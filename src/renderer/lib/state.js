@@ -118,8 +118,7 @@ function getDefaultPlayState () {
 
 /* If the saved state file doesn't exist yet, here's what we use instead */
 function setupStateSaved () {
-  const { copyFileSync, mkdirSync, readFileSync } = require('fs')
-  const parseTorrent = require('parse-torrent')
+  const { mkdirSync } = require('fs')
 
   const saved = {
     prefs: {
@@ -135,48 +134,25 @@ function setupStateSaved () {
       globalTrackers: defaultAnnounceList,
       viewMode: 'grid' // 'grid' or 'list'
     },
-    torrents: config.DEFAULT_TORRENTS.map(createTorrentObject),
+    movieExploration: {
+      apiUrl: 'http://localhost:8080/api',
+      autoAddMagnetLinks: true,
+      defaultCategory: 'latest',
+      moviesPerPage: 20
+    },
+    ui: {
+      sidebarOpen: true
+    },
+    torrents: [],
     torrentsToResume: [],
     version: config.APP_VERSION /* make sure we can upgrade gracefully later */
   }
 
-  // TODO: Doing several sync calls during first startup is not ideal
+  // Create required directories
   mkdirSync(config.POSTER_PATH, { recursive: true })
   mkdirSync(config.TORRENT_PATH, { recursive: true })
 
-  config.DEFAULT_TORRENTS.forEach((t, i) => {
-    const infoHash = saved.torrents[i].infoHash
-    // TODO: Doing several sync calls during first startup is not ideal
-    copyFileSync(
-      path.join(config.STATIC_PATH, t.posterFileName),
-      path.join(config.POSTER_PATH, infoHash + path.extname(t.posterFileName))
-    )
-    copyFileSync(
-      path.join(config.STATIC_PATH, t.torrentFileName),
-      path.join(config.TORRENT_PATH, infoHash + '.torrent')
-    )
-  })
-
   return saved
-
-  function createTorrentObject (t) {
-    // TODO: Doing several sync calls during first startup is not ideal
-    const torrent = readFileSync(path.join(config.STATIC_PATH, t.torrentFileName))
-    const parsedTorrent = parseTorrent(torrent)
-
-    return {
-      status: 'paused',
-      infoHash: parsedTorrent.infoHash,
-      name: t.name,
-      displayName: t.name,
-      posterFileName: parsedTorrent.infoHash + path.extname(t.posterFileName),
-      torrentFileName: parsedTorrent.infoHash + '.torrent',
-      magnetURI: parseTorrent.toMagnetURI(parsedTorrent),
-      files: parsedTorrent.files,
-      selections: parsedTorrent.files.map((x) => true),
-      testID: t.testID
-    }
-  }
 }
 
 function getPlayingTorrentSummary () {

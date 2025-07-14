@@ -1,0 +1,816 @@
+2025-07-14 16:49:14,670 - INFO - Database initialized at piaohua_movies.db
+2025-07-14 16:49:14,670 - INFO - Starting complete scrape of Piaohua website
+2025-07-14 16:49:14,670 - INFO - Using 3 parallel category workers
+2025-07-14 16:49:14,670 - INFO - Starting scrape for category: action
+2025-07-14 16:49:14,670 - INFO - Starting scrape for category: comedy
+2025-07-14 16:49:14,670 - INFO - Starting scrape for category: romance
+2025-07-14 16:49:15,280 - INFO - Category action has 480 pages
+2025-07-14 16:49:15,287 - INFO - Scraping action page 1/480
+2025-07-14 16:49:15,287 - INFO - Category romance has 196 pages
+2025-07-14 16:49:15,287 - INFO - Scraping romance page 1/196
+2025-07-14 16:49:15,294 - INFO - Category comedy has 403 pages
+2025-07-14 16:49:15,304 - INFO - Scraping comedy page 1/403
+2025-07-14 16:49:16,397 - INFO - Scraping action page 2/480
+2025-07-14 16:49:16,405 - INFO - Scraping romance page 2/196
+2025-07-14 16:49:16,412 - INFO - Scraping comedy page 2/403
+2025-07-14 16:49:17,502 - INFO - Scraping action page 3/480
+2025-07-14 16:49:17,509 - INFO - Scraping romance page 3/196
+2025-07-14 16:49:17,516 - INFO - Scraping comedy page 3/403
+2025-07-14 16:49:18,604 - INFO - Scraping action page 4/480
+2025-07-14 16:49:18,614 - INFO - Scraping romance page 4/196
+2025-07-14 16:49:18,621 - INFO - Scraping comedy page 4/403
+2025-07-14 16:49:19,712 - INFO - Scraping action page 5/480
+2025-07-14 16:49:19,719 - INFO - Scraping romance page 5/196
+2025-07-14 16:49:19,729 - INFO - Scraping comedy page 5/403
+2025-07-14 16:49:20,816 - INFO - Scraping action page 6/480
+2025-07-14 16:49:20,832 - INFO - Scraping romance page 6/196
+2025-07-14 16:49:20,838 - INFO - Scraping comedy page 6/403
+2025-07-14 16:49:21,921 - INFO - Scraping action page 7/480
+2025-07-14 16:49:21,938 - INFO - Scraping romance page 7/196
+2025-07-14 16:49:21,944 - INFO - Scraping comedy page 7/403
+2025-07-14 16:49:23,025 - INFO - Scraping action page 8/480
+2025-07-14 16:49:23,043 - INFO - Scraping romance page 8/196
+2025-07-14 16:49:23,050 - INFO - Scraping comedy page 8/403
+2025-07-14 16:49:24,128 - INFO - Scraping action page 9/480
+2025-07-14 16:49:24,154 - INFO - Scraping comedy page 9/403
+2025-07-14 16:49:24,168 - INFO - Scraping romance page 9/196
+2025-07-14 16:49:25,232 - INFO - Scraping action page 10/480
+2025-07-14 16:49:25,255 - INFO - Scraping comedy page 10/403
+2025-07-14 16:49:25,281 - INFO - Scraping romance page 10/196
+2025-07-14 16:49:26,338 - INFO - Scraping action page 11/480
+2025-07-14 16:49:26,358 - INFO - Scraping comedy page 11/403
+2025-07-14 16:49:26,390 - INFO - Scraping romance page 11/196
+2025-07-14 16:49:27,442 - INFO - Scraping action page 12/480
+2025-07-14 16:49:27,467 - INFO - Scraping comedy page 12/403
+2025-07-14 16:49:27,496 - INFO - Scraping romance page 12/196
+2025-07-14 16:49:28,547 - INFO - Scraping action page 13/480
+2025-07-14 16:49:28,568 - INFO - Scraping comedy page 13/403
+2025-07-14 16:49:28,600 - INFO - Scraping romance page 13/196
+2025-07-14 16:49:29,656 - INFO - Scraping action page 14/480
+2025-07-14 16:49:29,675 - INFO - Scraping comedy page 14/403
+2025-07-14 16:49:29,700 - INFO - Scraping romance page 14/196
+2025-07-14 16:49:30,756 - INFO - Scraping action page 15/480
+2025-07-14 16:49:30,776 - INFO - Scraping comedy page 15/403
+2025-07-14 16:49:30,804 - INFO - Scraping romance page 15/196
+2025-07-14 16:49:31,857 - INFO - Scraping action page 16/480
+2025-07-14 16:49:31,877 - INFO - Scraping comedy page 16/403
+2025-07-14 16:49:31,904 - INFO - Scraping romance page 16/196
+2025-07-14 16:49:32,972 - INFO - Scraping action page 17/480
+2025-07-14 16:49:32,979 - INFO - Scraping comedy page 17/403
+2025-07-14 16:49:33,005 - INFO - Scraping romance page 17/196
+2025-07-14 16:49:34,084 - INFO - Scraping action page 18/480
+2025-07-14 16:49:34,090 - INFO - Scraping comedy page 18/403
+2025-07-14 16:49:34,108 - INFO - Scraping romance page 18/196
+2025-07-14 16:49:35,187 - INFO - Scraping action page 19/480
+2025-07-14 16:49:35,194 - INFO - Scraping comedy page 19/403
+2025-07-14 16:49:35,209 - INFO - Scraping romance page 19/196
+2025-07-14 16:49:36,291 - INFO - Scraping action page 20/480
+2025-07-14 16:49:36,297 - INFO - Scraping comedy page 20/403
+2025-07-14 16:49:36,308 - INFO - Scraping romance page 20/196
+2025-07-14 16:49:37,397 - INFO - Scraping action page 21/480
+2025-07-14 16:49:37,403 - INFO - Scraping comedy page 21/403
+2025-07-14 16:49:37,416 - INFO - Scraping romance page 21/196
+2025-07-14 16:49:38,500 - INFO - Scraping action page 22/480
+2025-07-14 16:49:38,507 - INFO - Scraping comedy page 22/403
+2025-07-14 16:49:38,517 - INFO - Scraping romance page 22/196
+2025-07-14 16:49:39,602 - INFO - Scraping action page 23/480
+2025-07-14 16:49:39,609 - INFO - Scraping comedy page 23/403
+2025-07-14 16:49:39,623 - INFO - Scraping romance page 23/196
+2025-07-14 16:49:40,708 - INFO - Scraping action page 24/480
+2025-07-14 16:49:40,715 - INFO - Scraping comedy page 24/403
+2025-07-14 16:49:40,726 - INFO - Scraping romance page 24/196
+2025-07-14 16:49:41,818 - INFO - Scraping comedy page 25/403
+2025-07-14 16:49:41,830 - INFO - Scraping romance page 25/196
+2025-07-14 16:49:41,854 - INFO - Scraping action page 25/480
+2025-07-14 16:49:42,923 - INFO - Scraping comedy page 26/403
+2025-07-14 16:49:42,931 - INFO - Scraping romance page 26/196
+2025-07-14 16:49:42,956 - INFO - Scraping action page 26/480
+2025-07-14 16:49:44,022 - INFO - Scraping comedy page 27/403
+2025-07-14 16:49:44,033 - INFO - Scraping romance page 27/196
+2025-07-14 16:49:44,074 - INFO - Scraping action page 27/480
+2025-07-14 16:49:45,128 - INFO - Scraping comedy page 28/403
+2025-07-14 16:49:45,134 - INFO - Scraping romance page 28/196
+2025-07-14 16:49:45,175 - INFO - Scraping action page 28/480
+2025-07-14 16:49:46,234 - INFO - Scraping comedy page 29/403
+2025-07-14 16:49:46,239 - INFO - Scraping romance page 29/196
+2025-07-14 16:49:46,283 - INFO - Scraping action page 29/480
+2025-07-14 16:49:47,336 - INFO - Scraping comedy page 30/403
+2025-07-14 16:49:47,343 - INFO - Scraping romance page 30/196
+2025-07-14 16:49:47,388 - INFO - Scraping action page 30/480
+2025-07-14 16:49:48,439 - INFO - Scraping comedy page 31/403
+2025-07-14 16:49:48,445 - INFO - Scraping romance page 31/196
+2025-07-14 16:49:48,499 - INFO - Scraping action page 31/480
+2025-07-14 16:49:49,539 - INFO - Scraping comedy page 32/403
+2025-07-14 16:49:49,546 - INFO - Scraping romance page 32/196
+2025-07-14 16:49:49,651 - INFO - Scraping action page 32/480
+2025-07-14 16:49:50,646 - INFO - Scraping comedy page 33/403
+2025-07-14 16:49:50,652 - INFO - Scraping romance page 33/196
+2025-07-14 16:49:50,755 - INFO - Scraping action page 33/480
+2025-07-14 16:49:51,750 - INFO - Scraping comedy page 34/403
+2025-07-14 16:49:51,755 - INFO - Scraping romance page 34/196
+2025-07-14 16:49:51,859 - INFO - Scraping action page 34/480
+2025-07-14 16:49:52,854 - INFO - Scraping comedy page 35/403
+2025-07-14 16:49:52,860 - INFO - Scraping romance page 35/196
+2025-07-14 16:49:52,965 - INFO - Scraping action page 35/480
+2025-07-14 16:49:53,956 - INFO - Scraping comedy page 36/403
+2025-07-14 16:49:53,966 - INFO - Scraping romance page 36/196
+2025-07-14 16:49:54,071 - INFO - Scraping action page 36/480
+2025-07-14 16:49:55,064 - INFO - Scraping comedy page 37/403
+2025-07-14 16:49:55,071 - INFO - Scraping romance page 37/196
+2025-07-14 16:49:55,176 - INFO - Scraping action page 37/480
+2025-07-14 16:49:56,169 - INFO - Scraping comedy page 38/403
+2025-07-14 16:49:56,176 - INFO - Scraping romance page 38/196
+2025-07-14 16:49:56,293 - INFO - Scraping action page 38/480
+2025-07-14 16:49:57,272 - INFO - Scraping comedy page 39/403
+2025-07-14 16:49:57,280 - INFO - Scraping romance page 39/196
+2025-07-14 16:49:57,398 - INFO - Scraping action page 39/480
+2025-07-14 16:49:58,374 - INFO - Scraping comedy page 40/403
+2025-07-14 16:49:58,380 - INFO - Scraping romance page 40/196
+2025-07-14 16:49:58,501 - INFO - Scraping action page 40/480
+2025-07-14 16:49:59,482 - INFO - Scraping comedy page 41/403
+2025-07-14 16:49:59,488 - INFO - Scraping romance page 41/196
+2025-07-14 16:49:59,602 - INFO - Scraping action page 41/480
+2025-07-14 16:50:00,584 - INFO - Scraping comedy page 42/403
+2025-07-14 16:50:00,590 - INFO - Scraping romance page 42/196
+2025-07-14 16:50:00,706 - INFO - Scraping action page 42/480
+2025-07-14 16:50:01,686 - INFO - Scraping comedy page 43/403
+2025-07-14 16:50:01,691 - INFO - Scraping romance page 43/196
+2025-07-14 16:50:01,849 - INFO - Scraping action page 43/480
+2025-07-14 16:50:02,813 - INFO - Scraping romance page 44/196
+2025-07-14 16:50:02,818 - INFO - Scraping comedy page 44/403
+2025-07-14 16:50:02,956 - INFO - Scraping action page 44/480
+2025-07-14 16:50:03,941 - INFO - Scraping romance page 45/196
+2025-07-14 16:50:03,956 - INFO - Scraping comedy page 45/403
+2025-07-14 16:50:04,062 - INFO - Scraping action page 45/480
+2025-07-14 16:50:05,062 - INFO - Scraping romance page 46/196
+2025-07-14 16:50:05,075 - INFO - Scraping comedy page 46/403
+2025-07-14 16:50:05,164 - INFO - Scraping action page 46/480
+2025-07-14 16:50:06,183 - INFO - Scraping romance page 47/196
+2025-07-14 16:50:06,201 - INFO - Scraping comedy page 47/403
+2025-07-14 16:50:06,269 - INFO - Scraping action page 47/480
+2025-07-14 16:50:07,302 - INFO - Scraping romance page 48/196
+2025-07-14 16:50:07,321 - INFO - Scraping comedy page 48/403
+2025-07-14 16:50:07,370 - INFO - Scraping action page 48/480
+2025-07-14 16:50:08,426 - INFO - Scraping romance page 49/196
+2025-07-14 16:50:08,443 - INFO - Scraping comedy page 49/403
+2025-07-14 16:50:08,484 - INFO - Scraping action page 49/480
+2025-07-14 16:50:09,550 - INFO - Scraping romance page 50/196
+2025-07-14 16:50:09,564 - INFO - Scraping comedy page 50/403
+2025-07-14 16:50:09,608 - INFO - Scraping action page 50/480
+2025-07-14 16:50:10,670 - INFO - Scraping romance page 51/196
+2025-07-14 16:50:10,683 - INFO - Scraping comedy page 51/403
+2025-07-14 16:50:10,710 - INFO - Scraping action page 51/480
+2025-07-14 16:50:11,796 - INFO - Scraping romance page 52/196
+2025-07-14 16:50:11,803 - INFO - Scraping comedy page 52/403
+2025-07-14 16:50:11,813 - INFO - Scraping action page 52/480
+2025-07-14 16:50:12,914 - INFO - Scraping action page 53/480
+2025-07-14 16:50:12,921 - INFO - Scraping romance page 53/196
+2025-07-14 16:50:12,942 - INFO - Scraping comedy page 53/403
+2025-07-14 16:50:14,016 - INFO - Scraping action page 54/480
+2025-07-14 16:50:14,042 - INFO - Scraping romance page 54/196
+2025-07-14 16:50:14,061 - INFO - Scraping comedy page 54/403
+2025-07-14 16:50:15,136 - INFO - Scraping action page 55/480
+2025-07-14 16:50:15,163 - INFO - Scraping romance page 55/196
+2025-07-14 16:50:15,181 - INFO - Scraping comedy page 55/403
+2025-07-14 16:50:16,242 - INFO - Scraping action page 56/480
+2025-07-14 16:50:16,284 - INFO - Scraping romance page 56/196
+2025-07-14 16:50:16,303 - INFO - Scraping comedy page 56/403
+2025-07-14 16:50:17,342 - INFO - Scraping action page 57/480
+2025-07-14 16:50:17,410 - INFO - Scraping romance page 57/196
+2025-07-14 16:50:17,425 - INFO - Scraping comedy page 57/403
+2025-07-14 16:50:18,447 - INFO - Scraping action page 58/480
+2025-07-14 16:50:18,536 - INFO - Scraping romance page 58/196
+2025-07-14 16:50:18,550 - INFO - Scraping comedy page 58/403
+2025-07-14 16:50:19,550 - INFO - Scraping action page 59/480
+2025-07-14 16:50:19,671 - INFO - Scraping romance page 59/196
+2025-07-14 16:50:19,679 - INFO - Scraping comedy page 59/403
+2025-07-14 16:50:20,653 - INFO - Scraping action page 60/480
+2025-07-14 16:50:20,800 - INFO - Scraping romance page 60/196
+2025-07-14 16:50:20,838 - INFO - Scraping comedy page 60/403
+2025-07-14 16:50:21,755 - INFO - Scraping action page 61/480
+2025-07-14 16:50:21,924 - INFO - Scraping romance page 61/196
+2025-07-14 16:50:21,959 - INFO - Scraping comedy page 61/403
+2025-07-14 16:50:22,859 - INFO - Scraping action page 62/480
+2025-07-14 16:50:23,042 - INFO - Scraping romance page 62/196
+2025-07-14 16:50:23,080 - INFO - Scraping comedy page 62/403
+2025-07-14 16:50:23,980 - INFO - Scraping action page 63/480
+2025-07-14 16:50:24,163 - INFO - Scraping romance page 63/196
+2025-07-14 16:50:24,203 - INFO - Scraping comedy page 63/403
+2025-07-14 16:50:25,079 - INFO - Scraping action page 64/480
+2025-07-14 16:50:25,286 - INFO - Scraping romance page 64/196
+2025-07-14 16:50:25,326 - INFO - Scraping comedy page 64/403
+2025-07-14 16:50:26,180 - INFO - Scraping action page 65/480
+2025-07-14 16:50:26,407 - INFO - Scraping romance page 65/196
+2025-07-14 16:50:26,446 - INFO - Scraping comedy page 65/403
+2025-07-14 16:50:27,285 - INFO - Scraping action page 66/480
+2025-07-14 16:50:27,528 - INFO - Scraping romance page 66/196
+2025-07-14 16:50:27,566 - INFO - Scraping comedy page 66/403
+2025-07-14 16:50:28,386 - INFO - Scraping action page 67/480
+2025-07-14 16:50:28,651 - INFO - Scraping romance page 67/196
+2025-07-14 16:50:28,687 - INFO - Scraping comedy page 67/403
+2025-07-14 16:50:29,490 - INFO - Scraping action page 68/480
+2025-07-14 16:50:29,768 - INFO - Scraping romance page 68/196
+2025-07-14 16:50:29,811 - INFO - Scraping comedy page 68/403
+2025-07-14 16:50:30,596 - INFO - Scraping action page 69/480
+2025-07-14 16:50:30,889 - INFO - Scraping romance page 69/196
+2025-07-14 16:50:30,934 - INFO - Scraping comedy page 69/403
+2025-07-14 16:50:31,698 - INFO - Scraping action page 70/480
+2025-07-14 16:50:32,021 - INFO - Scraping romance page 70/196
+2025-07-14 16:50:32,054 - INFO - Scraping comedy page 70/403
+2025-07-14 16:50:32,800 - INFO - Scraping action page 71/480
+2025-07-14 16:50:33,141 - INFO - Scraping romance page 71/196
+2025-07-14 16:50:33,194 - INFO - Scraping comedy page 71/403
+2025-07-14 16:50:33,903 - INFO - Scraping action page 72/480
+2025-07-14 16:50:34,259 - INFO - Scraping romance page 72/196
+2025-07-14 16:50:34,313 - INFO - Scraping comedy page 72/403
+2025-07-14 16:50:35,011 - INFO - Scraping action page 73/480
+2025-07-14 16:50:35,381 - INFO - Scraping romance page 73/196
+2025-07-14 16:50:35,433 - INFO - Scraping comedy page 73/403
+2025-07-14 16:50:36,113 - INFO - Scraping action page 74/480
+2025-07-14 16:50:36,503 - INFO - Scraping romance page 74/196
+2025-07-14 16:50:36,555 - INFO - Scraping comedy page 74/403
+2025-07-14 16:50:37,215 - INFO - Scraping action page 75/480
+2025-07-14 16:50:37,626 - INFO - Scraping romance page 75/196
+2025-07-14 16:50:37,680 - INFO - Scraping comedy page 75/403
+2025-07-14 16:50:38,315 - INFO - Scraping action page 76/480
+2025-07-14 16:50:38,747 - INFO - Scraping romance page 76/196
+2025-07-14 16:50:38,799 - INFO - Scraping comedy page 76/403
+2025-07-14 16:50:39,417 - INFO - Scraping action page 77/480
+2025-07-14 16:50:39,869 - INFO - Scraping romance page 77/196
+2025-07-14 16:50:39,918 - INFO - Scraping comedy page 77/403
+2025-07-14 16:50:40,521 - INFO - Scraping action page 78/480
+2025-07-14 16:50:40,988 - INFO - Scraping romance page 78/196
+2025-07-14 16:50:41,042 - INFO - Scraping comedy page 78/403
+2025-07-14 16:50:41,620 - INFO - Scraping action page 79/480
+2025-07-14 16:50:42,109 - INFO - Scraping romance page 79/196
+2025-07-14 16:50:42,167 - INFO - Scraping comedy page 79/403
+2025-07-14 16:50:42,719 - INFO - Scraping action page 80/480
+2025-07-14 16:50:43,228 - INFO - Scraping romance page 80/196
+2025-07-14 16:50:43,285 - INFO - Scraping comedy page 80/403
+2025-07-14 16:50:43,819 - INFO - Scraping action page 81/480
+2025-07-14 16:50:44,349 - INFO - Scraping romance page 81/196
+2025-07-14 16:50:44,411 - INFO - Scraping comedy page 81/403
+2025-07-14 16:50:44,919 - INFO - Scraping action page 82/480
+2025-07-14 16:50:45,469 - INFO - Scraping romance page 82/196
+2025-07-14 16:50:45,551 - INFO - Scraping comedy page 82/403
+2025-07-14 16:50:46,018 - INFO - Scraping action page 83/480
+2025-07-14 16:50:46,591 - INFO - Scraping romance page 83/196
+2025-07-14 16:50:46,672 - INFO - Scraping comedy page 83/403
+2025-07-14 16:50:47,121 - INFO - Scraping action page 84/480
+2025-07-14 16:50:47,710 - INFO - Scraping romance page 84/196
+2025-07-14 16:50:47,792 - INFO - Scraping comedy page 84/403
+2025-07-14 16:50:48,222 - INFO - Scraping action page 85/480
+2025-07-14 16:50:48,831 - INFO - Scraping romance page 85/196
+2025-07-14 16:50:48,913 - INFO - Scraping comedy page 85/403
+2025-07-14 16:50:49,322 - INFO - Scraping action page 86/480
+2025-07-14 16:50:49,949 - INFO - Scraping romance page 86/196
+2025-07-14 16:50:50,031 - INFO - Scraping comedy page 86/403
+2025-07-14 16:50:50,420 - INFO - Scraping action page 87/480
+2025-07-14 16:50:51,070 - INFO - Scraping romance page 87/196
+2025-07-14 16:50:51,151 - INFO - Scraping comedy page 87/403
+2025-07-14 16:50:51,519 - INFO - Scraping action page 88/480
+2025-07-14 16:50:52,192 - INFO - Scraping romance page 88/196
+2025-07-14 16:50:52,274 - INFO - Scraping comedy page 88/403
+2025-07-14 16:50:52,623 - INFO - Scraping action page 89/480
+2025-07-14 16:50:53,314 - INFO - Scraping romance page 89/196
+2025-07-14 16:50:53,392 - INFO - Scraping comedy page 89/403
+2025-07-14 16:50:53,722 - INFO - Scraping action page 90/480
+2025-07-14 16:50:54,435 - INFO - Scraping romance page 90/196
+2025-07-14 16:50:54,513 - INFO - Scraping comedy page 90/403
+2025-07-14 16:50:54,827 - INFO - Scraping action page 91/480
+2025-07-14 16:50:55,554 - INFO - Scraping romance page 91/196
+2025-07-14 16:50:55,635 - INFO - Scraping comedy page 91/403
+2025-07-14 16:50:55,926 - INFO - Scraping action page 92/480
+2025-07-14 16:50:56,677 - INFO - Scraping romance page 92/196
+2025-07-14 16:50:56,755 - INFO - Scraping comedy page 92/403
+2025-07-14 16:50:57,033 - INFO - Scraping action page 93/480
+2025-07-14 16:50:57,801 - INFO - Scraping romance page 93/196
+2025-07-14 16:50:57,894 - INFO - Scraping comedy page 93/403
+2025-07-14 16:50:58,140 - INFO - Scraping action page 94/480
+2025-07-14 16:50:58,920 - INFO - Scraping romance page 94/196
+2025-07-14 16:50:59,017 - INFO - Scraping comedy page 94/403
+2025-07-14 16:50:59,241 - INFO - Scraping action page 95/480
+2025-07-14 16:51:00,039 - INFO - Scraping romance page 95/196
+2025-07-14 16:51:00,143 - INFO - Scraping comedy page 95/403
+2025-07-14 16:51:00,343 - INFO - Scraping action page 96/480
+2025-07-14 16:51:01,159 - INFO - Scraping romance page 96/196
+2025-07-14 16:51:01,269 - INFO - Scraping comedy page 96/403
+2025-07-14 16:51:01,444 - INFO - Scraping action page 97/480
+2025-07-14 16:51:02,283 - INFO - Scraping romance page 97/196
+2025-07-14 16:51:02,393 - INFO - Scraping comedy page 97/403
+2025-07-14 16:51:02,548 - INFO - Scraping action page 98/480
+2025-07-14 16:51:03,402 - INFO - Scraping romance page 98/196
+2025-07-14 16:51:03,521 - INFO - Scraping comedy page 98/403
+2025-07-14 16:51:03,652 - INFO - Scraping action page 99/480
+2025-07-14 16:51:04,523 - INFO - Scraping romance page 99/196
+2025-07-14 16:51:04,652 - INFO - Scraping comedy page 99/403
+2025-07-14 16:51:04,753 - INFO - Scraping action page 100/480
+2025-07-14 16:51:05,645 - INFO - Scraping romance page 100/196
+2025-07-14 16:51:05,770 - INFO - Scraping comedy page 100/403
+2025-07-14 16:51:05,854 - INFO - Scraping action page 101/480
+2025-07-14 16:51:06,766 - INFO - Scraping romance page 101/196
+2025-07-14 16:51:06,889 - INFO - Scraping comedy page 101/403
+2025-07-14 16:51:06,955 - INFO - Scraping action page 102/480
+2025-07-14 16:51:07,885 - INFO - Scraping romance page 102/196
+2025-07-14 16:51:08,009 - INFO - Scraping comedy page 102/403
+2025-07-14 16:51:08,079 - INFO - Scraping action page 103/480
+2025-07-14 16:51:09,006 - INFO - Scraping romance page 103/196
+2025-07-14 16:51:09,112 - INFO - Scraping comedy page 103/403
+2025-07-14 16:51:09,184 - INFO - Scraping action page 104/480
+2025-07-14 16:51:10,129 - INFO - Scraping romance page 104/196
+2025-07-14 16:51:10,238 - INFO - Scraping comedy page 104/403
+2025-07-14 16:51:10,311 - INFO - Scraping action page 105/480
+2025-07-14 16:51:11,255 - INFO - Scraping romance page 105/196
+2025-07-14 16:51:11,367 - INFO - Scraping comedy page 105/403
+2025-07-14 16:51:11,415 - INFO - Scraping action page 106/480
+2025-07-14 16:51:12,356 - INFO - Scraping romance page 106/196
+2025-07-14 16:51:12,486 - INFO - Scraping comedy page 106/403
+2025-07-14 16:51:12,517 - INFO - Scraping action page 107/480
+2025-07-14 16:51:13,480 - INFO - Scraping romance page 107/196
+2025-07-14 16:51:13,612 - INFO - Scraping comedy page 107/403
+2025-07-14 16:51:13,618 - INFO - Scraping action page 108/480
+2025-07-14 16:51:14,600 - INFO - Scraping romance page 108/196
+2025-07-14 16:51:14,720 - INFO - Scraping action page 109/480
+2025-07-14 16:51:14,734 - INFO - Scraping comedy page 108/403
+2025-07-14 16:51:15,721 - INFO - Scraping romance page 109/196
+2025-07-14 16:51:15,822 - INFO - Scraping action page 110/480
+2025-07-14 16:51:15,853 - INFO - Scraping comedy page 109/403
+2025-07-14 16:51:16,846 - INFO - Scraping romance page 110/196
+2025-07-14 16:51:16,927 - INFO - Scraping action page 111/480
+2025-07-14 16:51:16,973 - INFO - Scraping comedy page 110/403
+2025-07-14 16:51:17,966 - INFO - Scraping romance page 111/196
+2025-07-14 16:51:18,029 - INFO - Scraping action page 112/480
+2025-07-14 16:51:18,094 - INFO - Scraping comedy page 111/403
+2025-07-14 16:51:19,090 - INFO - Scraping romance page 112/196
+2025-07-14 16:51:19,128 - INFO - Scraping action page 113/480
+2025-07-14 16:51:19,215 - INFO - Scraping comedy page 112/403
+2025-07-14 16:51:20,211 - INFO - Scraping romance page 113/196
+2025-07-14 16:51:20,228 - INFO - Scraping action page 114/480
+2025-07-14 16:51:20,342 - INFO - Scraping comedy page 113/403
+2025-07-14 16:51:21,331 - INFO - Scraping action page 115/480
+2025-07-14 16:51:21,337 - INFO - Scraping romance page 114/196
+2025-07-14 16:51:21,487 - INFO - Scraping comedy page 114/403
+2025-07-14 16:51:22,436 - INFO - Scraping action page 116/480
+2025-07-14 16:51:22,464 - INFO - Scraping romance page 115/196
+2025-07-14 16:51:22,611 - INFO - Scraping comedy page 115/403
+2025-07-14 16:51:23,555 - INFO - Scraping action page 117/480
+2025-07-14 16:51:23,590 - INFO - Scraping romance page 116/196
+2025-07-14 16:51:23,730 - INFO - Scraping comedy page 116/403
+2025-07-14 16:51:24,656 - INFO - Scraping action page 118/480
+2025-07-14 16:51:24,713 - INFO - Scraping romance page 117/196
+2025-07-14 16:51:24,851 - INFO - Scraping comedy page 117/403
+2025-07-14 16:51:25,758 - INFO - Scraping action page 119/480
+2025-07-14 16:51:25,834 - INFO - Scraping romance page 118/196
+2025-07-14 16:51:25,972 - INFO - Scraping comedy page 118/403
+2025-07-14 16:51:26,864 - INFO - Scraping action page 120/480
+2025-07-14 16:51:26,957 - INFO - Scraping romance page 119/196
+2025-07-14 16:51:27,093 - INFO - Scraping comedy page 119/403
+2025-07-14 16:51:27,966 - INFO - Scraping action page 121/480
+2025-07-14 16:51:28,078 - INFO - Scraping romance page 120/196
+2025-07-14 16:51:28,217 - INFO - Scraping comedy page 120/403
+2025-07-14 16:51:29,072 - INFO - Scraping action page 122/480
+2025-07-14 16:51:29,204 - INFO - Scraping romance page 121/196
+2025-07-14 16:51:29,339 - INFO - Scraping comedy page 121/403
+2025-07-14 16:51:30,178 - INFO - Scraping action page 123/480
+2025-07-14 16:51:30,326 - INFO - Scraping romance page 122/196
+2025-07-14 16:51:30,461 - INFO - Scraping comedy page 122/403
+2025-07-14 16:51:31,281 - INFO - Scraping action page 124/480
+2025-07-14 16:51:31,447 - INFO - Scraping romance page 123/196
+2025-07-14 16:51:31,583 - INFO - Scraping comedy page 123/403
+2025-07-14 16:51:32,385 - INFO - Scraping action page 125/480
+2025-07-14 16:51:32,577 - INFO - Scraping romance page 124/196
+2025-07-14 16:51:32,702 - INFO - Scraping comedy page 124/403
+2025-07-14 16:51:33,497 - INFO - Scraping action page 126/480
+2025-07-14 16:51:33,698 - INFO - Scraping romance page 125/196
+2025-07-14 16:51:33,824 - INFO - Scraping comedy page 125/403
+2025-07-14 16:51:34,599 - INFO - Scraping action page 127/480
+2025-07-14 16:51:34,820 - INFO - Scraping romance page 126/196
+2025-07-14 16:51:34,953 - INFO - Scraping comedy page 126/403
+2025-07-14 16:51:35,722 - INFO - Scraping action page 128/480
+2025-07-14 16:51:35,943 - INFO - Scraping romance page 127/196
+2025-07-14 16:51:36,074 - INFO - Scraping comedy page 127/403
+2025-07-14 16:51:36,828 - INFO - Scraping action page 129/480
+2025-07-14 16:51:37,064 - INFO - Scraping romance page 128/196
+2025-07-14 16:51:37,192 - INFO - Scraping comedy page 128/403
+2025-07-14 16:51:37,931 - INFO - Scraping action page 130/480
+2025-07-14 16:51:38,185 - INFO - Scraping romance page 129/196
+2025-07-14 16:51:38,311 - INFO - Scraping comedy page 129/403
+2025-07-14 16:51:39,037 - INFO - Scraping action page 131/480
+2025-07-14 16:51:39,306 - INFO - Scraping romance page 130/196
+2025-07-14 16:51:39,430 - INFO - Scraping comedy page 130/403
+2025-07-14 16:51:40,144 - INFO - Scraping action page 132/480
+2025-07-14 16:51:40,429 - INFO - Scraping romance page 131/196
+2025-07-14 16:51:40,552 - INFO - Scraping comedy page 131/403
+2025-07-14 16:51:41,245 - INFO - Scraping action page 133/480
+2025-07-14 16:51:41,551 - INFO - Scraping romance page 132/196
+2025-07-14 16:51:41,674 - INFO - Scraping comedy page 132/403
+2025-07-14 16:51:42,348 - INFO - Scraping action page 134/480
+2025-07-14 16:51:42,680 - INFO - Scraping romance page 133/196
+2025-07-14 16:51:42,801 - INFO - Scraping comedy page 133/403
+2025-07-14 16:51:43,448 - INFO - Scraping action page 135/480
+2025-07-14 16:51:43,802 - INFO - Scraping romance page 134/196
+2025-07-14 16:51:43,922 - INFO - Scraping comedy page 134/403
+2025-07-14 16:51:44,550 - INFO - Scraping action page 136/480
+2025-07-14 16:51:44,921 - INFO - Scraping romance page 135/196
+2025-07-14 16:51:45,043 - INFO - Scraping comedy page 135/403
+2025-07-14 16:51:45,653 - INFO - Scraping action page 137/480
+2025-07-14 16:51:46,042 - INFO - Scraping romance page 136/196
+2025-07-14 16:51:46,169 - INFO - Scraping comedy page 136/403
+2025-07-14 16:51:46,752 - INFO - Scraping action page 138/480
+2025-07-14 16:51:47,161 - INFO - Scraping romance page 137/196
+2025-07-14 16:51:47,303 - INFO - Scraping comedy page 137/403
+2025-07-14 16:51:47,856 - INFO - Scraping action page 139/480
+2025-07-14 16:51:48,308 - INFO - Scraping romance page 138/196
+2025-07-14 16:51:48,430 - INFO - Scraping comedy page 138/403
+2025-07-14 16:51:48,981 - INFO - Scraping action page 140/480
+2025-07-14 16:51:49,431 - INFO - Scraping romance page 139/196
+2025-07-14 16:51:49,555 - INFO - Scraping comedy page 139/403
+2025-07-14 16:51:50,083 - INFO - Scraping action page 141/480
+2025-07-14 16:51:50,557 - INFO - Scraping romance page 140/196
+2025-07-14 16:51:50,676 - INFO - Scraping comedy page 140/403
+2025-07-14 16:51:51,187 - INFO - Scraping action page 142/480
+2025-07-14 16:51:51,677 - INFO - Scraping romance page 141/196
+2025-07-14 16:51:51,797 - INFO - Scraping comedy page 141/403
+2025-07-14 16:51:52,286 - INFO - Scraping action page 143/480
+2025-07-14 16:51:52,798 - INFO - Scraping romance page 142/196
+2025-07-14 16:51:52,920 - INFO - Scraping comedy page 142/403
+2025-07-14 16:51:53,393 - INFO - Scraping action page 144/480
+2025-07-14 16:51:53,921 - INFO - Scraping romance page 143/196
+2025-07-14 16:51:54,043 - INFO - Scraping comedy page 143/403
+2025-07-14 16:51:54,493 - INFO - Scraping action page 145/480
+2025-07-14 16:51:55,045 - INFO - Scraping romance page 144/196
+2025-07-14 16:51:55,166 - INFO - Scraping comedy page 144/403
+2025-07-14 16:51:55,593 - INFO - Scraping action page 146/480
+2025-07-14 16:51:56,164 - INFO - Scraping romance page 145/196
+2025-07-14 16:51:56,289 - INFO - Scraping comedy page 145/403
+2025-07-14 16:51:56,696 - INFO - Scraping action page 147/480
+2025-07-14 16:51:57,288 - INFO - Scraping romance page 146/196
+2025-07-14 16:51:57,412 - INFO - Scraping comedy page 146/403
+2025-07-14 16:51:57,802 - INFO - Scraping action page 148/480
+2025-07-14 16:51:58,412 - INFO - Scraping romance page 147/196
+2025-07-14 16:51:58,537 - INFO - Scraping comedy page 147/403
+2025-07-14 16:51:58,927 - INFO - Scraping action page 149/480
+2025-07-14 16:51:59,546 - INFO - Scraping romance page 148/196
+2025-07-14 16:51:59,660 - INFO - Scraping comedy page 148/403
+2025-07-14 16:52:00,044 - INFO - Scraping action page 150/480
+2025-07-14 16:52:00,671 - INFO - Scraping romance page 149/196
+2025-07-14 16:52:00,798 - INFO - Scraping comedy page 149/403
+2025-07-14 16:52:01,161 - INFO - Scraping action page 151/480
+2025-07-14 16:52:01,821 - INFO - Scraping romance page 150/196
+2025-07-14 16:52:01,926 - INFO - Scraping comedy page 150/403
+2025-07-14 16:52:02,285 - INFO - Scraping action page 152/480
+2025-07-14 16:52:02,942 - INFO - Scraping romance page 151/196
+2025-07-14 16:52:03,051 - INFO - Scraping comedy page 151/403
+2025-07-14 16:52:03,406 - INFO - Scraping action page 153/480
+2025-07-14 16:52:04,062 - INFO - Scraping romance page 152/196
+2025-07-14 16:52:04,177 - INFO - Scraping comedy page 152/403
+2025-07-14 16:52:04,512 - INFO - Scraping action page 154/480
+2025-07-14 16:52:05,188 - INFO - Scraping romance page 153/196
+2025-07-14 16:52:05,285 - INFO - Scraping comedy page 153/403
+2025-07-14 16:52:05,612 - INFO - Scraping action page 155/480
+2025-07-14 16:52:06,316 - INFO - Scraping romance page 154/196
+2025-07-14 16:52:06,408 - INFO - Scraping comedy page 154/403
+2025-07-14 16:52:06,714 - INFO - Scraping action page 156/480
+2025-07-14 16:52:07,441 - INFO - Scraping romance page 155/196
+2025-07-14 16:52:07,529 - INFO - Scraping comedy page 155/403
+2025-07-14 16:52:07,815 - INFO - Scraping action page 157/480
+2025-07-14 16:52:08,572 - INFO - Scraping romance page 156/196
+2025-07-14 16:52:08,655 - INFO - Scraping comedy page 156/403
+2025-07-14 16:52:08,916 - INFO - Scraping action page 158/480
+2025-07-14 16:52:09,714 - INFO - Scraping romance page 157/196
+2025-07-14 16:52:09,780 - INFO - Scraping comedy page 157/403
+2025-07-14 16:52:10,016 - INFO - Scraping action page 159/480
+2025-07-14 16:52:10,838 - INFO - Scraping romance page 158/196
+2025-07-14 16:52:10,901 - INFO - Scraping comedy page 158/403
+2025-07-14 16:52:11,118 - INFO - Scraping action page 160/480
+2025-07-14 16:52:11,958 - INFO - Scraping romance page 159/196
+2025-07-14 16:52:12,022 - INFO - Scraping comedy page 159/403
+2025-07-14 16:52:12,218 - INFO - Scraping action page 161/480
+2025-07-14 16:52:13,080 - INFO - Scraping romance page 160/196
+2025-07-14 16:52:13,166 - INFO - Scraping comedy page 160/403
+2025-07-14 16:52:13,319 - INFO - Scraping action page 162/480
+2025-07-14 16:52:14,203 - INFO - Scraping romance page 161/196
+2025-07-14 16:52:14,288 - INFO - Scraping comedy page 161/403
+2025-07-14 16:52:14,418 - INFO - Scraping action page 163/480
+2025-07-14 16:52:15,325 - INFO - Scraping romance page 162/196
+2025-07-14 16:52:15,411 - INFO - Scraping comedy page 162/403
+2025-07-14 16:52:15,519 - INFO - Scraping action page 164/480
+2025-07-14 16:52:16,449 - INFO - Scraping romance page 163/196
+2025-07-14 16:52:16,540 - INFO - Scraping comedy page 163/403
+2025-07-14 16:52:16,624 - INFO - Scraping action page 165/480
+2025-07-14 16:52:17,571 - INFO - Scraping romance page 164/196
+2025-07-14 16:52:17,662 - INFO - Scraping comedy page 164/403
+2025-07-14 16:52:17,728 - INFO - Scraping action page 166/480
+2025-07-14 16:52:18,694 - INFO - Scraping romance page 165/196
+2025-07-14 16:52:18,787 - INFO - Scraping comedy page 165/403
+2025-07-14 16:52:18,828 - INFO - Scraping action page 167/480
+2025-07-14 16:52:19,813 - INFO - Scraping romance page 166/196
+2025-07-14 16:52:19,911 - INFO - Scraping comedy page 166/403
+2025-07-14 16:52:19,929 - INFO - Scraping action page 168/480
+2025-07-14 16:52:20,939 - INFO - Scraping romance page 167/196
+2025-07-14 16:52:21,033 - INFO - Scraping comedy page 167/403
+2025-07-14 16:52:21,353 - INFO - Scraping action page 169/480
+2025-07-14 16:52:22,068 - INFO - Scraping romance page 168/196
+2025-07-14 16:52:22,153 - INFO - Scraping comedy page 168/403
+2025-07-14 16:52:22,455 - INFO - Scraping action page 170/480
+2025-07-14 16:52:23,191 - INFO - Scraping romance page 169/196
+2025-07-14 16:52:23,278 - INFO - Scraping comedy page 169/403
+2025-07-14 16:52:23,558 - INFO - Scraping action page 171/480
+2025-07-14 16:52:24,317 - INFO - Scraping romance page 170/196
+2025-07-14 16:52:24,401 - INFO - Scraping comedy page 170/403
+2025-07-14 16:52:24,659 - INFO - Scraping action page 172/480
+2025-07-14 16:52:25,439 - INFO - Scraping romance page 171/196
+2025-07-14 16:52:25,525 - INFO - Scraping comedy page 171/403
+2025-07-14 16:52:25,781 - INFO - Scraping action page 173/480
+2025-07-14 16:52:26,563 - INFO - Scraping romance page 172/196
+2025-07-14 16:52:26,647 - INFO - Scraping comedy page 172/403
+2025-07-14 16:52:26,885 - INFO - Scraping action page 174/480
+2025-07-14 16:52:27,688 - INFO - Scraping romance page 173/196
+2025-07-14 16:52:27,777 - INFO - Scraping comedy page 173/403
+2025-07-14 16:52:27,988 - INFO - Scraping action page 175/480
+2025-07-14 16:52:28,810 - INFO - Scraping romance page 174/196
+2025-07-14 16:52:28,899 - INFO - Scraping comedy page 174/403
+2025-07-14 16:52:29,089 - INFO - Scraping action page 176/480
+2025-07-14 16:52:29,910 - INFO - Scraping romance page 175/196
+2025-07-14 16:52:30,020 - INFO - Scraping comedy page 175/403
+2025-07-14 16:52:30,193 - INFO - Scraping action page 177/480
+2025-07-14 16:52:31,042 - INFO - Scraping romance page 176/196
+2025-07-14 16:52:31,143 - INFO - Scraping comedy page 176/403
+2025-07-14 16:52:31,294 - INFO - Scraping action page 178/480
+2025-07-14 16:52:32,166 - INFO - Scraping romance page 177/196
+2025-07-14 16:52:32,263 - INFO - Scraping comedy page 177/403
+2025-07-14 16:52:32,394 - INFO - Scraping action page 179/480
+2025-07-14 16:52:33,291 - INFO - Scraping romance page 178/196
+2025-07-14 16:52:33,387 - INFO - Scraping comedy page 178/403
+2025-07-14 16:52:33,500 - INFO - Scraping action page 180/480
+2025-07-14 16:52:34,412 - INFO - Scraping romance page 179/196
+2025-07-14 16:52:34,511 - INFO - Scraping comedy page 179/403
+2025-07-14 16:52:34,605 - INFO - Scraping action page 181/480
+2025-07-14 16:52:35,535 - INFO - Scraping romance page 180/196
+2025-07-14 16:52:35,631 - INFO - Scraping comedy page 180/403
+2025-07-14 16:52:35,705 - INFO - Scraping action page 182/480
+2025-07-14 16:52:36,657 - INFO - Scraping romance page 181/196
+2025-07-14 16:52:36,755 - INFO - Scraping comedy page 181/403
+2025-07-14 16:52:36,809 - INFO - Scraping action page 183/480
+2025-07-14 16:52:37,782 - INFO - Scraping romance page 182/196
+2025-07-14 16:52:37,882 - INFO - Scraping comedy page 182/403
+2025-07-14 16:52:37,930 - INFO - Scraping action page 184/480
+2025-07-14 16:52:38,905 - INFO - Scraping romance page 183/196
+2025-07-14 16:52:39,003 - INFO - Scraping comedy page 183/403
+2025-07-14 16:52:39,035 - INFO - Scraping action page 185/480
+2025-07-14 16:52:40,026 - INFO - Scraping romance page 184/196
+2025-07-14 16:52:40,128 - INFO - Scraping comedy page 184/403
+2025-07-14 16:52:40,137 - INFO - Scraping action page 186/480
+2025-07-14 16:52:41,148 - INFO - Scraping romance page 185/196
+2025-07-14 16:52:41,243 - INFO - Scraping action page 187/480
+2025-07-14 16:52:41,252 - INFO - Scraping comedy page 185/403
+2025-07-14 16:52:42,273 - INFO - Scraping romance page 186/196
+2025-07-14 16:52:42,343 - INFO - Scraping action page 188/480
+2025-07-14 16:52:42,375 - INFO - Scraping comedy page 186/403
+2025-07-14 16:52:43,398 - INFO - Scraping romance page 187/196
+2025-07-14 16:52:43,444 - INFO - Scraping action page 189/480
+2025-07-14 16:52:43,499 - INFO - Scraping comedy page 187/403
+2025-07-14 16:52:44,525 - INFO - Scraping romance page 188/196
+2025-07-14 16:52:44,548 - INFO - Scraping action page 190/480
+2025-07-14 16:52:44,637 - INFO - Scraping comedy page 188/403
+2025-07-14 16:52:45,646 - INFO - Scraping romance page 189/196
+2025-07-14 16:52:45,655 - INFO - Scraping action page 191/480
+2025-07-14 16:52:45,770 - INFO - Scraping comedy page 189/403
+2025-07-14 16:52:46,753 - INFO - Scraping action page 192/480
+2025-07-14 16:52:46,767 - INFO - Scraping romance page 190/196
+2025-07-14 16:52:46,901 - INFO - Scraping comedy page 190/403
+2025-07-14 16:52:47,854 - INFO - Scraping action page 193/480
+2025-07-14 16:52:47,886 - INFO - Scraping romance page 191/196
+2025-07-14 16:52:48,021 - INFO - Scraping comedy page 191/403
+2025-07-14 16:52:48,962 - INFO - Scraping action page 194/480
+2025-07-14 16:52:49,010 - INFO - Scraping romance page 192/196
+2025-07-14 16:52:49,147 - INFO - Scraping comedy page 192/403
+2025-07-14 16:52:50,063 - INFO - Scraping action page 195/480
+2025-07-14 16:52:50,131 - INFO - Scraping romance page 193/196
+2025-07-14 16:52:50,270 - INFO - Scraping comedy page 193/403
+2025-07-14 16:52:51,193 - INFO - Scraping action page 196/480
+2025-07-14 16:52:51,254 - INFO - Scraping romance page 194/196
+2025-07-14 16:52:51,392 - INFO - Scraping comedy page 194/403
+2025-07-14 16:52:52,296 - INFO - Scraping action page 197/480
+2025-07-14 16:52:52,380 - INFO - Scraping romance page 195/196
+2025-07-14 16:52:52,513 - INFO - Scraping comedy page 195/403
+2025-07-14 16:52:53,402 - INFO - Scraping action page 198/480
+2025-07-14 16:52:53,504 - INFO - Scraping romance page 196/196
+2025-07-14 16:52:53,638 - INFO - Scraping comedy page 196/403
+2025-07-14 16:52:54,504 - INFO - Scraping action page 199/480
+2025-07-14 16:52:54,626 - INFO - Found 2744 movies in category romance
+2025-07-14 16:52:54,626 - INFO - Fetching detailed information for 2744 movies in romance...
+2025-07-14 16:52:54,767 - INFO - Scraping comedy page 197/403
+2025-07-14 16:52:55,615 - INFO - Scraping action page 200/480
+2025-07-14 16:52:56,086 - INFO - Scraping comedy page 198/403
+2025-07-14 16:52:56,718 - INFO - Scraping action page 201/480
+2025-07-14 16:52:57,211 - INFO - Scraping comedy page 199/403
+2025-07-14 16:52:57,819 - INFO - Scraping action page 202/480
+2025-07-14 16:52:58,334 - INFO - Scraping comedy page 200/403
+2025-07-14 16:52:58,919 - INFO - Scraping action page 203/480
+2025-07-14 16:52:59,452 - INFO - Scraping comedy page 201/403
+2025-07-14 16:53:00,024 - INFO - Scraping action page 204/480
+2025-07-14 16:53:00,577 - INFO - Scraping comedy page 202/403
+2025-07-14 16:53:01,125 - INFO - Scraping action page 205/480
+2025-07-14 16:53:01,696 - INFO - Scraping comedy page 203/403
+2025-07-14 16:53:02,223 - INFO - Scraping action page 206/480
+2025-07-14 16:53:02,814 - INFO - Scraping comedy page 204/403
+2025-07-14 16:53:03,326 - INFO - Scraping action page 207/480
+2025-07-14 16:53:03,946 - INFO - Scraping comedy page 205/403
+2025-07-14 16:53:04,434 - INFO - Scraping action page 208/480
+2025-07-14 16:53:05,069 - INFO - Scraping comedy page 206/403
+2025-07-14 16:53:05,533 - INFO - Scraping action page 209/480
+2025-07-14 16:53:06,189 - INFO - Scraping comedy page 207/403
+2025-07-14 16:53:06,633 - INFO - Scraping action page 210/480
+2025-07-14 16:53:07,321 - INFO - Scraping comedy page 208/403
+2025-07-14 16:53:07,738 - INFO - Scraping action page 211/480
+2025-07-14 16:53:08,313 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0405/15077.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,314 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0411/15128.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,314 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0407/15100.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,314 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0407/15093.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,315 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0411/15132.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,316 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0406/15087.html: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-07-14 16:53:08,450 - INFO - Scraping comedy page 209/403
+2025-07-14 16:53:08,839 - INFO - Scraping action page 212/480
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0420/15178.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0420/15178.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602273500>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0413/15140.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0413/15140.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196019655B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0412/15134.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0412/15134.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601965B20>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0420/15176.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0420/15176.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601F351F0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0417/15166.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0417/15166.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601967740>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,322 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0414/15144.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0414/15144.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196019646B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:16,335 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0420/15181.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0420/15181.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196024FF470>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:18,462 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_209.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_209.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601688830>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:18,462 - INFO - Scraping comedy page 210/403
+2025-07-14 16:53:18,850 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_212.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_212.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBACF0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:18,850 - INFO - Scraping action page 213/480
+2025-07-14 16:53:24,347 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0422/15201.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0422/15201.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBA4E0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,347 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0425/15219.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0425/15219.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DB8470>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,348 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0423/15210.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0423/15210.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DB97C0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,348 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0420/15187.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0420/15187.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601965AF0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,348 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0426/15229.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0426/15229.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA030>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,348 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0425/15218.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0425/15218.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DB83B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:24,349 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0426/15233.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0426/15233.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BAED0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:28,468 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_210.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_210.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8AA0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:28,468 - INFO - Scraping comedy page 211/403
+2025-07-14 16:53:28,864 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_213.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_213.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BB380>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:28,864 - INFO - Scraping action page 214/480
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0426/15234.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0426/15234.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA9F0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0429/15268.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0429/15268.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA810>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0428/15259.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0428/15259.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DEEA0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0501/15277.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0501/15277.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DC1A0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0503/15288.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0503/15288.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B9430>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0428/15244.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0428/15244.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BAD50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:32,371 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0428/15256.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0428/15256.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCB30>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:38,482 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_211.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_211.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601133B90>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:38,482 - INFO - Scraping comedy page 212/403
+2025-07-14 16:53:38,865 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_214.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_214.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBA4E0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:38,866 - INFO - Scraping action page 215/480
+2025-07-14 16:53:40,410 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0511/15332.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0511/15332.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DB8530>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,410 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0514/15356.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0514/15356.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBB620>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,410 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0505/15294.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0505/15294.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBA270>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,411 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0514/15355.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0514/15355.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601964830>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,411 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0517/15378.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0517/15378.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196019679E0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,411 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0516/15367.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0516/15367.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCAA0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:40,411 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0516/15364.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0516/15364.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601964650>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,417 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0521/15399.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0521/15399.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8B60>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,417 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0522/15414.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0522/15414.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA900>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,417 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0522/15403.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0522/15403.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BB830>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,417 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0528/15456.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0528/15456.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8C80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,418 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0523/15419.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0523/15419.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BAED0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,418 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0528/15450.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0528/15450.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BBB30>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,418 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0518/15382.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0518/15382.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B86E0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:48,507 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_212.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_212.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DDA30>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:48,507 - INFO - Scraping comedy page 213/403
+2025-07-14 16:53:48,883 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_215.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_215.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DFF20>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:48,884 - INFO - Scraping action page 216/480
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0606/15534.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0606/15534.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DC3B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0601/15477.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0601/15477.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF350>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0606/15528.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0606/15528.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DD850>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0603/15506.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0603/15506.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DDC40>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0602/15497.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0602/15497.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DFB00>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0602/15495.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0602/15495.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DEEA0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:56,483 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0604/15511.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0604/15511.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE5D0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:53:58,518 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_213.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_213.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DDF40>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:58,518 - INFO - Scraping comedy page 214/403
+2025-07-14 16:53:58,890 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_216.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_216.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601111400>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:53:58,890 - INFO - Scraping action page 217/480
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0611/15578.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0611/15578.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BAA50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0606/15536.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0606/15536.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8F80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0611/15580.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0611/15580.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196011334A0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0614/15600.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0614/15600.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DD340>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0613/15593.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0613/15593.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF980>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0609/15559.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0609/15559.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B86B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:04,508 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0611/15581.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0611/15581.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601130FE0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:08,519 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_214.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_214.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DFFE0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:08,519 - INFO - Scraping comedy page 215/403
+2025-07-14 16:54:08,896 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_217.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_217.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE270>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:08,897 - INFO - Scraping action page 218/480
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0623/15697.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0623/15697.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF620>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0620/15656.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0620/15656.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCD10>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0701/15735.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0701/15735.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCB30>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0614/15607.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0614/15607.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBAD80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0617/15630.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0617/15630.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCE00>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0623/15685.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0623/15685.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DBBE60>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:12,530 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0614/15614.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0614/15614.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601DB88C0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:18,522 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_215.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_215.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF500>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:18,522 - INFO - Scraping comedy page 216/403
+2025-07-14 16:54:18,902 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_218.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_218.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE9F0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:18,902 - INFO - Scraping action page 219/480
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0715/15852.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0715/15852.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302870>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0702/15739.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0702/15739.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DDFD0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0705/15757.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0705/15757.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302C60>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0714/15827.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0714/15827.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302A50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0716/15865.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0716/15865.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023037D0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0714/15838.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0714/15838.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302D20>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:20,591 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0704/15754.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0704/15754.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCDA0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,545 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_216.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_216.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE600>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:28,545 - INFO - Scraping comedy page 217/403
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0720/15905.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0720/15905.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BB4A0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0717/15875.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0717/15875.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601112BD0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0722/15931.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0722/15931.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8350>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0720/15900.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0720/15900.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA390>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0716/15868.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0716/15868.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601110380>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0718/15884.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0718/15884.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601964C50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,599 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0717/15874.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0717/15874.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196011129C0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:28,903 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_219.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_219.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE120>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:28,903 - INFO - Scraping action page 220/480
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0731/16015.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0731/16015.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DED80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0727/15974.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0727/15974.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE600>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0731/16010.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0731/16010.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DE300>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0803/16037.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0803/16037.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF830>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0731/16020.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0731/16020.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DEE70>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0801/16027.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0801/16027.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DFF80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:36,603 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0801/16031.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0801/16031.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF920>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:38,560 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_217.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_217.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023038F0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:38,560 - INFO - Scraping comedy page 218/403
+2025-07-14 16:54:38,906 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_220.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_220.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023039E0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:38,906 - INFO - Scraping action page 221/480
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9536.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9536.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020A9B80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0805/16043.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0805/16043.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303410>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9534.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9534.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602301130>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9533.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9533.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB470>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0805/16053.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0805/16053.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602300F50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2009/0805/16044.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2009/0805/16044.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302120>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:44,632 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/0930/9522.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/0930/9522.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602301280>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:48,570 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_218.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_218.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020ABA70>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:48,570 - INFO - Scraping comedy page 219/403
+2025-07-14 16:54:48,911 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_221.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_221.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001960137A390>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:48,911 - INFO - Scraping action page 222/480
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1004/9563.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1004/9563.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B94C0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9537.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9537.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCD10>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9539.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9539.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DD3D0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9541.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9541.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BAC60>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1006/9575.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1006/9575.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BA4B0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,653 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1001/9540.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1001/9540.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DCB00>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:52,654 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1007/9579.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1007/9579.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012B8BF0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:54:58,584 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_219.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_219.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601112F90>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:58,584 - INFO - Scraping comedy page 220/403
+2025-07-14 16:54:58,913 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_222.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_222.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020ABC50>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:54:58,913 - INFO - Scraping action page 223/480
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1011/9611.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1011/9611.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602300BC0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1007/9581.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1007/9581.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602301640>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1011/9610.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1011/9610.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023032F0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1007/9580.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1007/9580.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601379370>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1012/9619.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1012/9619.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023025D0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,853 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1007/9582.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1007/9582.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303410>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:00,854 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1012/9618.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1012/9618.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303980>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,602 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_220.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_220.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602300320>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:08,602 - INFO - Scraping comedy page 221/403
+2025-07-14 16:55:08,865 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1012/9621.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1012/9621.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020A9C40>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,865 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1012/9620.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1012/9620.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AA270>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,865 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1024/9669.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1024/9669.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB8F0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,865 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1020/9649.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1020/9649.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB7A0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,866 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1020/9650.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1020/9650.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB620>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,866 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1018/9641.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1018/9641.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AAF90>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,866 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1020/9648.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1020/9648.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020A9730>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:08,919 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_223.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_223.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020A9400>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:08,919 - INFO - Scraping action page 224/480
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1103/9697.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1103/9697.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601113FB0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1106/9711.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1106/9711.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601379070>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1114/9724.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1114/9724.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601112CC0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1114/9723.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1114/9723.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001960137BF50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1114/9725.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1114/9725.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DFC50>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1103/9694.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1103/9694.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196012BB500>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:16,877 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1114/9722.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1114/9722.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601379AF0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:18,641 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_221.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_221.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602302B40>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:18,641 - INFO - Scraping comedy page 222/403
+2025-07-14 16:55:18,926 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_224.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_224.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020DF6B0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:18,926 - INFO - Scraping action page 225/480
+2025-07-14 16:55:25,132 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9870.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9870.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601113A40>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,132 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9872.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9872.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019601379E80>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,132 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9873.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9873.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303590>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,133 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9875.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9875.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303EC0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,133 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2008/0819/13303.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2008/0819/13303.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB7D0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,133 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9871.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9871.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x000001960137BE00>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:25,133 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9874.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9874.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x0000019602303980>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:28,647 - ERROR - Error fetching https://www.piaohua.com/html/xiju/list_222.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/xiju/list_222.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196023032F0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:28,647 - INFO - Scraping comedy page 223/403
+2025-07-14 16:55:28,937 - ERROR - Error fetching https://www.piaohua.com/html/dongzuo/list_225.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/dongzuo/list_225.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196011309B0>, 'Connection to www.piaohua.com timed out. (connect timeout=10)'))
+2025-07-14 16:55:28,937 - INFO - Scraping action page 226/480
+2025-07-14 16:55:33,157 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9876.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9876.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB290>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,157 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9883.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9883.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AB8C0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,157 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9884.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9884.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020ABD40>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,158 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9878.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9878.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AA990>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,158 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9879.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9879.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AAB10>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,158 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9880.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9880.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020AACF0>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))
+2025-07-14 16:55:33,158 - ERROR - Error fetching https://www.piaohua.com/html/aiqing/2006/1122/9881.html: HTTPSConnectionPool(host='www.piaohua.com', port=443): Max retries exceeded with url: /html/aiqing/2006/1122/9881.html (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x00000196020ABF20>, 'Connection to www.piaohua.com timed out. (connect timeout=8)'))

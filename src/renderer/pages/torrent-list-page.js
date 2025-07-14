@@ -1,5 +1,6 @@
 const React = require('react')
 const prettyBytes = require('prettier-bytes')
+const Header = require('../components/header')
 
 const Checkbox = require('material-ui/Checkbox').default
 const LinearProgress = require('material-ui/LinearProgress').default
@@ -22,12 +23,12 @@ module.exports = class TorrentList extends React.Component {
     const contents = []
     if (state.downloadPathStatus === 'missing') {
       contents.push(
-        <div key='torrent-missing-path'>
+        <div key='torrent-missing-path' className='torrent-missing-path'>
+          <div className='missing-path-icon'>⚠️</div>
+          <h3>Download Path Missing</h3>
           <p>Download path missing: {state.saved.prefs.downloadPath}</p>
           <p>Check that all drives are connected?</p>
-          <p>Alternatively, choose a new download path
-            in <a href='#' onClick={dispatcher('preferences')}>Preferences</a>
-          </p>
+          <p>Alternatively, choose a new download path in <a href='#' onClick={dispatcher('preferences')}>Preferences</a></p>
         </div>
       )
     }
@@ -37,8 +38,36 @@ module.exports = class TorrentList extends React.Component {
     )
     contents.push(...torrentElems)
 
+    // Show empty state if no torrents
+    if (contents.length === 0) {
+      contents.push(
+        <div key='torrent-list-empty' className='torrent-list-empty'>
+          <div className='empty-icon'>📁</div>
+          <h3>No downloads yet</h3>
+          <p>Your downloads will appear here. Add a torrent file or magnet link to get started.</p>
+          <div className='empty-actions'>
+            <button 
+              className='add-torrent-btn' 
+              onClick={dispatcher('openFiles')}
+            >
+              <i className='icon'>add</i>
+              Add Torrent File
+            </button>
+            <button 
+              className='add-magnet-btn' 
+              onClick={dispatcher('openTorrentAddress')}
+            >
+              <i className='icon'>link</i>
+              Add Magnet Link
+            </button>
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <div>
+      <div className='torrent-list-page'>
+        <Header state={state} />
         {this.renderToolbar(viewMode)}
         <div
           key='torrent-list'
@@ -52,6 +81,10 @@ module.exports = class TorrentList extends React.Component {
   }
 
   renderToolbar (viewMode) {
+    // Create style objects to avoid Material-UI prepareStyles warning
+    const iconButtonStyle = { marginLeft: 8 }
+    const iconButtonIconStyle = { color: '#ffffff', opacity: 0.8 }
+    
     return (
       <div className='torrent-toolbar'>
         <div className='toolbar-left'>
@@ -59,8 +92,8 @@ module.exports = class TorrentList extends React.Component {
           <IconButton
             onClick={dispatcher('toggleViewMode')}
             tooltip={viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}
-            iconStyle={{ color: '#ffffff', opacity: 0.8 }}
-            style={{ marginLeft: 8 }}
+            iconStyle={iconButtonIconStyle}
+            style={iconButtonStyle}
           >
             <i className='icon'>
               {viewMode === 'grid' ? 'view_list' : 'view_module'}
@@ -469,12 +502,15 @@ class AddDropdownButton extends React.Component {
   }
 
   render () {
+    // Create style object to avoid Material-UI prepareStyles warning
+    const iconButtonIconStyle = { color: '#ffffff', opacity: 0.8 }
+    
     return (
       <span>
         <IconButton
           onClick={this.handleClick}
           tooltip='Add torrent'
-          iconStyle={{ color: '#ffffff', opacity: 0.8 }}
+          iconStyle={iconButtonIconStyle}
         >
           <i className='icon'>add</i>
         </IconButton>

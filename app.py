@@ -11,6 +11,9 @@ import time
 app = Flask(__name__)
 CORS(app)
 
+# Configure Flask to not escape Unicode characters in JSON
+app.config['JSON_AS_ASCII'] = False
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -149,10 +152,18 @@ def extract_movie_details(movie_url):
                 text = link.get_text(strip=True)
                 
                 if href and href != 'javascript: void(0);':
+                    # Determine link type
+                    if href.startswith('magnet:'):
+                        link_type = 'magnet'
+                    elif href.startswith('ftp://'):
+                        link_type = 'ftp'
+                    else:
+                        link_type = 'http'
+                    
                     download_links.append({
                         'quality': text,
                         'link': href,
-                        'type': 'ftp' if href.startswith('ftp://') else 'http'
+                        'type': link_type
                     })
                 elif 'magnet:?' in str(link.next_sibling):
                     # Check next sibling for magnet link
@@ -244,6 +255,64 @@ def parse_movie_list_item_basic(item):
         logger.error(f"Error parsing movie item: {str(e)}")
         return None
 
+def parse_latest_movie_item(item):
+    """Parse movie info from latest movies page structure"""
+    try:
+        movie = {}
+        
+        # Get the main link
+        main_link = item.find('a')
+        if not main_link:
+            return None
+        
+        link = main_link['href']
+        movie['link'] = urljoin(BASE_URL, link)
+        movie['relative_link'] = link
+        movie['id'] = link.split('/')[-1].replace('.html', '')
+        
+        # Get image and title from pic div
+        pic_div = main_link.find('div', class_='pic')
+        if pic_div:
+            img = pic_div.find('img')
+            if img:
+                movie['poster'] = img.get('src', '')
+                # Clean title from alt attribute
+                title = img.get('alt', '')
+                title = re.sub(r'<[^>]+>', '', title)  # Remove HTML tags
+                title = re.sub(r'&lt;[^&]*&gt;', '', title)  # Remove encoded HTML tags
+                movie['title'] = title.strip()
+        
+        # Get text info
+        txt_div = main_link.find('div', class_='txt')
+        if txt_div:
+            # Title and quality from h3
+            h3 = txt_div.find('h3')
+            if h3:
+                title_text = h3.get_text(strip=True)
+                # Remove HTML color tags
+                title_text = re.sub(r'<[^>]+>', '', title_text)
+                movie['full_title'] = title_text
+                
+                # Extract base title (remove quality info)
+                # Usually the title is at the beginning, quality info is at the end
+                if movie.get('title'):
+                    # Use the title from alt attribute as the clean title
+                    pass
+                else:
+                    # Extract title from h3 text
+                    movie['title'] = title_text
+            
+            # Get date from span
+            span = txt_div.find('span')
+            if span:
+                date_text = span.get_text(strip=True)
+                movie['update_date'] = date_text
+        
+        return movie
+    except Exception as e:
+        logger.error(f"Error parsing latest movie item: {str(e)}")
+        return None
+
 def enrich_movies_with_details(movies):
     """Fetch details for all movies in parallel"""
     enriched_movies = []
@@ -269,6 +338,21 @@ def enrich_movies_with_details(movies):
             enriched_movies.append(movie)
     
     return enriched_movies
+
+def filter_movies_with_magnet_links(movies):
+    """Filter movies to only include those with magnet links"""
+    filtered_movies = []
+    
+    for movie in movies:
+        download_links = movie.get('download_links', [])
+        has_magnet_link = any(link.get('type') == 'magnet' for link in download_links)
+        
+        if has_magnet_link:
+            filtered_movies.append(movie)
+        else:
+            logger.debug(f"Filtered out movie '{movie.get('title', 'Unknown')}' - no magnet link")
+    
+    return filtered_movies
 
 @app.route('/api/categories', methods=['GET'])
 def get_categories():
@@ -335,7 +419,10 @@ def get_movies_by_category(category):
                 basic_movies.append(movie)
     
     # Enrich with details in parallel
-    movies = enrich_movies_with_details(basic_movies)
+    enriched_movies = enrich_movies_with_details(basic_movies)
+    
+    # Filter to only include movies with magnet links
+    movies = filter_movies_with_magnet_links(enriched_movies)
     
     # Try to get total pages from pagination
     total_pages = 1
@@ -378,9 +465,10 @@ def search_movies():
             'message': 'Keyword is required'
         }), 400
     
-    # Encode keyword for URL
-    encoded_keyword = quote(keyword.encode('gb2312'))
-    search_url = f"{BASE_URL}/plus/search.php?kwtype=0&keyword={encoded_keyword}&searchtype=影视搜索"
+    # Encode keyword for URL using UTF-8 (not GB2312)
+    encoded_keyword = quote(keyword.encode('utf-8'))
+    encoded_searchtype = quote('影视搜索'.encode('utf-8'))
+    search_url = f"{BASE_URL}/plus/search.php?kwtype=0&keyword={encoded_keyword}&searchtype={encoded_searchtype}"
     
     if page > 1:
         search_url += f"&PageNo={page}"
@@ -413,7 +501,10 @@ def search_movies():
                     basic_movies.append(movie)
     
     # Enrich with details in parallel
-    movies = enrich_movies_with_details(basic_movies)
+    enriched_movies = enrich_movies_with_details(basic_movies)
+    
+    # Filter to only include movies with magnet links
+    movies = filter_movies_with_magnet_links(enriched_movies)
     
     # Get pagination info
     total_pages = 1
@@ -445,30 +536,35 @@ def search_movies():
 
 @app.route('/api/latest', methods=['GET'])
 def get_latest_movies():
-    """Get latest movies from homepage with full details"""
+    """Get latest movies from latest movies page with full details"""
     start_time = time.time()
     limit = request.args.get('limit', 20, type=int)
     
-    soup = get_soup(BASE_URL)
+    # Use the correct URL for latest movies
+    latest_url = f"{BASE_URL}/html/dianying.html"
+    soup = get_soup(latest_url)
     if not soup:
         return jsonify({
             'status': 'error',
-            'message': 'Failed to fetch homepage'
+            'message': 'Failed to fetch latest movies page'
         }), 500
     
-    # Parse basic movie info
+    # Parse basic movie info using the correct structure
     basic_movies = []
-    movie_list = soup.find('ul', class_='ul-imgtxt2 row')
+    movie_list = soup.find('ul', class_='ul-imgtxt1 row')
     
     if movie_list:
-        items = movie_list.find_all('li', class_='col-md-6')
+        items = movie_list.find_all('li', class_='col-sm-4')
         for item in items[:limit]:  # Limit results
-            movie = parse_movie_list_item_basic(item)
+            movie = parse_latest_movie_item(item)
             if movie:
                 basic_movies.append(movie)
     
     # Enrich with details in parallel
-    movies = enrich_movies_with_details(basic_movies)
+    enriched_movies = enrich_movies_with_details(basic_movies)
+    
+    # Filter to only include movies with magnet links
+    movies = filter_movies_with_magnet_links(enriched_movies)
     
     processing_time = time.time() - start_time
     
@@ -477,6 +573,159 @@ def get_latest_movies():
         'data': {
             'movies': movies,
             'total': len(movies),
+            'processing_time': f"{processing_time:.2f} seconds"
+        }
+    })
+
+@app.route('/api/home', methods=['GET'])
+def get_home_data():
+    """Get all home page data in a single API call with parallel processing"""
+    start_time = time.time()
+    
+    # Configuration for home page
+    FEATURED_LIMIT = 10
+    CATEGORY_LIMIT = 12
+    HOME_CATEGORIES = ['action', 'comedy', 'drama', 'scifi', 'romance', 'horror']
+    
+    def fetch_latest_movies():
+        """Fetch latest movies for featured section"""
+        try:
+            latest_url = f"{BASE_URL}/html/dianying.html"
+            soup = get_soup(latest_url)
+            if not soup:
+                return []
+            
+            basic_movies = []
+            movie_list = soup.find('ul', class_='ul-imgtxt1 row')
+            
+            if movie_list:
+                items = movie_list.find_all('li', class_='col-sm-4')
+                for item in items[:FEATURED_LIMIT]:
+                    movie = parse_latest_movie_item(item)
+                    if movie:
+                        basic_movies.append(movie)
+            
+            enriched_movies = enrich_movies_with_details(basic_movies)
+            return filter_movies_with_magnet_links(enriched_movies)
+        except Exception as e:
+            logger.error(f"Error fetching latest movies: {str(e)}")
+            return []
+    
+    def fetch_category_movies(category):
+        """Fetch movies for a specific category"""
+        try:
+            if category not in CATEGORIES:
+                return []
+            
+            category_path = CATEGORIES[category]
+            url = f"{BASE_URL}/html/{category_path}/index.html"
+            
+            soup = get_soup(url)
+            if not soup:
+                return []
+            
+            basic_movies = []
+            movie_list = soup.find('ul', class_='ul-imgtxt2 row')
+            
+            if movie_list:
+                items = movie_list.find_all('li', class_='col-md-6')
+                for item in items[:CATEGORY_LIMIT]:
+                    movie = parse_movie_list_item_basic(item)
+                    if movie:
+                        basic_movies.append(movie)
+            
+            enriched_movies = enrich_movies_with_details(basic_movies)
+            return filter_movies_with_magnet_links(enriched_movies)
+        except Exception as e:
+            logger.error(f"Error fetching {category} movies: {str(e)}")
+            return []
+    
+    # Create futures for parallel processing
+    futures = {}
+    
+    # Fetch latest movies
+    futures['latest'] = executor.submit(fetch_latest_movies)
+    
+    # Fetch movies for each category
+    for category in HOME_CATEGORIES:
+        futures[category] = executor.submit(fetch_category_movies, category)
+    
+    # Collect results
+    results = {
+        'latest': [],
+        'categories': {}
+    }
+    
+    for key, future in futures.items():
+        try:
+            result = future.result(timeout=30)  # 30 second timeout
+            if key == 'latest':
+                results['latest'] = result
+            else:
+                results['categories'][key] = result
+        except Exception as e:
+            logger.error(f"Error getting result for {key}: {str(e)}")
+            if key == 'latest':
+                results['latest'] = []
+            else:
+                results['categories'][key] = []
+    
+    # Prepare response data
+    featured_movie = None
+    if results['latest']:
+        # Find the best movie for featured section (one with good poster and description)
+        for movie in results['latest']:
+            if (movie.get('poster_hd') or movie.get('poster')) and movie.get('description'):
+                featured_movie = movie
+                break
+        # If no perfect match, use the first movie
+        if not featured_movie:
+            featured_movie = results['latest'][0]
+    
+    # Prepare movie rows
+    movie_rows = [
+        {
+            'title': 'Latest Releases',
+            'category': 'latest',
+            'movies': results['latest']
+        }
+    ]
+    
+    # Add category rows
+    category_titles = {
+        'action': 'Action Movies',
+        'comedy': 'Comedy Movies',
+        'drama': 'Drama Movies',
+        'scifi': 'Sci-Fi Movies',
+        'romance': 'Romance Movies',
+        'horror': 'Horror Movies'
+    }
+    
+    for category in HOME_CATEGORIES:
+        if category in results['categories'] and results['categories'][category]:
+            movie_rows.append({
+                'title': category_titles.get(category, category.title() + ' Movies'),
+                'category': category,
+                'movies': results['categories'][category]
+            })
+    
+    # Calculate total movies
+    total_movies = len(results['latest'])
+    for category_movies in results['categories'].values():
+        total_movies += len(category_movies)
+    
+    processing_time = time.time() - start_time
+    
+    return jsonify({
+        'status': 'success',
+        'data': {
+            'featured_movie': featured_movie,
+            'movie_rows': movie_rows,
+            'statistics': {
+                'total_movies': total_movies,
+                'categories_loaded': len([cat for cat, movies in results['categories'].items() if movies]),
+                'featured_available': bool(featured_movie)
+            },
             'processing_time': f"{processing_time:.2f} seconds"
         }
     })
@@ -490,9 +739,17 @@ def home():
         'features': [
             'All movie lists now include full details and download links',
             'Parallel processing for faster response times',
-            'No separate detail endpoint needed'
+            'No separate detail endpoint needed',
+            'New home endpoint for single-call home page data',
+            'Only returns movies with magnet links available'
         ],
         'endpoints': {
+            'home': {
+                'url': '/api/home',
+                'method': 'GET',
+                'description': 'Get all home page data in a single API call',
+                'note': 'Returns featured movie and multiple category rows with parallel processing. Only movies with magnet links are included.'
+            },
             'categories': {
                 'url': '/api/categories',
                 'method': 'GET',
@@ -506,7 +763,7 @@ def home():
                     'category': 'Category key (e.g., action, comedy, romance)',
                     'page': 'Page number (optional, default: 1)'
                 },
-                'note': 'Each movie includes full details and download links'
+                'note': 'Each movie includes full details and download links. Only movies with magnet links are returned.'
             },
             'search': {
                 'url': '/api/search?keyword=<keyword>&page=1',
@@ -516,16 +773,16 @@ def home():
                     'keyword': 'Search keyword',
                     'page': 'Page number (optional, default: 1)'
                 },
-                'note': 'Each movie includes full details and download links'
+                'note': 'Each movie includes full details and download links. Only movies with magnet links are returned.'
             },
             'latest': {
                 'url': '/api/latest?limit=20',
                 'method': 'GET',
-                'description': 'Get latest movies with full details',
+                'description': 'Get latest movies from dianying.html page with full details',
                 'parameters': {
                     'limit': 'Number of movies to return (optional, default: 20)'
                 },
-                'note': 'Each movie includes full details and download links'
+                'note': 'Each movie includes full details and download links. Only movies with magnet links are returned.'
             }
         }
     })

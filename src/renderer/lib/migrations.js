@@ -71,7 +71,16 @@ function migrate_0_7_0 (saved) {
       dst = path.join(config.TORRENT_PATH, infoHash + '.torrent')
       // Synchronous FS calls aren't ideal, but probably OK in a migration
       // that only runs once
-      if (src !== dst) copyFileSync(src, dst)
+      if (src !== dst) {
+        try {
+          copyFileSync(src, dst)
+        } catch (err) {
+          // If the source file doesn't exist, skip this migration step
+          // This can happen if default torrents have been removed
+          console.warn('Migration: Failed to copy torrent file', src, err.message)
+          return
+        }
+      }
 
       delete ts.torrentPath
       ts.torrentFileName = infoHash + '.torrent'
@@ -86,7 +95,16 @@ function migrate_0_7_0 (saved) {
       dst = path.join(config.POSTER_PATH, infoHash + extension)
       // Synchronous FS calls aren't ideal, but probably OK in a migration
       // that only runs once
-      if (src !== dst) copyFileSync(src, dst)
+      if (src !== dst) {
+        try {
+          copyFileSync(src, dst)
+        } catch (err) {
+          // If the source file doesn't exist, skip this migration step
+          // This can happen if default posters have been removed
+          console.warn('Migration: Failed to copy poster file', src, err.message)
+          return
+        }
+      }
 
       delete ts.posterURL
       ts.posterFileName = infoHash + extension
@@ -203,11 +221,20 @@ function migrate_0_17_2 (saved) {
   ts.posterFileName = NEW_HASH + '.jpg'
 
   rimraf.sync(path.join(config.TORRENT_PATH, ts.torrentFileName))
-  copyFileSync(
-    path.join(config.STATIC_PATH, 'wiredCd.torrent'),
-    path.join(config.TORRENT_PATH, NEW_HASH + '.torrent')
-  )
-  ts.torrentFileName = NEW_HASH + '.torrent'
+  try {
+    copyFileSync(
+      path.join(config.STATIC_PATH, 'wiredCd.torrent'),
+      path.join(config.TORRENT_PATH, NEW_HASH + '.torrent')
+    )
+    ts.torrentFileName = NEW_HASH + '.torrent'
+  } catch (err) {
+    // If the source file doesn't exist, just remove the torrent from the list
+    // since it's a default torrent that can't be properly migrated
+    const torrentIndex = saved.torrents.findIndex(t => t.infoHash === OLD_HASH)
+    if (torrentIndex !== -1) {
+      saved.torrents.splice(torrentIndex, 1)
+    }
+  }
 
   if (ts.path) {
     // If torrent folder already exists on disk, try to rename it

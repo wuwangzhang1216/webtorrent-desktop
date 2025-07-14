@@ -24,6 +24,7 @@ const createGetter = require('fn-getter')
 const debounce = require('debounce')
 const dragDrop = require('drag-drop')
 const electron = require('electron')
+const { remote } = require('electron')
 const fs = require('fs')
 const React = require('react')
 const ReactDOM = require('react-dom')
@@ -59,6 +60,7 @@ let state
 
 // Root React component
 let app
+let appReady = false
 
 // Called once when the application loads. (Not once per window.)
 // Connects to the torrent networks, sets up the UI and OS integrations like
@@ -119,7 +121,7 @@ function onState (err, _state) {
   state.location.go({
     url: 'home',
     setup: (cb) => {
-      state.window.title = config.APP_WINDOW_TITLE
+      state.window.title = 'Movie Exploration'
       cb(null)
     }
   })
@@ -132,7 +134,10 @@ function onState (err, _state) {
 
   // Initialize ReactDOM
   ReactDOM.render(
-    <App state={state} ref={elem => { app = elem }} />,
+    <App state={state} ref={elem => { 
+      app = elem
+      appReady = true
+    }} />,
     document.querySelector('#body')
   )
 
@@ -172,7 +177,7 @@ function onState (err, _state) {
   window.addEventListener('focus', onFocus)
   window.addEventListener('blur', onBlur)
 
-  if (electron.remote.getCurrentWindow().isVisible()) {
+  if (remote && remote.getCurrentWindow && remote.getCurrentWindow().isVisible()) {
     sound.play('STARTUP')
   }
 
@@ -217,7 +222,9 @@ function lazyLoadCast () {
 // 4. controller - the controller handles the event, changing the state object
 function update () {
   controllers.playback().showOrHidePlayerControls()
-  app.setState(state)
+  if (appReady && app && app.setState) {
+    app.setState(state)
+  }
   updateElectron()
 }
 
@@ -316,6 +323,43 @@ const dispatchHandlers = {
   // Preferences screen
   preferences: () => controllers.prefs().show(),
   updatePreferences: (key, value) => controllers.prefs().update(key, value),
+  updateUIPreference: (key, value) => {
+    state.saved.ui[key] = value
+    State.saveImmediate(state)
+  },
+  
+  // Movie exploration (now handled by home)
+  openMovieExploration: () => {
+    state.location.go({
+      url: 'home',
+      setup (cb) {
+        state.window.title = 'Movie Exploration'
+        cb()
+      }
+    })
+  },
+  
+  // My Torrents/Downloads
+  openMyTorrents: () => {
+    state.location.go({
+      url: 'my-torrents',
+      setup (cb) {
+        state.window.title = 'My Downloads'
+        cb()
+      }
+    })
+  },
+  
+  // Search Movies
+  openSearchPage: () => {
+    state.location.go({
+      url: 'search',
+      setup (cb) {
+        state.window.title = 'Search Movies'
+        cb()
+      }
+    })
+  },
   toggleViewMode: () => {
     const currentMode = state.saved.prefs.viewMode
     const newMode = currentMode === 'grid' ? 'list' : 'grid'
@@ -407,10 +451,15 @@ function setupIpc () {
 function backToList () {
   // Exit any modals and screens with a back button
   state.modal = null
-  state.location.backToFirst(() => {
-    // If we were already on the torrent list, scroll to the top
-    const contentTag = document.querySelector('.content')
-    if (contentTag) contentTag.scrollTop = 0
+  state.location.go({
+    url: 'my-torrents',
+    setup: (cb) => {
+      state.window.title = 'My Downloads'
+      // If we were already on the torrent list, scroll to the top
+      const contentTag = document.querySelector('.content')
+      if (contentTag) contentTag.scrollTop = 0
+      cb(null)
+    }
   })
 }
 
@@ -445,7 +494,7 @@ function resumeTorrents () {
 // Set window dimensions to match video dimensions or fill the screen
 function setDimensions (dimensions) {
   // Don't modify the window size if it's already maximized
-  if (electron.remote.getCurrentWindow().isMaximized()) {
+  if (remote && remote.getCurrentWindow && remote.getCurrentWindow().isMaximized()) {
     state.window.bounds = null
     return
   }
@@ -457,7 +506,7 @@ function setDimensions (dimensions) {
     width: window.outerWidth,
     height: window.outerHeight
   }
-  state.window.wasMaximized = electron.remote.getCurrentWindow().isMaximized
+  state.window.wasMaximized = remote && remote.getCurrentWindow ? remote.getCurrentWindow().isMaximized() : false
 
   // Limit window size to screen size
   const screenWidth = window.screen.width
@@ -506,7 +555,21 @@ function onOpen (files) {
     // Drop subtitles onto a playing video: add subtitles
     controllers.subtitles().addSubtitles(files, true)
   } else if (url === 'home') {
-    // Drop files onto home screen: show Create Torrent
+    // Drop files onto movie exploration screen: go to torrent list and show Create Torrent
+    state.modal = null
+    state.location.go({
+      url: 'my-torrents',
+      setup: (cb) => {
+        state.window.title = 'My Downloads'
+        cb(null)
+        // Show create torrent after navigation
+        setTimeout(() => {
+          controllers.torrentList().showCreateTorrent(files)
+        }, 100)
+      }
+    })
+  } else if (url === 'my-torrents') {
+    // Drop files onto torrent list screen: show Create Torrent
     state.modal = null
     controllers.torrentList().showCreateTorrent(files)
   } else {
