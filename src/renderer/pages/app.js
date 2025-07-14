@@ -1,4 +1,3 @@
-const colors = require('material-ui/styles/colors')
 const createGetter = require('fn-getter')
 const React = require('react')
 
@@ -35,12 +34,12 @@ const fontFamily = process.platform === 'win32'
 
 darkBaseTheme.fontFamily = fontFamily
 darkBaseTheme.userAgent = false
-darkBaseTheme.palette.primary1Color = colors.grey50
-darkBaseTheme.palette.primary2Color = colors.grey50
-darkBaseTheme.palette.primary3Color = colors.grey600
-darkBaseTheme.palette.accent1Color = colors.redA200
-darkBaseTheme.palette.accent2Color = colors.redA400
-darkBaseTheme.palette.accent3Color = colors.redA100
+darkBaseTheme.palette.primary1Color = '#181818'
+darkBaseTheme.palette.primary2Color = '#0f0f0f'
+darkBaseTheme.palette.primary3Color = '#303030'
+darkBaseTheme.palette.accent1Color = '#ff0000'
+darkBaseTheme.palette.accent2Color = '#cc0000'
+darkBaseTheme.palette.accent3Color = '#ff4444'
 
 let darkMuiTheme
 let lightMuiTheme
