@@ -132,7 +132,8 @@ function setupStateSaved () {
       autoAddTorrents: false,
       torrentsFolderPath: '',
       highestPlaybackPriority: true,
-      globalTrackers: defaultAnnounceList
+      globalTrackers: defaultAnnounceList,
+      viewMode: 'grid' // 'grid' or 'list'
     },
     torrents: config.DEFAULT_TORRENTS.map(createTorrentObject),
     torrentsToResume: [],

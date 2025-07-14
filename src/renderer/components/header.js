@@ -1,6 +1,8 @@
 const React = require('react')
 
 const { dispatcher } = require('../lib/dispatcher')
+const Popover = require('material-ui/Popover').default
+const MenuItem = require('material-ui/MenuItem').default
 
 class Header extends React.Component {
   render () {
@@ -52,15 +54,62 @@ class Header extends React.Component {
   getAddButton () {
     const state = this.props.state
     if (state.location.url() !== 'home') return null
+    return null // Remove add button from header
+  }
+}
+
+// Dropdown button for Add
+class AddDropdownButton extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { open: false, anchorEl: null }
+    this.handleClick = this.handleClick.bind(this)
+    this.handleRequestClose = this.handleRequestClose.bind(this)
+    this.handleUpload = this.handleUpload.bind(this)
+    this.handleMagnet = this.handleMagnet.bind(this)
+  }
+
+  handleClick (event) {
+    event.preventDefault()
+    this.setState({ open: true, anchorEl: event.currentTarget })
+  }
+
+  handleRequestClose () {
+    this.setState({ open: false })
+  }
+
+  handleUpload () {
+    this.setState({ open: false })
+    require('../lib/dispatcher').dispatch('openFiles')
+  }
+
+  handleMagnet () {
+    this.setState({ open: false })
+    require('../lib/dispatcher').dispatch('openTorrentAddress')
+  }
+
+  render () {
     return (
-      <i
-        className='icon add'
-        title='Add torrent'
-        onClick={dispatcher('openFiles')}
-        role='button'
-      >
-        add
-      </i>
+      <span>
+        <i
+          className='icon add'
+          title='Add torrent'
+          onClick={this.handleClick}
+          role='button'
+        >
+          add
+        </i>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+          onRequestClose={this.handleRequestClose}
+        >
+          <MenuItem primaryText='Upload torrent file' onClick={this.handleUpload} />
+          <MenuItem primaryText='Enter magnet link' onClick={this.handleMagnet} />
+        </Popover>
+      </span>
     )
   }
 }

@@ -145,10 +145,10 @@ function onState (err, _state) {
   setupIpc()
 
   // Drag and drop files/text to start torrenting or seeding
-  dragDrop('body', {
-    onDrop: onOpen,
-    onDropText: onOpen
-  })
+  // dragDrop('body', {
+  //   onDrop: onOpen,
+  //   onDropText: onOpen
+  // })
 
   // ...same thing if you paste a torrent
   document.addEventListener('paste', onPaste)
@@ -316,6 +316,11 @@ const dispatchHandlers = {
   // Preferences screen
   preferences: () => controllers.prefs().show(),
   updatePreferences: (key, value) => controllers.prefs().update(key, value),
+  toggleViewMode: () => {
+    const currentMode = state.saved.prefs.viewMode
+    const newMode = currentMode === 'grid' ? 'list' : 'grid'
+    controllers.prefs().update('viewMode', newMode)
+  },
   checkDownloadPath,
   updateGlobalTrackers: (trackers) => setGlobalTrackers(trackers),
   startFolderWatcher: () => controllers.folderWatcher().start(),

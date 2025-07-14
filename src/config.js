@@ -95,7 +95,7 @@ module.exports = {
 
   WINDOW_INITIAL_BOUNDS: {
     width: 500,
-    height: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 6) // header + 6 torrents
+    height: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 4) // header + 4 torrents
   },
   WINDOW_MIN_HEIGHT: UI_HEADER_HEIGHT + (UI_TORRENT_HEIGHT * 2), // header + 2 torrents
   WINDOW_MIN_WIDTH: 425,

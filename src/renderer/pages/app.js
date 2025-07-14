@@ -6,8 +6,6 @@ const darkBaseTheme = require('material-ui/styles/baseThemes/darkBaseTheme').def
 const getMuiTheme = require('material-ui/styles/getMuiTheme').default
 const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default
 
-const Header = require('../components/header')
-
 // Perf optimization: Needed immediately, so do not lazy load it below
 const TorrentListPage = require('./torrent-list-page')
 
@@ -71,7 +69,6 @@ class App extends React.Component {
     return (
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div className={'app ' + cls.join(' ')}>
-          <Header state={state} />
           {this.getErrorPopover()}
           <div key='content' className='content'>{this.getView()}</div>
           {this.getModal()}
@@ -106,6 +103,12 @@ class App extends React.Component {
       const lightBaseTheme = require('material-ui/styles/baseThemes/lightBaseTheme').default
       lightBaseTheme.fontFamily = fontFamily
       lightBaseTheme.userAgent = false
+      /* Netflix style palette overrides */
+      lightBaseTheme.palette.primary1Color = '#e50914' /* Netflix red */
+      lightBaseTheme.palette.accent1Color = '#e50914'
+      lightBaseTheme.palette.canvasColor = '#141414'
+      lightBaseTheme.palette.textColor = '#ffffff'
+
       lightMuiTheme = getMuiTheme(lightBaseTheme)
     }
 

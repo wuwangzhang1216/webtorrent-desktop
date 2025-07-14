@@ -3,15 +3,21 @@ const prettyBytes = require('prettier-bytes')
 
 const Checkbox = require('material-ui/Checkbox').default
 const LinearProgress = require('material-ui/LinearProgress').default
+const IconButton = require('material-ui/IconButton').default
+const Popover = require('material-ui/Popover').default
+const MenuItem = require('material-ui/MenuItem').default
+const { clipboard } = require('electron')
 
 const TorrentSummary = require('../lib/torrent-summary')
 const TorrentPlayer = require('../lib/torrent-player')
 const { dispatcher } = require('../lib/dispatcher')
 const { calculateEta } = require('../lib/time')
+const { isMagnetLink } = require('../lib/torrent-player')
 
 module.exports = class TorrentList extends React.Component {
   render () {
     const state = this.props.state
+    const viewMode = state.saved.prefs.viewMode || 'grid'
 
     const contents = []
     if (state.downloadPathStatus === 'missing') {
@@ -25,28 +31,47 @@ module.exports = class TorrentList extends React.Component {
         </div>
       )
     }
+    
     const torrentElems = state.saved.torrents.map(
-      (torrentSummary) => this.renderTorrent(torrentSummary)
+      (torrentSummary) => this.renderTorrent(torrentSummary, viewMode)
     )
     contents.push(...torrentElems)
-    contents.push(
-      <div key='torrent-placeholder' className='torrent-placeholder'>
-        <span className='ellipsis'>Drop a torrent file here or paste a magnet link</span>
-      </div>
-    )
 
     return (
-      <div
-        key='torrent-list'
-        className='torrent-list'
-        onContextMenu={dispatcher('openTorrentListContextMenu')}
-      >
-        {contents}
+      <div>
+        {this.renderToolbar(viewMode)}
+        <div
+          key='torrent-list'
+          className={`torrent-list ${viewMode}-view`}
+          onContextMenu={dispatcher('openTorrentListContextMenu')}
+        >
+          {contents}
+        </div>
       </div>
     )
   }
 
-  renderTorrent (torrentSummary) {
+  renderToolbar (viewMode) {
+    return (
+      <div className='torrent-toolbar'>
+        <div className='toolbar-left'>
+          <AddDropdownButton />
+          <IconButton
+            onClick={dispatcher('toggleViewMode')}
+            tooltip={viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}
+            iconStyle={{ color: '#ffffff', opacity: 0.8 }}
+            style={{ marginLeft: 8 }}
+          >
+            <i className='icon'>
+              {viewMode === 'grid' ? 'view_list' : 'view_module'}
+            </i>
+          </IconButton>
+        </div>
+      </div>
+    )
+  }
+
+  renderTorrent (torrentSummary, viewMode) {
     const state = this.props.state
     const infoHash = torrentSummary.infoHash
     const isSelected = infoHash && state.selectedInfoHash === infoHash
@@ -61,7 +86,7 @@ module.exports = class TorrentList extends React.Component {
 
     // Foreground: name of the torrent, basic info like size, play button,
     // cast buttons if available, and delete
-    const classes = ['torrent']
+    const classes = ['torrent', `torrent-${viewMode}`]
     if (isSelected) classes.push('selected')
     if (!infoHash) classes.push('disabled')
     if (!torrentSummary.torrentKey) throw new Error('Missing torrentKey')
@@ -72,7 +97,6 @@ module.exports = class TorrentList extends React.Component {
         style={style}
         className={classes.join(' ')}
         onContextMenu={infoHash && dispatcher('openTorrentContextMenu', infoHash)}
-        onClick={infoHash && dispatcher('toggleSelectTorrent', infoHash)}
       >
         {this.renderTorrentMetadata(torrentSummary)}
         {infoHash ? this.renderTorrentButtons(torrentSummary) : null}
@@ -96,7 +120,6 @@ module.exports = class TorrentList extends React.Component {
       progElems = [getErrorMessage(torrentSummary)]
     } else if (torrentSummary.status !== 'paused' && prog) {
       progElems = [
-        renderDownloadCheckbox(),
         renderTorrentStatus(),
         renderProgressBar(),
         renderPercentProgress(),
@@ -107,7 +130,6 @@ module.exports = class TorrentList extends React.Component {
       ]
     } else {
       progElems = [
-        renderDownloadCheckbox(),
         renderTorrentStatus()
       ]
     }
@@ -118,28 +140,6 @@ module.exports = class TorrentList extends React.Component {
     )
 
     return (<div key='metadata' className='metadata'>{elements}</div>)
-
-    function renderDownloadCheckbox () {
-      const infoHash = torrentSummary.infoHash
-      const isActive = ['downloading', 'seeding'].includes(torrentSummary.status)
-      return (
-        <Checkbox
-          key='download-button'
-          className={'control download ' + torrentSummary.status}
-          style={{
-            display: 'inline-block',
-            width: 32
-          }}
-          iconStyle={{
-            width: 20,
-            height: 20
-          }}
-          checked={isActive}
-          onClick={stopPropagation}
-          onCheck={dispatcher('toggleTorrent', infoHash)}
-        />
-      )
-    }
 
     function renderProgressBar () {
       const progress = Math.floor(100 * prog.progress)
@@ -202,21 +202,36 @@ module.exports = class TorrentList extends React.Component {
     }
 
     function renderTorrentStatus () {
-      let status
-      if (torrentSummary.status === 'paused') {
-        if (!torrentSummary.progress) status = ''
-        else if (torrentSummary.progress.progress === 1) status = 'Not seeding'
-        else status = 'Paused'
-      } else if (torrentSummary.status === 'downloading') {
-        if (!torrentSummary.progress) status = ''
-        else if (!torrentSummary.progress.ready) status = 'Verifying'
-        else status = 'Downloading'
-      } else if (torrentSummary.status === 'seeding') {
-        status = 'Seeding'
-      } else { // torrentSummary.status is 'new' or something unexpected
-        status = ''
+      const { status } = torrentSummary
+      let statusText, statusClass
+      
+      switch (status) {
+        case 'downloading':
+          statusText = 'Downloading'
+          statusClass = 'status-downloading'
+          break
+        case 'seeding':
+          statusText = 'Seeding'
+          statusClass = 'status-seeding'
+          break
+        case 'paused':
+          statusText = 'Paused'
+          statusClass = 'status-paused'
+          break
+        case 'new':
+          statusText = 'Ready'
+          statusClass = 'status-ready'
+          break
+        default:
+          statusText = 'Loading...'
+          statusClass = 'status-loading'
       }
-      return (<span key='torrent-status'>{status}</span>)
+      
+      return (
+        <span key='torrent-status' className={`torrent-status ${statusClass}`}>
+          {statusText}
+        </span>
+      )
     }
   }
 
@@ -224,15 +239,30 @@ module.exports = class TorrentList extends React.Component {
   // Play button starts streaming the torrent immediately, unpausing if needed
   renderTorrentButtons (torrentSummary) {
     const infoHash = torrentSummary.infoHash
+    const isActive = ['downloading', 'seeding'].includes(torrentSummary.status)
+    const isPaused = torrentSummary.status === 'paused'
+    const isCompleted = torrentSummary.status === 'seeding'
 
-    // Only show the play/dowload buttons for torrents that contain playable media
-    let playButton
+    // Download/Pause button - always visible for better UX
+    const downloadButton = (
+      <i
+        key='download-button'
+        title={isActive ? (isCompleted ? 'Seeding - Click to pause' : 'Downloading - Click to pause') : 'Start download'}
+        className={`icon download-control ${torrentSummary.status}`}
+        onClick={dispatcher('toggleTorrent', infoHash)}
+      >
+        {isActive ? 'pause' : 'play_arrow'}
+      </i>
+    )
+
+    // Only show the stream button for torrents that contain playable media
+    let streamButton
     if (!torrentSummary.error && TorrentPlayer.isPlayableTorrentSummary(torrentSummary)) {
-      playButton = (
+      streamButton = (
         <i
-          key='play-button'
+          key='stream-button'
           title='Start streaming'
-          className='icon play'
+          className='icon stream'
           onClick={dispatcher('playFile', infoHash)}
         >
           play_circle_outline
@@ -242,7 +272,8 @@ module.exports = class TorrentList extends React.Component {
 
     return (
       <div className='torrent-controls'>
-        {playButton}
+        {downloadButton}
+        {streamButton}
         <i
           key='delete-button'
           className='icon delete'
@@ -401,14 +432,63 @@ function stopPropagation (e) {
 }
 
 function getErrorMessage (torrentSummary) {
-  const err = torrentSummary.error
-  if (err === 'path-missing') {
+  if (torrentSummary.error.message) {
+    return torrentSummary.error.message
+  }
+  return torrentSummary.error
+}
+
+// Dropdown button for Add
+class AddDropdownButton extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { open: false, anchorEl: null }
+    this.handleClick = this.handleClick.bind(this)
+    this.handleRequestClose = this.handleRequestClose.bind(this)
+    this.handleUpload = this.handleUpload.bind(this)
+    this.handleMagnet = this.handleMagnet.bind(this)
+  }
+
+  handleClick (event) {
+    event.preventDefault()
+    this.setState({ open: true, anchorEl: event.currentTarget })
+  }
+
+  handleRequestClose () {
+    this.setState({ open: false })
+  }
+
+  handleUpload () {
+    this.setState({ open: false })
+    require('../lib/dispatcher').dispatch('openFiles')
+  }
+
+  handleMagnet () {
+    this.setState({ open: false })
+    require('../lib/dispatcher').dispatch('openTorrentAddress')
+  }
+
+  render () {
     return (
-      <span key='path-missing'>
-        Path missing.<br />
-        Fix and restart the app, or delete the torrent.
+      <span>
+        <IconButton
+          onClick={this.handleClick}
+          tooltip='Add torrent'
+          iconStyle={{ color: '#ffffff', opacity: 0.8 }}
+        >
+          <i className='icon'>add</i>
+        </IconButton>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
+          onRequestClose={this.handleRequestClose}
+        >
+          <MenuItem primaryText='Upload torrent file' onClick={this.handleUpload} />
+          <MenuItem primaryText='Enter magnet link' onClick={this.handleMagnet} />
+        </Popover>
       </span>
     )
   }
-  return 'Error'
 }
