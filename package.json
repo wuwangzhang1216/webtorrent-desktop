@@ -1,6 +1,6 @@
 {
-  "name": "webtorrent-desktop",
-  "description": "WebTorrent, the streaming torrent client. For Mac, Windows, and Linux.",
+  "name": "bytestream-desktop",
+  "description": "ByteStream, the streaming torrent client. For Mac, Windows, and Linux.",
   "version": "0.24.0",
   "author": {
     "name": "WebTorrent, LLC",
@@ -64,7 +64,7 @@
     "@babel/plugin-transform-react-jsx": "7.27.1",
     "cross-zip": "4.0.0",
     "depcheck": "1.4.7",
-    "electron": "27.3.11",
+    "electron": "37.2.1",
     "electron-notarize": "1.2.2",
     "electron-osx-sign": "0.6.0",
     "electron-packager": "17.1.2",
@@ -103,7 +103,7 @@
     "electron-installer-redhat": "^3.4.0"
   },
   "private": true,
-  "productName": "WebTorrent",
+  "productName": "ByteStream",
   "repository": {
     "type": "git",
     "url": "git://github.com/webtorrent/webtorrent-desktop.git"
@@ -115,6 +115,8 @@
     "install-system-deps": "brew install fakeroot dpkg rpm",
     "open-config": "node ./bin/open-config.js",
     "package": "node ./bin/package.js",
+    "package-with-backend": "node ./bin/package-with-backend.js",
+    "build-backend": "cd backend && python3 create_standalone.py",
     "start": "npm run build && electron --no-sandbox .",
     "test": "standard && depcheck --ignores=standard,@babel/eslint-parser --ignore-dirs=build,dist",
     "test-integration": "npm run build && node ./test",

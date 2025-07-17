@@ -33,6 +33,8 @@ const config = require('../config')
 const telemetry = require('./lib/telemetry')
 const sound = require('./lib/sound')
 const TorrentPlayer = require('./lib/torrent-player')
+const { registerCleanup } = require('./lib/cleanup')
+const { scrollToTop } = require('./lib/smooth-scroll')
 
 // Perf optimization: Needed immediately, so do not lazy load it below
 const TorrentListController = require('./controllers/torrent-list-controller')
@@ -144,7 +146,8 @@ function onState (err, _state) {
   // Calling update() updates the UI given the current state
   // Do this at least once a second to give every file in every torrentSummary
   // a progress bar and to keep the cursor in sync when playing a video
-  setInterval(update, 1000)
+  const updateInterval = setInterval(update, 1000)
+  registerCleanup(() => clearInterval(updateInterval))
 
   // Listen for messages from the main process
   setupIpc()
@@ -157,25 +160,33 @@ function onState (err, _state) {
 
   // ...same thing if you paste a torrent
   document.addEventListener('paste', onPaste)
+  registerCleanup(() => document.removeEventListener('paste', onPaste))
 
   // Add YouTube style hotkey shortcuts
   window.addEventListener('keydown', onKeydown)
+  registerCleanup(() => window.removeEventListener('keydown', onKeydown))
 
   const debouncedFullscreenToggle = debounce(() => {
     dispatch('toggleFullScreen')
   }, 1000, true)
 
-  document.addEventListener('wheel', event => {
+  const wheelHandler = event => {
     // ctrlKey detects pinch to zoom, http://crbug.com/289887
     if (event.ctrlKey) {
       event.preventDefault()
       debouncedFullscreenToggle()
     }
-  })
+  }
+  document.addEventListener('wheel', wheelHandler)
+  registerCleanup(() => document.removeEventListener('wheel', wheelHandler))
 
   // ...focus and blur. Needed to show correct dock icon text ('badge') in OSX
   window.addEventListener('focus', onFocus)
   window.addEventListener('blur', onBlur)
+  registerCleanup(() => {
+    window.removeEventListener('focus', onFocus)
+    window.removeEventListener('blur', onBlur)
+  })
 
   if (remote && remote.getCurrentWindow && remote.getCurrentWindow().isVisible()) {
     sound.play('STARTUP')
@@ -194,7 +205,8 @@ function delayedInit () {
 
   // Send telemetry data every 12 hours, for users who keep the app running
   // for extended periods of time
-  setInterval(() => telemetry.send(state), 12 * 3600 * 1000)
+  const telemetryInterval = setInterval(() => telemetry.send(state), 12 * 3600 * 1000)
+  registerCleanup(() => clearInterval(telemetryInterval))
 
   // Warn if the download dir is gone, eg b/c an external drive is unplugged
   checkDownloadPath()
@@ -334,6 +346,7 @@ const dispatchHandlers = {
       url: 'home',
       setup (cb) {
         state.window.title = 'Movie Exploration'
+        scrollToTop()
         cb()
       }
     })
@@ -345,6 +358,7 @@ const dispatchHandlers = {
       url: 'my-torrents',
       setup (cb) {
         state.window.title = 'My Downloads'
+        scrollToTop()
         cb()
       }
     })
@@ -356,6 +370,21 @@ const dispatchHandlers = {
       url: 'search',
       setup (cb) {
         state.window.title = 'Search Movies'
+        scrollToTop()
+        cb()
+      }
+    })
+  },
+  
+  // Category Page
+  openCategoryPage: (category) => {
+    // Store the selected category in state
+    state.selectedCategory = category
+    state.location.go({
+      url: 'category',
+      setup (cb) {
+        state.window.title = 'Browse Categories'
+        scrollToTop()
         cb()
       }
     })
@@ -378,7 +407,10 @@ const dispatchHandlers = {
   exitModal: () => { state.modal = null },
   backToList,
   escapeBack,
-  back: () => state.location.back(),
+  back: () => {
+    state.location.back()
+    scrollToTop()
+  },
   forward: () => state.location.forward(),
   cancel: () => state.location.cancel(),
 
@@ -561,6 +593,7 @@ function onOpen (files) {
       url: 'my-torrents',
       setup: (cb) => {
         state.window.title = 'My Downloads'
+        scrollToTop()
         cb(null)
         // Show create torrent after navigation
         setTimeout(() => {

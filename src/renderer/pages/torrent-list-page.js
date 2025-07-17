@@ -1,12 +1,7 @@
 const React = require('react')
 const prettyBytes = require('prettier-bytes')
-const Header = require('../components/header')
 
-const Checkbox = require('material-ui/Checkbox').default
 const LinearProgress = require('material-ui/LinearProgress').default
-const IconButton = require('material-ui/IconButton').default
-const Popover = require('material-ui/Popover').default
-const MenuItem = require('material-ui/MenuItem').default
 const { clipboard } = require('electron')
 
 const TorrentSummary = require('../lib/torrent-summary')
@@ -67,7 +62,6 @@ module.exports = class TorrentList extends React.Component {
 
     return (
       <div className='torrent-list-page'>
-        <Header state={state} />
         {this.renderToolbar(viewMode)}
         <div
           key='torrent-list'
@@ -81,24 +75,33 @@ module.exports = class TorrentList extends React.Component {
   }
 
   renderToolbar (viewMode) {
-    // Create style objects to avoid Material-UI prepareStyles warning
-    const iconButtonStyle = { marginLeft: 8 }
-    const iconButtonIconStyle = { color: '#ffffff', opacity: 0.8 }
-    
     return (
-      <div className='torrent-toolbar'>
-        <div className='toolbar-left'>
-          <AddDropdownButton />
-          <IconButton
+      <div className='apple-torrent-toolbar'>
+        <div className='toolbar-section'>
+          <AppleAddButton />
+          <div className='toolbar-divider' />
+          <button
+            className='apple-toolbar-button'
             onClick={dispatcher('toggleViewMode')}
-            tooltip={viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}
-            iconStyle={iconButtonIconStyle}
-            style={iconButtonStyle}
+            title={viewMode === 'grid' ? 'Switch to List View' : 'Switch to Grid View'}
           >
-            <i className='icon'>
-              {viewMode === 'grid' ? 'view_list' : 'view_module'}
-            </i>
-          </IconButton>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              {viewMode === 'grid' ? (
+                <path d="M3 5v14h18V5H3zm2 2h14v10H5V7zm2 2v2h10V9H7zm0 4v2h10v-2H7z"/>
+              ) : (
+                <path d="M3 3v8h8V3H3zm6 6H5V5h4v4zm4-6v8h8V3h-8zm6 6h-4V5h4v4zM3 13v8h8v-8H3zm6 6H5v-4h4v4zm4-6v8h8v-8h-8zm6 6h-4v-4h4v4z"/>
+              )}
+            </svg>
+            <span>{viewMode === 'grid' ? 'List' : 'Grid'}</span>
+          </button>
+        </div>
+        
+        <div className='toolbar-section'>
+          <div className='toolbar-stats'>
+            <span className='stat-item'>
+              {this.props.state.saved.torrents.length} torrent{this.props.state.saved.torrents.length !== 1 ? 's' : ''}
+            </span>
+          </div>
         </div>
       </div>
     )
@@ -238,14 +241,18 @@ module.exports = class TorrentList extends React.Component {
       const { status } = torrentSummary
       let statusText, statusClass
       
+      // Check if download is complete (100%)
+      const isComplete = prog && prog.progress >= 1
+      
       switch (status) {
         case 'downloading':
           statusText = 'Downloading'
           statusClass = 'status-downloading'
           break
         case 'seeding':
-          statusText = 'Seeding'
-          statusClass = 'status-seeding'
+          // Show "Completed" instead of "Seeding" when progress is 100%
+          statusText = isComplete ? 'Completed' : 'Seeding'
+          statusClass = isComplete ? 'status-completed' : 'status-seeding'
           break
         case 'paused':
           statusText = 'Paused'
@@ -276,17 +283,36 @@ module.exports = class TorrentList extends React.Component {
     const isPaused = torrentSummary.status === 'paused'
     const isCompleted = torrentSummary.status === 'seeding'
 
-    // Download/Pause button - always visible for better UX
-    const downloadButton = (
-      <i
-        key='download-button'
-        title={isActive ? (isCompleted ? 'Seeding - Click to pause' : 'Downloading - Click to pause') : 'Start download'}
-        className={`icon download-control ${torrentSummary.status}`}
-        onClick={dispatcher('toggleTorrent', infoHash)}
-      >
-        {isActive ? 'pause' : 'play_arrow'}
-      </i>
-    )
+    // Download/Pause button - hide when completed
+    const prog = torrentSummary.progress
+    const isFullyComplete = prog && prog.progress >= 1 && torrentSummary.status === 'seeding'
+    
+    let downloadButton = null
+    if (!isFullyComplete) {
+      // Only show download/pause button if not completed
+      downloadButton = (
+        <i
+          key='download-button'
+          title={isActive ? 'Downloading - Click to pause' : 'Start download'}
+          className={`icon download-control ${torrentSummary.status}`}
+          onClick={dispatcher('toggleTorrent', infoHash)}
+        >
+          {isActive ? 'pause' : 'play_arrow'}
+        </i>
+      )
+    } else {
+      // Show a completed checkmark icon instead
+      downloadButton = (
+        <i
+          key='completed-icon'
+          title='Download completed'
+          className='icon completed'
+          style={{ color: '#4CAF50', cursor: 'default' }}
+        >
+          check_circle
+        </i>
+      )
+    }
 
     // Only show the stream button for torrents that contain playable media
     let streamButton
@@ -310,8 +336,8 @@ module.exports = class TorrentList extends React.Component {
         <i
           key='delete-button'
           className='icon delete'
-          title='Remove torrent'
-          onClick={dispatcher('confirmDeleteTorrent', infoHash, false)}
+          title='Remove torrent and files'
+          onClick={dispatcher('confirmDeleteTorrent', infoHash, true)}
         >
           close
         </i>
@@ -471,60 +497,79 @@ function getErrorMessage (torrentSummary) {
   return torrentSummary.error
 }
 
-// Dropdown button for Add
-class AddDropdownButton extends React.Component {
-  constructor (props) {
+// Apple-style Add button for toolbar
+class AppleAddButton extends React.Component {
+  constructor(props) {
     super(props)
-    this.state = { open: false, anchorEl: null }
-    this.handleClick = this.handleClick.bind(this)
-    this.handleRequestClose = this.handleRequestClose.bind(this)
-    this.handleUpload = this.handleUpload.bind(this)
-    this.handleMagnet = this.handleMagnet.bind(this)
+    this.state = { showMenu: false }
+    this.menuRef = React.createRef()
+    this.buttonRef = React.createRef()
   }
 
-  handleClick (event) {
-    event.preventDefault()
-    this.setState({ open: true, anchorEl: event.currentTarget })
+  componentDidMount() {
+    document.addEventListener('click', this.handleClickOutside)
   }
 
-  handleRequestClose () {
-    this.setState({ open: false })
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside)
   }
 
-  handleUpload () {
-    this.setState({ open: false })
+  handleClickOutside = (event) => {
+    if (this.menuRef.current && !this.menuRef.current.contains(event.target) &&
+        this.buttonRef.current && !this.buttonRef.current.contains(event.target)) {
+      this.setState({ showMenu: false })
+    }
+  }
+
+  toggleMenu = () => {
+    this.setState(prev => ({ showMenu: !prev.showMenu }))
+  }
+
+  handleUpload = () => {
+    this.setState({ showMenu: false })
     require('../lib/dispatcher').dispatch('openFiles')
   }
 
-  handleMagnet () {
-    this.setState({ open: false })
+  handleMagnet = () => {
+    this.setState({ showMenu: false })
     require('../lib/dispatcher').dispatch('openTorrentAddress')
   }
 
-  render () {
-    // Create style object to avoid Material-UI prepareStyles warning
-    const iconButtonIconStyle = { color: '#ffffff', opacity: 0.8 }
-    
+  render() {
+    const { showMenu } = this.state
+
     return (
-      <span>
-        <IconButton
-          onClick={this.handleClick}
-          tooltip='Add torrent'
-          iconStyle={iconButtonIconStyle}
+      <div className='apple-add-wrapper'>
+        <button
+          ref={this.buttonRef}
+          className='apple-toolbar-button primary'
+          onClick={this.toggleMenu}
+          aria-label='Add Torrent'
         >
-          <i className='icon'>add</i>
-        </IconButton>
-        <Popover
-          open={this.state.open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-          targetOrigin={{ horizontal: 'left', vertical: 'top' }}
-          onRequestClose={this.handleRequestClose}
-        >
-          <MenuItem primaryText='Upload torrent file' onClick={this.handleUpload} />
-          <MenuItem primaryText='Enter magnet link' onClick={this.handleMagnet} />
-        </Popover>
-      </span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          <span>Add</span>
+        </button>
+        
+        {showMenu && (
+          <div ref={this.menuRef} className='apple-toolbar-dropdown'>
+            <button className='dropdown-item' onClick={this.handleUpload}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M9 16h6v-6h4l-7-7-7 7h4v6zm-4 2h14v2H5v-2z"/>
+              </svg>
+              <span>Upload Torrent File</span>
+            </button>
+            <div className='dropdown-divider' />
+            <button className='dropdown-item' onClick={this.handleMagnet}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/>
+              </svg>
+              <span>Enter Magnet Link</span>
+            </button>
+          </div>
+        )}
+      </div>
     )
   }
 }

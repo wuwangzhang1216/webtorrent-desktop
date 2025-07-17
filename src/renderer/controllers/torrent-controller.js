@@ -154,6 +154,7 @@ module.exports = class TorrentController {
 
   torrentServerRunning (serverInfo) {
     this.state.server = serverInfo
+    dispatch('update')
   }
 
   // Gets a torrent summary {name, infoHash, status} from state.saved.torrents

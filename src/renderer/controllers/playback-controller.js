@@ -10,6 +10,7 @@ const TorrentPlayer = require('../lib/torrent-player')
 const TorrentSummary = require('../lib/torrent-summary')
 const Playlist = require('../lib/playlist')
 const State = require('../lib/state')
+const { scrollToTop } = require('../lib/smooth-scroll')
 
 // Controls playback of torrents and files within torrents
 // both local (<video>,<audio>,external player) and remote (cast)
@@ -45,6 +46,7 @@ module.exports = class PlaybackController {
           if (index === undefined) return cb(new UnplayableTorrentError())
 
           initialized = true
+          scrollToTop()
 
           this.openPlayer(infoHash, index, (err) => {
             if (!err) this.play()

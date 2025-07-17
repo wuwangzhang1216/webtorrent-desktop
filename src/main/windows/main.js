@@ -45,7 +45,9 @@ function init (state, options) {
       contextIsolation: false,
       enableBlinkFeatures: 'AudioVideoTracks',
       enableRemoteModule: true,
-      backgroundThrottling: false
+      backgroundThrottling: false,
+      webSecurity: false,
+      allowRunningInsecureContent: true
     },
     x: initialBounds.x,
     y: initialBounds.y

@@ -1,4 +1,5 @@
 const React = require('react')
+const { memo } = React
 const { Card, CardActions, CardMedia, CardTitle, CardText } = require('material-ui/Card')
 const FlatButton = require('material-ui/FlatButton').default
 const RaisedButton = require('material-ui/RaisedButton').default
@@ -9,6 +10,7 @@ const PlayIcon = require('material-ui/svg-icons/av/play-arrow').default
 const colors = require('material-ui/styles/colors')
 const path = require('path')
 const config = require('../../config')
+const { extractCleanTitle, decodeHtmlEntities } = require('../lib/string-utils')
 
 class MovieCard extends React.Component {
   constructor(props) {
@@ -25,7 +27,17 @@ class MovieCard extends React.Component {
     e.stopPropagation()
     const { movie, onAddToTorrentList } = this.props
     
-    // Find the first magnet link
+    // For TV shows with episodes, find the first episode's magnet link
+    if (movie.is_tv_show && movie.episodes && movie.episodes.length > 0) {
+      const firstEpisode = movie.episodes[0]
+      const magnetLink = firstEpisode.download_links && firstEpisode.download_links.find(link => link.type === 'magnet')
+      if (magnetLink) {
+        onAddToTorrentList(movie, magnetLink.link)
+        return
+      }
+    }
+    
+    // Otherwise find the first magnet link in download_links
     const magnetLink = movie.download_links && movie.download_links.find(link => link.type === 'magnet')
     
     if (magnetLink) {
@@ -52,11 +64,17 @@ class MovieCard extends React.Component {
     
     if (!movie) return null
 
-    const title = movie.title || movie.full_title || 'Unknown Title'
+    const title = extractCleanTitle(movie.title || movie.full_title || 'Unknown Title')
     const poster = movie.poster_hd || movie.poster || this.fallbackImage
     const description = movie.description || movie.synopsis || 'No description available'
-    const hasMagnetLink = movie.download_links && movie.download_links.some(link => link.type === 'magnet')
-    const downloadCount = movie.download_links ? movie.download_links.length : 0
+    const hasMagnetLink = movie.has_magnet || (movie.download_links && movie.download_links.some(link => link.type === 'magnet'))
+    
+    // Calculate download count including episodes
+    let downloadCount = movie.download_links ? movie.download_links.length : 0
+    if (movie.is_tv_show && movie.episodes) {
+      downloadCount = movie.episodes.reduce((total, ep) => 
+        total + (ep.download_links ? ep.download_links.length : 0), downloadCount)
+    }
     
     // Create badge style object once per render to avoid Material-UI prepareStyles warning
     const badgeStyle = movie.quality ? { backgroundColor: this.getQualityColor(movie.quality) } : null
@@ -85,7 +103,8 @@ class MovieCard extends React.Component {
           subtitle={
             <div className="movie-subtitle">
               {movie.year && <span className="movie-year">{movie.year}</span>}
-              {movie.genre && <span className="movie-genre">{movie.genre}</span>}
+              {movie.genre && <span className="movie-genre">{movie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()}</span>}
+              {movie.is_tv_show && movie.total_episodes && <span className="movie-episodes">{movie.total_episodes} Episodes</span>}
               {movie.director && <span className="movie-director">Dir: {movie.director}</span>}
             </div>
           }
@@ -93,7 +112,7 @@ class MovieCard extends React.Component {
         />
         
         <CardText className="movie-description">
-          {description.length > 150 ? `${description.substring(0, 150)}...` : description}
+          {decodeHtmlEntities(description.length > 150 ? `${description.substring(0, 150)}...` : description)}
         </CardText>
         
         <div className="movie-metadata">
@@ -137,7 +156,9 @@ class MovieCard extends React.Component {
           
           {downloadCount > 0 && (
             <span className="download-count">
-              {downloadCount} download{downloadCount > 1 ? 's' : ''}
+              {movie.is_tv_show && movie.episodes && movie.episodes.length > 0
+                ? `${movie.episodes.length} episodes, ${downloadCount} downloads`
+                : `${downloadCount} download${downloadCount > 1 ? 's' : ''}`}
             </span>
           )}
         </CardActions>
@@ -146,4 +167,12 @@ class MovieCard extends React.Component {
   }
 }
 
-module.exports = MovieCard 
+// Memoize MovieCard to prevent unnecessary re-renders
+module.exports = memo(MovieCard, (prevProps, nextProps) => {
+  // Deep comparison for movie object and callback references
+  return (
+    prevProps.movie === nextProps.movie && // Reference equality
+    prevProps.onMovieClick === nextProps.onMovieClick &&
+    prevProps.onAddToTorrentList === nextProps.onAddToTorrentList
+  )
+}) 

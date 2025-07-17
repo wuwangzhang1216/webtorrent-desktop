@@ -7,6 +7,7 @@ const { dispatch } = require('../lib/dispatcher')
 const { TorrentKeyNotFoundError } = require('../lib/errors')
 const sound = require('../lib/sound')
 const TorrentSummary = require('../lib/torrent-summary')
+const { scrollToTop } = require('../lib/smooth-scroll')
 
 const instantIoRegex = /^(https:\/\/)?instant\.io\/#/
 
@@ -57,6 +58,7 @@ module.exports = class TorrentListController {
         files,
         setup: (cb) => {
           this.state.window.title = 'Create New Torrent'
+          scrollToTop()
           cb(null)
         }
       })
@@ -198,14 +200,14 @@ module.exports = class TorrentListController {
     this.state.modal = {
       id: 'remove-torrent-modal',
       infoHash,
-      deleteData
+      deleteData: true // Always delete data when removing torrents
     }
   }
 
   confirmDeleteAllTorrents (deleteData) {
     this.state.modal = {
       id: 'delete-all-torrents-modal',
-      deleteData
+      deleteData: true // Always delete data when removing torrents
     }
   }
 
@@ -258,12 +260,7 @@ module.exports = class TorrentListController {
     const menu = new remote.Menu()
 
     menu.append(new remote.MenuItem({
-      label: 'Remove From List',
-      click: () => dispatch('confirmDeleteTorrent', torrentSummary.infoHash, false)
-    }))
-
-    menu.append(new remote.MenuItem({
-      label: 'Remove Data File',
+      label: 'Remove Torrent',
       click: () => dispatch('confirmDeleteTorrent', torrentSummary.infoHash, true)
     }))
 

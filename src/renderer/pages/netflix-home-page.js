@@ -1,6 +1,8 @@
 const React = require('react')
-const Header = require('../components/header')
-const MovieDetailsModal = require('../components/movie-details-modal')
+const AppleMovieCard = require('../components/apple-movie-card')
+const AppleMovieModal = require('../components/apple-movie-modal')
+const { extractCleanTitle, decodeHtmlEntities } = require('../lib/string-utils')
+const { adaptMovieData, adaptMovieList } = require('../lib/movie-data-adapter')
 
 // SVG Icons - Enhanced with better styling
 const PlayIcon = () => (
@@ -67,15 +69,37 @@ class NetflixHomePage extends React.Component {
       loading: true,
       error: null,
       selectedMovie: null,
-      isModalOpen: false
+      isModalOpen: false,
+      heroMovies: [],
+      currentHeroIndex: 0,
+      nextHeroIndex: null,
+      isTransitioning: false
     }
 
     this.handleMovieClick = this.handleMovieClick.bind(this)
     this.handleCloseModal = this.handleCloseModal.bind(this)
+    this.handleMoreInfo = this.handleMoreInfo.bind(this)
+    this.heroInterval = null
+    this.transitionTimeout = null
+    this._isMounted = false
   }
 
   componentDidMount() {
+    console.log('NetflixHomePage mounted')
+    this._isMounted = true
     this.loadAllMovies()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+    if (this.heroInterval) {
+      clearInterval(this.heroInterval)
+      this.heroInterval = null
+    }
+    if (this.transitionTimeout) {
+      clearTimeout(this.transitionTimeout)
+      this.transitionTimeout = null
+    }
   }
 
   async loadAllMovies() {
@@ -85,21 +109,67 @@ class NetflixHomePage extends React.Component {
       const data = await response.json()
       
       if (data.status === 'success' && data.data) {
-        const { featured_movie, movie_rows, statistics } = data.data
+        const { featured_movie, sections, statistics } = data.data
         
-        console.log(`Loaded ${statistics.total_movies} movies from ${statistics.categories_loaded} categories in ${data.data.processing_time}`)
+        console.log(`Loaded movies from ${sections.length} sections`)
+        
+        // Adapt movie data to legacy format
+        const adaptedFeaturedMovie = featured_movie ? adaptMovieData(featured_movie) : null
+        const adaptedSections = sections.map(section => ({
+          ...section,
+          movies: adaptMovieList(section.movies || [])
+        }))
+        
+        // Get up to 5 hero movies from the first section of movies
+        let heroMovies = []
+        console.log('Sections available:', adaptedSections.length)
+        console.log('First section movies:', adaptedSections[0]?.movies?.length)
+        
+        if (adaptedSections.length > 0 && adaptedSections[0].movies.length > 0) {
+          // First try to get movies with posters
+          const moviesWithPosters = adaptedSections[0].movies.filter(m => m.poster)
+          console.log('Movies with posters:', moviesWithPosters.length)
+          
+          heroMovies = moviesWithPosters.slice(0, 5)
+          // If no movies have posters, just take first 5
+          if (heroMovies.length === 0) {
+            console.log('No movies with posters, using first 5 movies')
+            heroMovies = adaptedSections[0].movies.slice(0, 5)
+          }
+        } else if (adaptedFeaturedMovie) {
+          console.log('Using featured movie as hero')
+          heroMovies = [adaptedFeaturedMovie]
+        }
+        
+        console.log('Hero movies selected:', heroMovies.length)
+        console.log('Hero movies:', heroMovies.map(m => ({ title: m.title, poster: m.poster })))
+        // Log the first movie's poster URL to debug
+        if (heroMovies.length > 0 && heroMovies[0].poster) {
+          console.log('First hero poster URL:', heroMovies[0].poster)
+        }
+        
+        if (!this._isMounted) return
         
         this.setState({
-          featuredMovie: featured_movie,
-          movieRows: movie_rows,
+          featuredMovie: adaptedFeaturedMovie,
+          movieRows: adaptedSections,
           loading: false,
-          error: null
+          error: null,
+          heroMovies: heroMovies,
+          currentHeroIndex: 0
         })
+        
+        // Start auto-scrolling if we have multiple hero movies
+        if (heroMovies.length > 1 && this._isMounted) {
+          this.startHeroCarousel()
+        }
       } else {
         throw new Error(data.message || 'Failed to load home page data')
       }
     } catch (error) {
       console.error('Error loading home page data:', error)
+      if (!this._isMounted) return
+      
       this.setState({
         loading: false,
         error: 'Failed to load movies. Please ensure the API server is running.'
@@ -132,6 +202,35 @@ class NetflixHomePage extends React.Component {
       selectedMovie: null,
       isModalOpen: false
     })
+  }
+
+  startHeroCarousel() {
+    this.heroInterval = setInterval(() => {
+      if (!this._isMounted) return
+      
+      this.setState(prevState => {
+        const nextIndex = (prevState.currentHeroIndex + 1) % prevState.heroMovies.length
+        return {
+          nextHeroIndex: nextIndex,
+          isTransitioning: true
+        }
+      })
+      
+      // Complete the transition after animation
+      this.transitionTimeout = setTimeout(() => {
+        if (!this._isMounted) return
+        
+        this.setState(prevState => ({
+          currentHeroIndex: prevState.nextHeroIndex,
+          nextHeroIndex: null,
+          isTransitioning: false
+        }))
+      }, 800)
+    }, 6000) // Change hero every 6 seconds for smoother experience
+  }
+
+  handleMoreInfo(movie) {
+    this.handleMovieClick(movie)
   }
 
   showNotification(message, type = 'success') {
@@ -174,78 +273,140 @@ class NetflixHomePage extends React.Component {
   }
 
   renderHeroSection() {
-    const { featuredMovie } = this.state
-    if (!featuredMovie) return null
+    const { heroMovies, currentHeroIndex, nextHeroIndex, isTransitioning } = this.state
+    console.log('renderHeroSection called, heroMovies:', heroMovies)
+    if (!heroMovies || heroMovies.length === 0) {
+      console.log('No hero movies available')
+      return null
+    }
 
-    const magnetLink = featuredMovie.download_links?.find(link => link.type === 'magnet')
+    const currentMovie = heroMovies[currentHeroIndex] || heroMovies[0]
+    const nextMovie = nextHeroIndex !== null ? heroMovies[nextHeroIndex] : null
+    console.log('Current hero movie:', currentMovie)
+    if (!currentMovie) return null
 
+    const magnetLink = currentMovie.download_links?.find(link => link.type === 'magnet')
+
+    const posterUrl = currentMovie.poster
+    const nextPosterUrl = nextMovie?.poster
+    console.log('Poster URL for hero:', posterUrl)
+    
     return (
       <div className="netflix-hero">
-        {featuredMovie.poster_hd && (
+        {/* Current background - stays visible */}
+        <div 
+          className="netflix-hero-bg current"
+          style={posterUrl ? {
+            backgroundImage: `url("${posterUrl}")`,
+            backgroundColor: 'transparent'
+          } : {
+            background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
+          }}
+        />
+        
+        {/* Next background for transition - fades in on top */}
+        {isTransitioning && nextMovie && (
           <div 
-            className="netflix-hero-bg"
-            style={{
-              backgroundImage: `url(${featuredMovie.poster_hd})`,
+            className="netflix-hero-bg fade-in"
+            style={nextPosterUrl ? {
+              backgroundImage: `url("${nextPosterUrl}")`,
+              backgroundColor: 'transparent'
+            } : {
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
             }}
           />
         )}
         
-        <div className="netflix-hero-content">
-          <h1 className="netflix-hero-title">
-            {featuredMovie.title || featuredMovie.full_title}
-          </h1>
+        <div className={`netflix-hero-content ${isTransitioning ? 'transitioning' : ''}`}>
+          <div className="netflix-hero-title-wrapper">
+            <h1 className="netflix-hero-title">
+              {extractCleanTitle(currentMovie.title || currentMovie.full_title)}
+            </h1>
+            <button 
+              className="netflix-hero-info-btn"
+              onClick={() => this.handleMoreInfo(currentMovie)}
+              title="More Info"
+              aria-label="More Info"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+              </svg>
+            </button>
+          </div>
           
-          {featuredMovie.description && (
+          {currentMovie.synopsis && (
             <p className="netflix-hero-description">
-              {featuredMovie.description.length > 200 
-                ? featuredMovie.description.substring(0, 200) + '...'
-                : featuredMovie.description
-              }
+              {decodeHtmlEntities(
+                currentMovie.synopsis.length > 150 
+                  ? currentMovie.synopsis.substring(0, 150) + '...'
+                  : currentMovie.synopsis
+              )}
             </p>
           )}
           
           <div className="netflix-hero-metadata">
-            {featuredMovie.year && (
+            {currentMovie.year && (
               <span>
                 <CalendarIcon />
-                {featuredMovie.year}
+                {currentMovie.year}
               </span>
             )}
-            {featuredMovie.genre && (
+            {currentMovie.genre && (
               <span>
                 <GenreIcon />
-                {featuredMovie.genre}
+                {currentMovie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()}
               </span>
             )}
-            {featuredMovie.duration && (
+            {currentMovie.duration && (
               <span>
                 <TimeIcon />
-                {featuredMovie.duration}
-              </span>
-            )}
-            {featuredMovie.download_links && (
-              <span>
-                <LinkIcon />
-                {featuredMovie.download_links.length} links
+                {currentMovie.duration}
               </span>
             )}
           </div>
           
-          <div className="netflix-hero-actions">
-            <button
-              className="netflix-hero-btn primary"
-              onClick={() => this.handleAddToTorrentList(featuredMovie)}
-              disabled={!magnetLink}
-            >
-              <PlayIcon />
-              {magnetLink ? 'Download Now' : 'No Download Available'}
-            </button>
-            
-            <button className="netflix-hero-btn secondary">
-              <InfoIcon />
-              More Info
-            </button>
-          </div>
+          {heroMovies.length > 1 && (
+            <div className="netflix-hero-indicators">
+              {heroMovies.map((_, index) => (
+                <button
+                  key={index}
+                  className={`hero-indicator ${index === currentHeroIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    if (!this._isMounted || this.state.isTransitioning || index === this.state.currentHeroIndex) {
+                      return
+                    }
+                    
+                    // Clear any existing timeout
+                    if (this.transitionTimeout) {
+                      clearTimeout(this.transitionTimeout)
+                    }
+                    
+                    this.setState({
+                      nextHeroIndex: index,
+                      isTransitioning: true
+                    })
+                    
+                    this.transitionTimeout = setTimeout(() => {
+                      if (!this._isMounted) return
+                      
+                      this.setState({
+                        currentHeroIndex: index,
+                        nextHeroIndex: null,
+                        isTransitioning: false
+                      })
+                    }, 800)
+                    
+                    // Reset the interval when user manually selects
+                    if (this.heroInterval) {
+                      clearInterval(this.heroInterval)
+                      this.startHeroCarousel()
+                    }
+                  }}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     )
@@ -253,75 +414,32 @@ class NetflixHomePage extends React.Component {
 
   renderMovieRows() {
     const { movieRows } = this.state
+    const { dispatch } = require('../lib/dispatcher')
     
     return (
       <div className="netflix-movie-rows">
         {movieRows.map((row, index) => (
           <div key={index} className="netflix-movie-row">
-            <h2 className="netflix-movie-row-title">{row.title}</h2>
+            <div className="netflix-movie-row-header">
+              <h2 className="netflix-movie-row-title">{row.title}</h2>
+              {row.category && row.type !== 'latest' && (
+                <button 
+                  className="netflix-view-all-btn"
+                  onClick={() => dispatch('openCategoryPage', row.category)}
+                >
+                  View All →
+                </button>
+              )}
+            </div>
             <div className="netflix-movie-row-container">
               <div className="netflix-movie-row-grid">
                 {row.movies.map((movie, movieIndex) => (
-                  <div key={movieIndex} className="netflix-movie-card" onClick={() => this.handleMovieClick(movie)}>
-                    {movie.poster && (
-                      <img 
-                        src={movie.poster} 
-                        alt={movie.title}
-                        className="netflix-movie-poster"
-                        onError={(e) => {
-                          e.target.style.display = 'none'
-                        }}
-                      />
-                    )}
-                    
-                    <div className="netflix-movie-info">
-                      <h3 className="netflix-movie-title">
-                        {movie.title || movie.full_title}
-                      </h3>
-                      
-                      <div className="netflix-movie-metadata">
-                        {movie.year && (
-                          <span>
-                            <CalendarIcon />
-                            {movie.year}
-                          </span>
-                        )}
-                        {movie.genre && (
-                          <span>
-                            <GenreIcon />
-                            {movie.genre.split(' ')[0]}
-                          </span>
-                        )}
-                        {movie.duration && (
-                          <span>
-                            <TimeIcon />
-                            {movie.duration}
-                          </span>
-                        )}
-                      </div>
-                      
-                      <button
-                        className="netflix-movie-download-btn"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          this.handleAddToTorrentList(movie)
-                        }}
-                        disabled={!movie.download_links?.some(link => link.type === 'magnet')}
-                      >
-                        {movie.download_links?.some(link => link.type === 'magnet') ? (
-                          <>
-                            <DownloadIcon />
-                            Add to Downloads
-                          </>
-                        ) : (
-                          <>
-                            <InfoIcon />
-                            No Download
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                  <AppleMovieCard
+                    key={movie.id || `${movie.title}-${movieIndex}`}
+                    movie={movie}
+                    onMovieClick={this.handleMovieClick}
+                    onAddToTorrentList={this.handleAddToTorrentList.bind(this)}
+                  />
                 ))}
               </div>
             </div>
@@ -337,7 +455,6 @@ class NetflixHomePage extends React.Component {
     if (loading) {
       return (
         <div className="netflix-home-page">
-          <Header state={this.props.state} />
           <div className="netflix-loading">
             <div className="netflix-loading-spinner">
               <div style={{
@@ -358,13 +475,15 @@ class NetflixHomePage extends React.Component {
     if (error) {
       return (
         <div className="netflix-home-page">
-          <Header state={this.props.state} />
           <div className="netflix-error">
             <h1>Connection Error</h1>
             <p>{error}</p>
             <button
               className="netflix-error-btn"
-              onClick={() => window.location.reload()}
+              onClick={() => {
+                this.setState({ loading: true, error: null })
+                this.loadAllMovies()
+              }}
             >
               Try Again
             </button>
@@ -375,11 +494,10 @@ class NetflixHomePage extends React.Component {
 
     return (
       <div className="netflix-home-page">
-        <Header state={this.props.state} />
         {this.renderHeroSection()}
         {this.renderMovieRows()}
         
-        <MovieDetailsModal
+        <AppleMovieModal
           movie={this.state.selectedMovie}
           isOpen={this.state.isModalOpen}
           onClose={this.handleCloseModal}

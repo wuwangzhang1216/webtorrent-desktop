@@ -53,6 +53,11 @@ let server = null
 
 // Used for diffing, so we only send progress updates when necessary
 let prevProgress = null
+let progressThrottleTimer = null
+const PROGRESS_UPDATE_INTERVAL = 250 // Reduced from 1000ms to 250ms for smoother updates
+
+// Cache for file progress calculations
+const fileProgressCache = new WeakMap()
 
 init()
 
@@ -82,11 +87,25 @@ function init () {
 
   ipcRenderer.send('ipcReadyWebTorrent')
 
-  window.addEventListener('error', (e) =>
-    ipcRenderer.send('wt-uncaught-error', { message: e.error.message, stack: e.error.stack }),
-  true)
+  const errorHandler = (e) =>
+    ipcRenderer.send('wt-uncaught-error', { message: e.error.message, stack: e.error.stack })
+  window.addEventListener('error', errorHandler, true)
+  
+  // Cleanup error handler on unload
+  window.addEventListener('beforeunload', () => {
+    window.removeEventListener('error', errorHandler, true)
+  })
 
-  setInterval(updateTorrentProgress, 1000)
+  const progressInterval = setInterval(updateTorrentProgress, 100) // Check more frequently, but updates are throttled
+  
+  // Cleanup on window unload
+  window.addEventListener('beforeunload', () => {
+    clearInterval(progressInterval)
+    if (progressThrottleTimer) {
+      clearTimeout(progressThrottleTimer)
+      progressThrottleTimer = null
+    }
+  })
   console.timeEnd('init')
 }
 
@@ -240,37 +259,99 @@ function generateTorrentPoster (torrentKey) {
 }
 
 function updateTorrentProgress () {
-  const progress = getTorrentProgress()
-  // TODO: diff torrent-by-torrent, not once for the whole update
-  if (prevProgress && util.isDeepStrictEqual(progress, prevProgress)) {
-    return /* don't send heavy object if it hasn't changed */
-  }
-  ipcRenderer.send('wt-progress', progress)
-  prevProgress = progress
+  // Throttle progress updates to reduce CPU usage
+  if (progressThrottleTimer) return
+  
+  progressThrottleTimer = setTimeout(() => {
+    progressThrottleTimer = null
+    const progress = getTorrentProgressOptimized()
+    // Only send if there's a meaningful change
+    if (prevProgress && isSimilarProgress(progress, prevProgress)) {
+      return /* don't send heavy object if it hasn't changed significantly */
+    }
+    ipcRenderer.send('wt-progress', progress)
+    prevProgress = progress
+  }, PROGRESS_UPDATE_INTERVAL)
 }
 
-function getTorrentProgress () {
+// Check if progress has changed meaningfully (not just download speed fluctuations)
+function isSimilarProgress(curr, prev) {
+  if (!curr || !prev) return false
+  if (curr.progress !== prev.progress) return false
+  if (curr.hasActiveTorrents !== prev.hasActiveTorrents) return false
+  
+  // Check each torrent for significant changes
+  for (let i = 0; i < curr.torrents.length; i++) {
+    const currTorrent = curr.torrents[i]
+    const prevTorrent = prev.torrents.find(t => t.torrentKey === currTorrent.torrentKey)
+    if (!prevTorrent) return false
+    
+    // Only care about meaningful progress changes (> 0.1%)
+    if (Math.abs(currTorrent.progress - prevTorrent.progress) > 0.001) return false
+    if (currTorrent.ready !== prevTorrent.ready) return false
+    if (Math.abs(currTorrent.downloaded - prevTorrent.downloaded) > 1024 * 1024) return false // 1MB threshold
+  }
+  
+  return true
+}
+
+// Optimized version that caches file progress and only updates when necessary
+function getTorrentProgressOptimized () {
   // First, track overall progress
   const progress = client.progress
   const hasActiveTorrents = client.torrents.some(torrent => torrent.progress !== 1)
 
-  // Track progress for every file in each torrent
-  // TODO: ideally this would be tracked by WebTorrent, which could do it
-  // more efficiently than looping over torrent.bitfield
+  // Track progress for every file in each torrent with caching
   const torrentProg = client.torrents.map(torrent => {
-    const fileProg = torrent.files && torrent.files.map(file => {
-      const numPieces = file._endPiece - file._startPiece + 1
-      let numPiecesPresent = 0
-      for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
-        if (torrent.bitfield.get(piece)) numPiecesPresent++
-      }
-      return {
-        startPiece: file._startPiece,
-        endPiece: file._endPiece,
-        numPieces,
-        numPiecesPresent
-      }
-    })
+    // Only calculate file progress for active torrents or if not cached
+    let fileProg = null
+    if (torrent.progress < 1 || !fileProgressCache.has(torrent)) {
+      fileProg = torrent.files && torrent.files.map(file => {
+        // Use cached calculation if file hasn't changed
+        const cacheKey = `${file._startPiece}-${file._endPiece}`
+        const torrentCache = fileProgressCache.get(torrent) || {}
+        
+        if (torrentCache[cacheKey] && torrent.progress === 1) {
+          return torrentCache[cacheKey]
+        }
+        
+        const numPieces = file._endPiece - file._startPiece + 1
+        let numPiecesPresent = 0
+        
+        // Optimize bitfield checking for completed torrents
+        if (torrent.progress === 1) {
+          numPiecesPresent = numPieces
+        } else {
+          // Only check pieces for incomplete torrents
+          for (let piece = file._startPiece; piece <= file._endPiece; piece++) {
+            if (torrent.bitfield.get(piece)) numPiecesPresent++
+          }
+        }
+        
+        const result = {
+          startPiece: file._startPiece,
+          endPiece: file._endPiece,
+          numPieces,
+          numPiecesPresent
+        }
+        
+        // Cache the result
+        if (!fileProgressCache.has(torrent)) {
+          fileProgressCache.set(torrent, {})
+        }
+        fileProgressCache.get(torrent)[cacheKey] = result
+        
+        return result
+      })
+    } else {
+      // Use fully cached data for completed torrents
+      const cache = fileProgressCache.get(torrent)
+      fileProg = torrent.files && torrent.files.map(file => {
+        const cacheKey = `${file._startPiece}-${file._endPiece}`
+        return cache[cacheKey]
+      })
+    }
+    
     return {
       torrentKey: torrent.key,
       ready: torrent.ready,
@@ -280,7 +361,8 @@ function getTorrentProgress () {
       uploadSpeed: torrent.uploadSpeed,
       numPeers: torrent.numPeers,
       length: torrent.length,
-      bitfield: torrent.bitfield,
+      // Don't send bitfield over IPC - it's too heavy and rarely needed
+      // bitfield: torrent.bitfield,
       files: fileProg
     }
   })
@@ -290,6 +372,11 @@ function getTorrentProgress () {
     progress,
     hasActiveTorrents
   }
+}
+
+// Keep original function for compatibility if needed
+function getTorrentProgress () {
+  return getTorrentProgressOptimized()
 }
 
 function startServer (infoHash) {
@@ -302,7 +389,18 @@ function startServerFromReadyTorrent (torrent) {
   if (server) return
 
   // start the streaming torrent-to-http server
-  server = torrent.createServer()
+  server = torrent.createServer({
+    // Add CORS headers for Electron
+    origin: '*',
+    // Add additional headers for better compatibility
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, HEAD, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Range',
+      'Access-Control-Expose-Headers': 'Content-Length, Content-Range, Accept-Ranges',
+      'Access-Control-Max-Age': '86400'
+    }
+  })
   server.listen(0, () => {
     const port = server.address().port
     const urlSuffix = ':' + port
@@ -323,8 +421,6 @@ function stopServer () {
   server.destroy()
   server = null
 }
-
-console.log('Initializing...')
 
 function getAudioMetadata (infoHash, index) {
   const torrent = client.get(infoHash)
@@ -355,7 +451,6 @@ function getAudioMetadata (infoHash, index) {
     .then(
       metadata => {
         ipcRenderer.send('wt-audio-metadata', infoHash, index, metadata)
-        console.log(`metadata for file='${file.name}' completed.`)
       },
       err => {
         console.log(
@@ -423,7 +518,6 @@ function onError (err) {
 // https://bugs.chromium.org/p/chromium/issues/detail?id=490143
 // https://github.com/electron/electron/issues/7212
 window.testOfflineMode = () => {
-  console.log('Test, going OFFLINE')
   client = window.client = new WebTorrent({
     peerId: PEER_ID,
     tracker: false,

@@ -1,0 +1,33 @@
+[Desktop Entry]
+Name=ByteStream
+Version=1.0
+GenericName=BitTorrent Client
+X-GNOME-FullName=ByteStream
+Comment=Download and share files over BitTorrent
+Encoding=UTF-8
+Type=Application
+Icon=bytestream-desktop
+Terminal=false
+Path=/opt/bytestream-desktop
+Exec=/opt/bytestream-desktop/ByteStream %U
+TryExec=/opt/bytestream-desktop/ByteStream
+StartupNotify=false
+Categories=Network;FileTransfer;P2P;
+MimeType=application/x-bittorrent;x-scheme-handler/magnet;x-scheme-handler/stream-magnet;
+
+Actions=CreateNewTorrent;OpenTorrentFile;OpenTorrentAddress;
+
+[Desktop Action CreateNewTorrent]
+Name=Create New Torrent...
+Exec=/opt/bytestream-desktop/ByteStream -n
+Path=/opt/bytestream-desktop
+
+[Desktop Action OpenTorrentFile]
+Name=Open Torrent File...
+Exec=/opt/bytestream-desktop/ByteStream -o
+Path=/opt/bytestream-desktop
+
+[Desktop Action OpenTorrentAddress]
+Name=Open Torrent Address...
+Exec=/opt/bytestream-desktop/ByteStream -u
+Path=/opt/bytestream-desktop

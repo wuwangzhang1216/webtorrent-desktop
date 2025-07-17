@@ -1,0 +1,12 @@
+INFO:__main__:Starting Piaohua Movie API in ONLINE mode
+INFO:__main__:Cache duration: 30 minutes
+INFO:__main__:Data will be fetched in real-time from piaohua.com
+ * Serving Flask app 'app_online'
+ * Debug mode: off
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:8080
+ * Running on http://10.0.0.21:8080
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:__main__:Fetching movie 45322 detail from https://www.piaohua.com/html/dongzuo/2021/0714/45322.html
+INFO:werkzeug:127.0.0.1 - - [16/Jul/2025 14:27:57] "GET /api/movie/45322?url=https://www.piaohua.com/html/dongzuo/2021/0714/45322.html HTTP/1.1" 200 -

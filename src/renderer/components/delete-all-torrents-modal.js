@@ -6,10 +6,8 @@ const { dispatch, dispatcher } = require('../lib/dispatcher')
 module.exports = class DeleteAllTorrentsModal extends React.Component {
   render () {
     const { state: { modal: { deleteData } } } = this.props
-    const message = deleteData
-      ? 'Are you sure you want to remove all the torrents from the list and delete the data files?'
-      : 'Are you sure you want to remove all the torrents from the list?'
-    const buttonText = deleteData ? 'REMOVE DATA' : 'REMOVE'
+    const message = 'Are you sure you want to remove all torrents and delete their files?'
+    const buttonText = 'REMOVE ALL'
 
     return (
       <div>
@@ -24,7 +22,7 @@ module.exports = class DeleteAllTorrentsModal extends React.Component {
     )
 
     function handleRemove () {
-      dispatch('deleteAllTorrents', deleteData)
+      dispatch('deleteAllTorrents', true) // Always delete files
       dispatch('exitModal')
     }
   }

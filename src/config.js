@@ -1,15 +1,15 @@
-const appConfig = require('application-config')('WebTorrent')
+const appConfig = require('application-config')('ByteStream')
 const path = require('path')
 const { app } = require('electron')
 const arch = require('arch')
 
-const APP_NAME = 'WebTorrent'
-const APP_TEAM = 'WebTorrent, LLC'
+const APP_NAME = 'ByteStream'
+const APP_TEAM = 'ByteStream, LLC'
 const APP_VERSION = require('../package.json').version
 
 const IS_TEST = isTest()
 const PORTABLE_PATH = IS_TEST
-  ? path.join(process.platform === 'win32' ? 'C:\\Windows\\Temp' : '/tmp', 'WebTorrentTest')
+  ? path.join(process.platform === 'win32' ? 'C:\\Windows\\Temp' : '/tmp', 'ByteStreamTest')
   : path.join(path.dirname(process.execPath), 'Portable Settings')
 const IS_PRODUCTION = isProduction()
 const IS_PORTABLE = isPortable()
@@ -24,8 +24,8 @@ module.exports = {
   TELEMETRY_URL: 'https://webtorrent.io/desktop/telemetry',
 
   APP_COPYRIGHT: `Copyright © 2014-${new Date().getFullYear()} ${APP_TEAM}`,
-  APP_FILE_ICON: path.join(__dirname, '..', 'static', 'WebTorrentFile'),
-  APP_ICON: path.join(__dirname, '..', 'static', 'WebTorrent'),
+  APP_FILE_ICON: path.join(__dirname, '..', 'static', 'ByteStreamFile'),
+  APP_ICON: path.join(__dirname, '..', 'static', 'bytestream'),
   APP_NAME,
   APP_TEAM,
   APP_VERSION,
@@ -60,7 +60,7 @@ module.exports = {
 
   WINDOW_ABOUT: 'file://' + path.join(__dirname, '..', 'static', 'about.html'),
   WINDOW_MAIN: 'file://' + path.join(__dirname, '..', 'static', 'main.html'),
-  WINDOW_WEBTORRENT: 'file://' + path.join(__dirname, '..', 'static', 'webtorrent.html'),
+  WINDOW_WEBTORRENT: 'file://' + path.join(__dirname, '..', 'static', 'bytestream.html'),
 
   WINDOW_INITIAL_BOUNDS: {
     width: 500,

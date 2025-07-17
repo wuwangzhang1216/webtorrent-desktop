@@ -18,6 +18,7 @@ module.exports = class Player extends React.Component {
     const state = this.props.state
     const showVideo = state.playing.location === 'local'
     const showControls = state.playing.location !== 'external'
+    
     return (
       <div
         className='player'
@@ -58,7 +59,16 @@ function handleVolumeWheel (e) {
 }
 
 function renderMedia (state) {
-  if (!state.server) return
+  if (!state.server || !state.playing.isReady) {
+    // Show loading animation while video is loading
+    return (
+      <div className='letterbox'>
+        <div className='video-loading-overlay'>
+          <div className='video-loading-spinner' />
+        </div>
+      </div>
+    )
+  }
 
   // Unfortunately, play/pause can't be done just by modifying HTML.
   // Instead, grab the DOM node and play/pause it if necessary
@@ -161,15 +171,30 @@ function renderMedia (state) {
 
   // Create the <audio> or <video> tag
   const MediaTagName = state.playing.type
+  const mediaURL = Playlist.getCurrentLocalURL(state)
+  
+  // Check if video is buffering
+  const showLoadingOverlay = state.playing.isStalled || 
+    (state.playing.location === 'local' && !state.playing.isReady)
+  
   const mediaTag = (
     <MediaTagName
-      src={Playlist.getCurrentLocalURL(state)}
+      src={mediaURL}
+      autoPlay
       onDoubleClick={dispatcher('toggleFullScreen')}
       onClick={dispatcher('playPause')}
       onLoadedMetadata={onLoadedMetadata}
       onEnded={onEnded}
+      onLoadStart={dispatcher('mediaLoadStart')}
+      onCanPlay={dispatcher('mediaCanPlay')}
+      onWaiting={dispatcher('mediaStalled')}
+      onPlaying={dispatcher('mediaPlaying')}
       onStalled={dispatcher('mediaStalled')}
-      onError={dispatcher('mediaError')}
+      onError={(e) => {
+        console.error('Media error event:', e)
+        console.error('Media element error:', e.target.error)
+        dispatcher('mediaError')(e)
+      }}
       onTimeUpdate={dispatcher('mediaTimeUpdate')}
       onEncrypted={dispatcher('mediaEncrypted')}
     >
@@ -185,6 +210,11 @@ function renderMedia (state) {
       onMouseMove={dispatcher('mediaMouseMoved')}
     >
       {mediaTag}
+      {showLoadingOverlay && (
+        <div className='video-loading-overlay'>
+          <div className='video-loading-spinner' />
+        </div>
+      )}
       {renderOverlay(state)}
     </div>
   )
@@ -249,9 +279,8 @@ function renderMedia (state) {
 function renderOverlay (state) {
   const elems = []
   const audioMetadataElem = renderAudioMetadata(state)
-  const spinnerElem = renderLoadingSpinner(state)
+  // Removed loading spinner - we don't want any loading indicators on the left
   if (audioMetadataElem) elems.push(audioMetadataElem)
-  if (spinnerElem) elems.push(spinnerElem)
 
   // Video fills the window, centered with black bars if necessary
   // Audio gets a static poster image and a summary of the file metadata.
@@ -413,32 +442,45 @@ function renderAudioMetadata (state) {
   return (<div key='audio-metadata' className='audio-metadata'>{elems}</div>)
 }
 
-function renderLoadingSpinner (state) {
-  if (state.playing.isPaused) return
-  const isProbablyStalled = state.playing.isStalled ||
-    (new Date().getTime() - state.playing.lastTimeUpdate > 2000)
-  if (!isProbablyStalled) return
-
-  const prog = state.getPlayingTorrentSummary().progress || {}
-  let fileProgress = 0
-  if (prog.files) {
-    const file = prog.files[state.playing.fileIndex]
-    fileProgress = Math.floor(100 * file.numPiecesPresent / file.numPieces)
-  }
-
-  return (
-    <div key='loading' className='media-stalled'>
-      <div key='loading-spinner' className='loading-spinner' />
-      <div key='loading-progress' className='loading-status ellipsis'>
-        <span><span className='progress'>{fileProgress}%</span> downloaded</span>
-        <span> ↓ {prettyBytes(prog.downloadSpeed || 0)}/s</span>
-        <span> ↑ {prettyBytes(prog.uploadSpeed || 0)}/s</span>
-      </div>
-    </div>
-  )
-}
+// Removed loading spinner function - we don't want any loading indicators on the overlay
+// function renderLoadingSpinner (state) {
+//   if (state.playing.isPaused) return
+//   const isProbablyStalled = state.playing.isStalled ||
+//     (new Date().getTime() - state.playing.lastTimeUpdate > 2000)
+//   if (!isProbablyStalled) return
+//
+//   const prog = state.getPlayingTorrentSummary().progress || {}
+//   let fileProgress = 0
+//   if (prog.files) {
+//     const file = prog.files[state.playing.fileIndex]
+//     fileProgress = Math.floor(100 * file.numPiecesPresent / file.numPieces)
+//   }
+//
+//   return (
+//     <div key='loading' className='media-stalled'>
+//       <div key='loading-spinner' className='loading-spinner' />
+//       <div key='loading-progress' className='loading-status ellipsis'>
+//         <span><span className='progress'>{fileProgress}%</span> downloaded</span>
+//         <span> ↓ {prettyBytes(prog.downloadSpeed || 0)}/s</span>
+//         <span> ↑ {prettyBytes(prog.uploadSpeed || 0)}/s</span>
+//       </div>
+//     </div>
+//   )
+// }
 
 function renderCastScreen (state) {
+  // Add safety check
+  if (!state.playing || !state.playing.location) {
+    console.error('Invalid player state:', state.playing)
+    return (
+      <div className='letterbox' style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+        <div style={{ textAlign: 'center', color: 'white' }}>
+          <h2>Loading player...</h2>
+        </div>
+      </div>
+    )
+  }
+
   let castIcon, castType, isCast
   if (state.playing.location.startsWith('chromecast')) {
     castIcon = 'cast_connected'
@@ -464,7 +506,8 @@ function renderCastScreen (state) {
 
   const isStarting = state.playing.location.endsWith('-pending')
   const castName = state.playing.castName
-  const fileName = state.getPlayingFileSummary().name || ''
+  const fileSummary = state.getPlayingFileSummary()
+  const fileName = fileSummary ? fileSummary.name : ''
   let castStatus
   if (isCast && isStarting) castStatus = 'Connecting to ' + castName + '...'
   else if (isCast && !isStarting) castStatus = 'Connected to ' + castName
@@ -624,7 +667,7 @@ function renderPlayerControls (state) {
     renderPreview(state),
 
     <div key='playback-bar' className='playback-bar'>
-      {renderLoadingBar(state)}
+      {/* Removed loading bar - no red loading indicators needed */}
       <div
         key='cursor'
         className='playback-cursor'
@@ -837,8 +880,11 @@ function renderPlayerControls (state) {
     dispatch('mediaMouseMoved')
     const windowWidth = document.querySelector('body').clientWidth
     const fraction = e.clientX / windowWidth
-    const position = fraction * state.playing.duration /* seconds */
-    dispatch('skipTo', position)
+    const duration = state.playing.duration || 0
+    const position = fraction * duration /* seconds */
+    if (isFinite(position) && position >= 0) {
+      dispatch('skipTo', position)
+    }
   }
 
   // Handles volume muting and Unmuting
@@ -888,14 +934,19 @@ function renderPreview (state) {
   // Calculate time from x-coord as fraction of track width
   const windowWidth = document.querySelector('body').clientWidth
   const fraction = previewXCoord / windowWidth
-  const time = fraction * state.playing.duration /* seconds */
+  const duration = state.playing.duration || 0
+  const time = fraction * duration /* seconds */
 
   const height = 70
   let width = 0
 
   const previewEl = document.querySelector('video#preview')
-  if (previewEl !== null && previewXCoord !== null) {
-    previewEl.currentTime = time
+  if (previewEl !== null && previewXCoord !== null && isFinite(time) && time >= 0) {
+    try {
+      previewEl.currentTime = time
+    } catch (err) {
+      console.warn('Failed to set preview time:', err)
+    }
 
     // Auto adjust width to maintain video aspect ratio
     width = Math.floor((previewEl.videoWidth / previewEl.videoHeight) * height)
@@ -918,6 +969,7 @@ function renderPreview (state) {
         <video
           src={Playlist.getCurrentLocalURL(state)}
           id='preview'
+          muted
           style={{ border: '1px solid lightgrey', borderRadius: 2 }}
         />
       </div>
@@ -938,15 +990,15 @@ function renderLoadingBar (state) {
   if (config.IS_TEST) return // Don't integration test the loading bar. Screenshots won't match.
 
   const torrentSummary = state.getPlayingTorrentSummary()
-  if (!torrentSummary.progress) {
+  if (!torrentSummary || !torrentSummary.progress) {
     return null
   }
 
   // Find all contiguous parts of the torrent which are loaded
   const prog = torrentSummary.progress
-  const fileProg = prog.files[state.playing.fileIndex]
+  const fileProg = prog.files && prog.files[state.playing.fileIndex]
 
-  if (!fileProg) return null
+  if (!fileProg || !prog.bitfield) return null
 
   const parts = []
   let lastPiecePresent = false

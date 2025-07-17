@@ -15,6 +15,7 @@ const log = require('./log')
 const menu = require('./menu')
 const State = require('../renderer/lib/state')
 const windows = require('./windows')
+const backendManager = require('./backend-manager')
 
 const WEBTORRENT_VERSION = require('webtorrent/package.json').version
 
@@ -76,11 +77,21 @@ function init () {
     state: (cb) => State.load(cb)
   }, onReady)
 
-  function onReady (err, results) {
+  async function onReady (err, results) {
     if (err) throw err
 
     isReady = true
     const state = results.state
+
+    // Start the backend server
+    try {
+      console.log('Starting backend server...')
+      await backendManager.startBackend()
+      console.log('Backend server started successfully')
+    } catch (error) {
+      console.error('Failed to start backend server:', error)
+      // You might want to show an error dialog here
+    }
 
     menu.init()
     windows.main.init(state, { hidden })
@@ -121,12 +132,16 @@ function init () {
 
     app.isQuitting = true
     e.preventDefault()
+    
+    // Stop the backend server before quitting
+    backendManager.stopBackend()
+    
     windows.main.dispatch('stateSaveImmediate') // try to save state on exit
     ipcMain.once('stateSaved', () => app.quit())
     setTimeout(() => {
       console.error('Saving state took too long. Quitting.')
       app.quit()
-    }, 4000) // quit after 4 secs, at most
+    }, 1000) // quit after 1 sec, at most - reduced from 4 secs for better UX
   })
 
   app.on('activate', () => {

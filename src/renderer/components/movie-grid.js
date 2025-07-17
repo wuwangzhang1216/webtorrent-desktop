@@ -1,4 +1,5 @@
 const React = require('react')
+const { memo } = React
 const { Card, CardMedia, CardTitle, CardText, CardActions } = require('material-ui/Card')
 const RaisedButton = require('material-ui/RaisedButton').default
 const FlatButton = require('material-ui/FlatButton').default
@@ -10,9 +11,9 @@ const Chip = require('material-ui/Chip').default
 const CloseIcon = require('material-ui/svg-icons/navigation/close').default
 const DownloadIcon = require('material-ui/svg-icons/file/file-download').default
 
-const MovieCard = require('./movie-card')
+const AppleMovieCard = require('./apple-movie-card')
 const MoviePagination = require('./movie-pagination')
-const MovieDetailsModal = require('./movie-details-modal')
+const AppleMovieModal = require('./apple-movie-modal')
 
 class MovieGrid extends React.Component {
   constructor(props) {
@@ -32,6 +33,8 @@ class MovieGrid extends React.Component {
       selectedMovie: movie,
       isModalOpen: true
     })
+    // Prevent body scrolling when modal is open
+    document.body.style.overflow = 'hidden'
   }
 
   handleCloseModal() {
@@ -39,6 +42,13 @@ class MovieGrid extends React.Component {
       selectedMovie: null,
       isModalOpen: false
     })
+    // Restore body scrolling when modal closes
+    document.body.style.overflow = ''
+  }
+  
+  componentWillUnmount() {
+    // Clean up body scroll lock if component unmounts while modal is open
+    document.body.style.overflow = ''
   }
 
   render() {
@@ -70,9 +80,9 @@ class MovieGrid extends React.Component {
         )}
         
         <div className="movie-grid">
-          {movies.map((movie, index) => (
-            <MovieCard
-              key={movie.id || index}
+          {movies.map((movie) => (
+            <AppleMovieCard
+              key={movie.id || `${movie.title}-${movie.year}`}
               movie={movie}
               onMovieClick={this.handleMovieClick}
               onAddToTorrentList={onAddToTorrentList}
@@ -88,7 +98,7 @@ class MovieGrid extends React.Component {
           />
         )}
 
-        <MovieDetailsModal
+        <AppleMovieModal
           movie={this.state.selectedMovie}
           isOpen={this.state.isModalOpen}
           onClose={this.handleCloseModal}
@@ -99,4 +109,15 @@ class MovieGrid extends React.Component {
   }
 }
 
-module.exports = MovieGrid 
+// Memoize the component to prevent unnecessary re-renders
+module.exports = memo(MovieGrid, (prevProps, nextProps) => {
+  // Custom comparison function for shallow equality
+  return (
+    prevProps.currentPage === nextProps.currentPage &&
+    prevProps.totalPages === nextProps.totalPages &&
+    prevProps.categoryName === nextProps.categoryName &&
+    prevProps.movies === nextProps.movies && // Reference equality check
+    prevProps.onPageChange === nextProps.onPageChange &&
+    prevProps.onAddToTorrentList === nextProps.onAddToTorrentList
+  )
+}) 

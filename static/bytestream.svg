@@ -1,0 +1,124 @@
+Make a logo baed on my svg
+
+<svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient for depth -->
+  <defs>
+    <linearGradient id="streamGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#E50914;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF0A16;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B20710;stop-opacity:1" />
+    </linearGradient>
+
+```
+<linearGradient id="byteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+  <stop offset="0%" style="stop-color:#000000;stop-opacity:1" />
+  <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+</linearGradient>
+
+<!-- Glow effect -->
+<filter id="glow">
+  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+  <feMerge>
+    <feMergeNode in="coloredBlur"/>
+    <feMergeNode in="SourceGraphic"/>
+  </feMerge>
+</filter>
+
+<!-- Shadow effect -->
+<filter id="shadow">
+  <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+</filter>
+```
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect width="300" height="100" fill="#141414"/>
+
+  <!-- Stream wave elements -->
+
+  <g id="streamWaves">
+    <path d="M 10 40 Q 30 30, 50 40 T 90 40" 
+          stroke="url(#streamGradient)" 
+          stroke-width="3" 
+          fill="none" 
+          opacity="0.8"
+          filter="url(#glow)">
+      <animate attributeName="d" 
+               values="M 10 40 Q 30 30, 50 40 T 90 40;
+                       M 10 40 Q 30 50, 50 40 T 90 40;
+                       M 10 40 Q 30 30, 50 40 T 90 40"
+               dur="3s" 
+               repeatCount="indefinite"/>
+    </path>
+
+```
+<path d="M 10 50 Q 30 60, 50 50 T 90 50" 
+      stroke="url(#streamGradient)" 
+      stroke-width="3" 
+      fill="none" 
+      opacity="0.6"
+      filter="url(#glow)">
+  <animate attributeName="d" 
+           values="M 10 50 Q 30 60, 50 50 T 90 50;
+                   M 10 50 Q 30 40, 50 50 T 90 50;
+                   M 10 50 Q 30 60, 50 50 T 90 50"
+           dur="3s" 
+           begin="0.5s"
+           repeatCount="indefinite"/>
+</path>
+
+<path d="M 10 60 Q 30 50, 50 60 T 90 60" 
+      stroke="url(#streamGradient)" 
+      stroke-width="3" 
+      fill="none" 
+      opacity="0.4"
+      filter="url(#glow)">
+  <animate attributeName="d" 
+           values="M 10 60 Q 30 50, 50 60 T 90 60;
+                   M 10 60 Q 30 70, 50 60 T 90 60;
+                   M 10 60 Q 30 50, 50 60 T 90 60"
+           dur="3s" 
+           begin="1s"
+           repeatCount="indefinite"/>
+</path>
+```
+
+  </g>
+
+  <!-- Byte blocks -->
+
+  <g id="byteBlocks">
+    <rect x="15" y="35" width="8" height="8" fill="#000000" opacity="0.9" filter="url(#shadow)">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="30" y="47" width="8" height="8" fill="#000000" opacity="0.9" filter="url(#shadow)">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="45" y="42" width="8" height="8" fill="#000000" opacity="0.9" filter="url(#shadow)">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" begin="1s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="60" y="52" width="8" height="8" fill="#000000" opacity="0.9" filter="url(#shadow)">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="75" y="38" width="8" height="8" fill="#000000" opacity="0.9" filter="url(#shadow)">
+      <animate attributeName="opacity" values="0.9;0.3;0.9" dur="2s" begin="2s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+
+  <!-- Text -->
+
+  <text x="110" y="55" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="#FFFFFF" filter="url(#shadow)">
+    Byte
+  </text>
+  <text x="175" y="55" font-family="Arial, sans-serif" font-size="28" font-weight="400" fill="url(#streamGradient)">
+    Stream
+  </text>
+
+  <!-- Decorative binary elements -->
+
+  <text x="110" y="70" font-family="monospace" font-size="8" fill="#E50914" opacity="0.5">
+    01001000 01101001
+  </text>
+</svg>

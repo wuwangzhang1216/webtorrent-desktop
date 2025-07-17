@@ -1,5 +1,6 @@
 const { dispatch } = require('../lib/dispatcher')
 const { ipcRenderer } = require('electron')
+const { scrollToTop } = require('../lib/smooth-scroll')
 
 // Controls the Preferences screen
 module.exports = class PrefsController {
@@ -16,6 +17,7 @@ module.exports = class PrefsController {
       setup (cb) {
         // initialize preferences
         state.window.title = 'Preferences'
+        scrollToTop()
         ipcRenderer.send('setAllowNav', false)
         cb()
       },

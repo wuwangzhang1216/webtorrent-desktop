@@ -8,10 +8,10 @@ const RaisedButton = require('material-ui/RaisedButton').default
 const SearchIcon = require('material-ui/svg-icons/action/search').default
 const ClearIcon = require('material-ui/svg-icons/content/clear').default
 
-const Header = require('../components/header')
 const MovieCard = require('../components/movie-card')
 const MovieDetailsModal = require('../components/movie-details-modal')
-const { dispatcher } = require('../lib/dispatcher')
+const { dispatch } = require('../lib/dispatcher')
+const { adaptMovieList } = require('../lib/movie-data-adapter')
 
 // Enhanced SVG Icons
 const EmptySearchIcon = () => (
@@ -41,7 +41,6 @@ const InfoIcon = () => (
 class SearchPage extends React.Component {
   constructor(props) {
     super(props)
-    console.log('SearchPage constructor called')
     
     this.state = {
       searchKeyword: '',
@@ -64,7 +63,6 @@ class SearchPage extends React.Component {
   }
 
   componentDidMount() {
-    console.log('SearchPage componentDidMount called')
     // Focus on search input when page loads
     setTimeout(() => {
       const searchInput = document.querySelector('input[type="text"]')
@@ -78,8 +76,8 @@ class SearchPage extends React.Component {
     this.setState({ searchKeyword: event.target.value })
   }
 
-  async handleSearch(event) {
-    if (event) event.preventDefault()
+  async handleSearch(event, page = 1) {
+    if (event && event.preventDefault) event.preventDefault()
     
     const keyword = this.state.searchKeyword.trim()
     if (!keyword) return
@@ -91,13 +89,14 @@ class SearchPage extends React.Component {
     })
 
     try {
-      const response = await fetch(`http://localhost:8080/api/search?keyword=${encodeURIComponent(keyword)}&page=1`)
+      const response = await fetch(`http://localhost:8080/api/search?keyword=${encodeURIComponent(keyword)}&page=${page}`)
       const data = await response.json()
       
       if (data.status === 'success') {
+        const adaptedMovies = adaptMovieList(data.data?.movies || [])
         this.setState({
           loading: false,
-          movies: data.data?.movies || [],
+          movies: adaptedMovies,
           currentPage: data.data?.pagination?.current_page || 1,
           totalPages: data.data?.pagination?.total_pages || 1,
           error: null
@@ -130,18 +129,29 @@ class SearchPage extends React.Component {
     })
   }
 
-  handleAddToTorrentList(movie) {
-    const magnetLink = movie.download_links?.find(link => link.type === 'magnet')
+  handlePageChange(page) {
+    if (page >= 1 && page <= this.state.totalPages && page !== this.state.currentPage) {
+      this.handleSearch(null, page)
+      window.scrollTo(0, 0)
+    }
+  }
+
+  handleAddToTorrentList(movie, magnetLink) {
     if (magnetLink) {
-      dispatcher('addTorrent', magnetLink.link)
+      dispatch('addTorrent', magnetLink)
       this.showNotification(`"${movie.title}" added to downloads!`)
     } else {
-      this.showNotification('No magnet link available for this movie.', 'error')
+      const fallbackLink = movie.download_links?.find(link => link.type === 'magnet')
+      if (fallbackLink) {
+        dispatch('addTorrent', fallbackLink.link)
+        this.showNotification(`"${movie.title}" added to downloads!`)
+      } else {
+        this.showNotification('No magnet link available for this movie.', 'error')
+      }
     }
   }
 
   handleMovieClick(movie) {
-    console.log('Movie clicked:', movie)
     this.setState({
       selectedMovie: movie,
       isModalOpen: true
@@ -260,6 +270,122 @@ class SearchPage extends React.Component {
     )
   }
 
+  renderPagination() {
+    const { currentPage, totalPages } = this.state
+    const pages = []
+    const maxVisiblePages = 5
+    
+    let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
+    let end = Math.min(totalPages, start + maxVisiblePages - 1)
+    
+    if (end - start < maxVisiblePages - 1) {
+      start = Math.max(1, end - maxVisiblePages + 1)
+    }
+    
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+    
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '8px',
+        marginTop: '40px',
+        marginBottom: '40px'
+      }}>
+        <button
+          onClick={() => this.handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          style={{
+            padding: '8px 12px',
+            background: currentPage === 1 ? '#333' : '#e50914',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
+            opacity: currentPage === 1 ? 0.5 : 1
+          }}
+        >
+          Previous
+        </button>
+        
+        {start > 1 && (
+          <>
+            <button
+              onClick={() => this.handlePageChange(1)}
+              style={{
+                padding: '8px 12px',
+                background: 'transparent',
+                color: '#e50914',
+                border: '1px solid #e50914',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              1
+            </button>
+            {start > 2 && <span style={{ color: '#999' }}>...</span>}
+          </>
+        )}
+        
+        {pages.map(page => (
+          <button
+            key={page}
+            onClick={() => this.handlePageChange(page)}
+            style={{
+              padding: '8px 12px',
+              background: page === currentPage ? '#e50914' : 'transparent',
+              color: page === currentPage ? 'white' : '#e50914',
+              border: `1px solid ${page === currentPage ? '#e50914' : '#e50914'}`,
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: page === currentPage ? 'bold' : 'normal'
+            }}
+          >
+            {page}
+          </button>
+        ))}
+        
+        {end < totalPages && (
+          <>
+            {end < totalPages - 1 && <span style={{ color: '#999' }}>...</span>}
+            <button
+              onClick={() => this.handlePageChange(totalPages)}
+              style={{
+                padding: '8px 12px',
+                background: 'transparent',
+                color: '#e50914',
+                border: '1px solid #e50914',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+        
+        <button
+          onClick={() => this.handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          style={{
+            padding: '8px 12px',
+            background: currentPage === totalPages ? '#333' : '#e50914',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
+            opacity: currentPage === totalPages ? 0.5 : 1
+          }}
+        >
+          Next
+        </button>
+      </div>
+    )
+  }
+
   renderMovieGrid() {
     const { movies } = this.state
     
@@ -372,13 +498,16 @@ class SearchPage extends React.Component {
                     borderRadius: '12px',
                     fontSize: '12px'
                   }}>
-                    {movie.genre}
+                    {movie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()}
                   </span>
                 )}
               </div>
               
               <button
-                onClick={() => this.handleAddToTorrentList(movie)}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  this.handleAddToTorrentList(movie)
+                }}
                 disabled={!movie.download_links?.some(link => link.type === 'magnet')}
                 style={{
                   background: movie.download_links?.some(link => link.type === 'magnet') ? 
@@ -446,8 +575,6 @@ class SearchPage extends React.Component {
 
     return (
       <div className="search-page">
-        <Header state={this.props.state} />
-        
         <div className="search-content">
           {this.renderSearchSection()}
           
@@ -492,6 +619,12 @@ class SearchPage extends React.Component {
           )}
 
           {!loading && movies.length > 0 && this.renderMovieGrid()}
+          
+          {!loading && movies.length > 0 && this.state.totalPages > 1 && (
+            <div className="pagination-container">
+              {this.renderPagination()}
+            </div>
+          )}
         </div>
 
         {error && (

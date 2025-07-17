@@ -1,4 +1,5 @@
 const React = require('react')
+const { adaptMovieList } = require('../lib/movie-data-adapter')
 
 class SimpleMoviePage extends React.Component {
   constructor(props) {
@@ -21,8 +22,9 @@ class SimpleMoviePage extends React.Component {
       const response = await fetch('http://localhost:8080/api/latest?limit=5')
       const data = await response.json()
       
+      const adaptedMovies = adaptMovieList(data.data?.movies || [])
       this.setState({
-        movies: data.data?.movies || [],
+        movies: adaptedMovies,
         loading: false,
         error: null
       })
@@ -108,7 +110,7 @@ class SimpleMoviePage extends React.Component {
                   
                   <div style={{ fontSize: '12px', color: '#888', marginBottom: '10px' }}>
                     {movie.year && <span>📅 {movie.year} </span>}
-                    {movie.genre && <span>🎭 {movie.genre} </span>}
+                    {movie.genre && <span>🎭 {movie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()} </span>}
                     {movie.duration && <span>⏱️ {movie.duration}</span>}
                   </div>
                   

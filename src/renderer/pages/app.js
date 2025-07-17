@@ -8,7 +8,7 @@ const MuiThemeProvider = require('material-ui/styles/MuiThemeProvider').default
 
 // Perf optimization: Needed immediately, so do not lazy load it below
 const TorrentListPage = require('./torrent-list-page')
-// const Sidebar = require('../components/sidebar')
+const Header = require('../components/header')
 
 const Views = {
   home: createGetter(() => require('./netflix-home-page')),
@@ -17,7 +17,8 @@ const Views = {
   'create-torrent': createGetter(() => require('./create-torrent-page')),
   preferences: createGetter(() => require('./preferences-page')),
   'movie-exploration': createGetter(() => require('./netflix-home-page')),
-  search: createGetter(() => require('./search-page'))
+  search: createGetter(() => require('./apple-search-page')),
+  category: createGetter(() => require('./category-page'))
 }
 
 const Modals = {
@@ -74,6 +75,7 @@ class App extends React.Component {
       <MuiThemeProvider muiTheme={darkMuiTheme}>
         <div className={'app ' + cls.join(' ')}>
           {this.getErrorPopover()}
+          {this.getHeader()}
           <div key='content' className='content'>{this.getView()}</div>
           {this.getModal()}
         </div>
@@ -133,6 +135,13 @@ class App extends React.Component {
     const state = this.props.state
     const View = Views[state.location.url()]()
     return (<View state={state} />)
+  }
+
+  getHeader () {
+    const state = this.props.state
+    // Don't show header on player page
+    if (state.location.url() === 'player') return null
+    return <Header state={state} />
   }
 }
 

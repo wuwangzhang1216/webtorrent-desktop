@@ -1,10 +1,6 @@
 const React = require('react')
-const Dialog = require('material-ui/Dialog').default
-const FlatButton = require('material-ui/FlatButton').default
-const RaisedButton = require('material-ui/RaisedButton').default
-const Chip = require('material-ui/Chip').default
-const CloseIcon = require('material-ui/svg-icons/navigation/close').default
-const DownloadIcon = require('material-ui/svg-icons/file/file-download').default
+const { memo } = React
+const { extractCleanTitle } = require('../lib/string-utils')
 
 class MovieDetailsModal extends React.Component {
   constructor(props) {
@@ -66,130 +62,219 @@ class MovieDetailsModal extends React.Component {
   render() {
     const { movie, isOpen, onAddToTorrentList } = this.props
     
-    if (!movie) return null
-
-    const dialogActions = [
-      <FlatButton
-        label="Close"
-        primary={true}
-        onClick={this.handleClose}
-        icon={<CloseIcon />}
-      />
-    ]
+    if (!movie || !isOpen) return null
 
     const magnetLinks = this.getMagnetLinks(movie)
+    const title = extractCleanTitle(movie.title || movie.full_title || 'Unknown Title')
+    const poster = movie.poster_hd || movie.poster
+    const description = movie.description || movie.synopsis || 'No description available'
+    const rating = movie.rating || movie.imdb_rating
 
     return (
-      <Dialog
-        title={movie.title || movie.full_title}
-        actions={dialogActions}
-        modal={true}
-        open={isOpen}
-        onRequestClose={this.handleClose}
-        autoScrollBodyContent={true}
-        className="movie-detail-dialog"
-        contentClassName="movie-detail-dialog-content"
-        overlayClassName="movie-detail-overlay"
-        bodyClassName="movie-detail-body"
-        repositionOnUpdate={false}
-      >
-        <div className="movie-detail-content">
-          <div className="movie-detail-header">
-            {(movie.poster_hd || movie.poster) && (
-              <img 
-                src={movie.poster_hd || movie.poster} 
-                alt={movie.title}
-                className="movie-detail-poster"
-              />
+      <div className={`movie-modal-overlay ${isOpen ? 'active' : ''}`} onClick={this.handleClose}>
+        <div className="movie-modal-container" onClick={(e) => e.stopPropagation()}>
+          <button className="movie-modal-close" onClick={this.handleClose}>
+            <span className="icon">close</span>
+          </button>
+          
+          <div className="movie-modal-content">
+            {/* Hero Section with Backdrop */}
+            <div className="movie-modal-hero">
+              {poster && (
+                <div className="movie-modal-backdrop">
+                  <img src={poster} alt={title} />
+                  <div className="backdrop-gradient" />
+                </div>
+              )}
+              
+              <div className="movie-modal-hero-content">
+                <div className="movie-modal-poster-wrapper">
+                  {poster && (
+                    <img 
+                      src={poster} 
+                      alt={title}
+                      className="movie-modal-poster"
+                    />
+                  )}
+                </div>
+                
+                <div className="movie-modal-info">
+                  <h1 className="movie-modal-title">{title}</h1>
+                  {movie.translated_name && (
+                    <h2 className="movie-modal-subtitle">{movie.translated_name}</h2>
+                  )}
+                  
+                  <div className="movie-modal-meta">
+                    {movie.year && <span className="meta-item">{movie.year}</span>}
+                    {movie.duration && <span className="meta-item">{movie.duration}</span>}
+                    {movie.quality && (
+                      <span className={`meta-item quality-badge quality-${movie.quality.toLowerCase().replace(/[^a-z0-9]/g, '')}`}>
+                        {movie.quality}
+                      </span>
+                    )}
+                    {rating && (
+                      <span className="meta-item rating">
+                        <span className="icon">star</span> {rating}
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="movie-modal-details">
+                    {movie.genre && (
+                      <div className="detail-item">
+                        <span className="detail-label">Genre:</span>
+                        <span className="detail-value">{movie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()}</span>
+                      </div>
+                    )}
+                    {movie.director && (
+                      <div className="detail-item">
+                        <span className="detail-label">Director:</span>
+                        <span className="detail-value">{movie.director}</span>
+                      </div>
+                    )}
+                    {movie.country && (
+                      <div className="detail-item">
+                        <span className="detail-label">Country:</span>
+                        <span className="detail-value">{movie.country}</span>
+                      </div>
+                    )}
+                    {movie.language && (
+                      <div className="detail-item">
+                        <span className="detail-label">Language:</span>
+                        <span className="detail-value">{movie.language}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Description Section */}
+            <div className="movie-modal-section">
+              <h3 className="section-title">Synopsis</h3>
+              <p className="movie-modal-description">{description}</p>
+            </div>
+            
+            {/* Cast Section */}
+            {movie.cast_list && movie.cast_list.length > 0 && (
+              <div className="movie-modal-section">
+                <h3 className="section-title">Cast</h3>
+                <div className="movie-modal-cast">
+                  {movie.cast_list.slice(0, 12).map((actor, index) => (
+                    <div key={index} className="cast-member">
+                      <div className="cast-avatar">{actor.charAt(0).toUpperCase()}</div>
+                      <span className="cast-name">{actor}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
-            <div className="movie-detail-info">
-              <h3>{movie.title || movie.full_title}</h3>
-              {movie.translated_name && (
-                <p><strong>Translated:</strong> {movie.translated_name}</p>
-              )}
-              {movie.year && (
-                <p><strong>Year:</strong> {movie.year}</p>
-              )}
-              {movie.genre && (
-                <p><strong>Genre:</strong> {movie.genre}</p>
-              )}
-              {movie.director && (
-                <p><strong>Director:</strong> {movie.director}</p>
-              )}
-              {movie.country && (
-                <p><strong>Country:</strong> {movie.country}</p>
-              )}
-              {movie.language && (
-                <p><strong>Language:</strong> {movie.language}</p>
-              )}
-              {movie.duration && (
-                <p><strong>Duration:</strong> {movie.duration}</p>
-              )}
-              {movie.file_size && (
-                <p><strong>File Size:</strong> {movie.file_size}</p>
-              )}
-              {movie.resolution && (
-                <p><strong>Resolution:</strong> {movie.resolution}</p>
-              )}
-              {movie.quality && (
-                <p><strong>Quality:</strong> {movie.quality}</p>
-              )}
+            
+            {/* Download Section */}
+            {magnetLinks.length > 0 && (
+              <div className="movie-modal-section download-section">
+                <h3 className="section-title">Download Options</h3>
+                <div className="movie-modal-downloads">
+                  {magnetLinks.map((group, groupIndex) => (
+                    <div key={groupIndex} className="download-group">
+                      <div className="download-quality-label">{group.quality}</div>
+                      <div className="download-options">
+                        {group.links.map((link, linkIndex) => (
+                          <button
+                            key={linkIndex}
+                            className="download-option"
+                            onClick={() => {
+                              const { dispatch } = require('../lib/dispatcher')
+                              dispatch('addTorrent', link.link)
+                              // Show notification
+                              const notification = document.createElement('div')
+                              notification.className = 'notification success'
+                              notification.style.cssText = `
+                                position: fixed;
+                                top: 90px;
+                                right: 30px;
+                                background: linear-gradient(135deg, #4CAF50, #45a049);
+                                color: white;
+                                padding: 15px 25px;
+                                border-radius: 10px;
+                                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                                z-index: 1000;
+                                font-weight: 500;
+                                max-width: 300px;
+                                transform: translateX(100%);
+                                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                              `
+                              notification.textContent = `"${movie.title || movie.full_title || 'Movie'}" added to downloads!`
+                              
+                              document.body.appendChild(notification)
+                              
+                              setTimeout(() => {
+                                notification.style.transform = 'translateX(0)'
+                              }, 100)
+                              
+                              setTimeout(() => {
+                                notification.style.transform = 'translateX(100%)'
+                                setTimeout(() => {
+                                  if (notification.parentNode) {
+                                    notification.parentNode.removeChild(notification)
+                                  }
+                                }, 300)
+                              }, 3000)
+                            }}
+                          >
+                            <span className="icon">get_app</span>
+                            <span className="download-info">
+                              <span className="download-label">
+                                {group.links.length > 1 ? `Option ${linkIndex + 1}` : 'Download'}
+                              </span>
+                              {link.size && <span className="download-size">{link.size}</span>}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            
+            {/* Additional Info */}
+            <div className="movie-modal-section">
+              <h3 className="section-title">Technical Details</h3>
+              <div className="movie-modal-tech-details">
+                {movie.file_size && (
+                  <div className="tech-item">
+                    <span className="icon">storage</span>
+                    <span className="tech-label">File Size</span>
+                    <span className="tech-value">{movie.file_size}</span>
+                  </div>
+                )}
+                {movie.resolution && (
+                  <div className="tech-item">
+                    <span className="icon">tv</span>
+                    <span className="tech-label">Resolution</span>
+                    <span className="tech-value">{movie.resolution}</span>
+                  </div>
+                )}
+                {movie.codec && (
+                  <div className="tech-item">
+                    <span className="icon">videocam</span>
+                    <span className="tech-label">Codec</span>
+                    <span className="tech-value">{movie.codec}</span>
+                  </div>
+                )}
+                {movie.audio && (
+                  <div className="tech-item">
+                    <span className="icon">audiotrack</span>
+                    <span className="tech-label">Audio</span>
+                    <span className="tech-value">{movie.audio}</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-
-          {movie.cast_list && movie.cast_list.length > 0 && (
-            <div className="movie-cast">
-              <h4>Cast</h4>
-              <div className="cast-chips">
-                {movie.cast_list.slice(0, 10).map((actor, index) => (
-                  <Chip key={index} className="cast-chip">
-                    {actor}
-                  </Chip>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {(movie.synopsis || movie.description) && (
-            <div className="movie-synopsis">
-              <h4>Synopsis</h4>
-              <p style={{ whiteSpace: 'pre-wrap' }}>{movie.synopsis || movie.description}</p>
-            </div>
-          )}
-
-          {magnetLinks.length > 0 && (
-            <div className="download-section">
-              <h4>Download</h4>
-              <div className="download-buttons">
-                {magnetLinks.map((group, groupIndex) => (
-                  <div key={groupIndex} className="download-quality-group">
-                    <div className="quality-label">{group.quality}</div>
-                    <div className="quality-buttons">
-                      {group.links.map((link, linkIndex) => (
-                        <RaisedButton
-                          key={linkIndex}
-                          label={group.links.length > 1 ? `${group.quality} (${linkIndex + 1})` : group.quality}
-                          primary={true}
-                          icon={<DownloadIcon />}
-                          onClick={() => onAddToTorrentList && onAddToTorrentList(movie, link.link)}
-                          className="download-button"
-                          style={{ marginRight: '8px', marginBottom: '8px' }}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {magnetLinks.length === 0 && (
-            <div className="no-download-section">
-              <p style={{ color: '#B0B0B0', fontStyle: 'italic' }}>No download links available</p>
-            </div>
-          )}
         </div>
-      </Dialog>
+      </div>
     )
   }
 }
