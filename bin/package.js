@@ -249,6 +249,13 @@ function buildDarwin (cb) {
 
     // Copy torrent file icon into app bundle
     cp.execSync(`cp ${config.APP_FILE_ICON + '.icns'} ${resourcesPath}`)
+    
+    // Copy backend executable if it exists
+    const backendExec = path.join(config.ROOT_PATH, 'bytestream-backend')
+    if (fs.existsSync(backendExec)) {
+      console.log('Mac: Copying backend executable...')
+      cp.execSync(`cp ${backendExec} ${resourcesPath}`)
+    }
 
     if (process.platform === 'darwin') {
       if (argv.sign) {
@@ -399,6 +406,14 @@ function buildWin32 (cb) {
 
   electronPackager(Object.assign({}, all, win32)).then(function (buildPath) {
     console.log('Windows: Packaged electron. ' + buildPath)
+    
+    // Copy backend executable if it exists
+    const backendExec = path.join(config.ROOT_PATH, 'bytestream-backend.exe')
+    if (fs.existsSync(backendExec)) {
+      console.log('Windows: Copying backend executable...')
+      const destPath = path.join(buildPath[0], 'bytestream-backend.exe')
+      fs.copyFileSync(backendExec, destPath)
+    }
 
     let signWithParams
     if (process.platform === 'win32') {
@@ -503,6 +518,18 @@ function buildLinux (cb) {
 
   electronPackager(Object.assign({}, all, linux)).then(function (buildPath) {
     console.log('Linux: Packaged electron. ' + buildPath)
+    
+    // Copy backend executable if it exists
+    const backendExec = path.join(config.ROOT_PATH, 'bytestream-backend')
+    if (fs.existsSync(backendExec)) {
+      console.log('Linux: Copying backend executable...')
+      buildPath.forEach(function (filesPath) {
+        const destPath = path.join(filesPath, 'bytestream-backend')
+        fs.copyFileSync(backendExec, destPath)
+        // Make it executable
+        fs.chmodSync(destPath, '755')
+      })
+    }
 
     const tasks = []
     buildPath.forEach(function (filesPath) {

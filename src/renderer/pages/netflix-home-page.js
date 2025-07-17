@@ -3,6 +3,7 @@ const AppleMovieCard = require('../components/apple-movie-card')
 const AppleMovieModal = require('../components/apple-movie-modal')
 const { extractCleanTitle, decodeHtmlEntities } = require('../lib/string-utils')
 const { adaptMovieData, adaptMovieList } = require('../lib/movie-data-adapter')
+const backendStatus = require('../lib/backend-status')
 
 // SVG Icons - Enhanced with better styling
 const PlayIcon = () => (
@@ -73,7 +74,8 @@ class NetflixHomePage extends React.Component {
       heroMovies: [],
       currentHeroIndex: 0,
       nextHeroIndex: null,
-      isTransitioning: false
+      isTransitioning: false,
+      backendReady: backendStatus.isReady
     }
 
     this.handleMovieClick = this.handleMovieClick.bind(this)
@@ -87,7 +89,23 @@ class NetflixHomePage extends React.Component {
   componentDidMount() {
     console.log('NetflixHomePage mounted')
     this._isMounted = true
-    this.loadAllMovies()
+    
+    // Subscribe to backend status
+    this.backendUnsubscribe = backendStatus.onStatusChange((ready) => {
+      if (this._isMounted) {
+        this.setState({ backendReady: ready })
+        if (ready && this.state.movieRows.length === 0) {
+          this.loadAllMovies()
+        }
+      }
+    })
+    
+    // Since backend starts before window shows, it should be ready
+    // But still check to be safe
+    if (backendStatus.isReady) {
+      this.setState({ backendReady: true })
+      this.loadAllMovies()
+    }
   }
 
   componentWillUnmount() {
@@ -99,6 +117,9 @@ class NetflixHomePage extends React.Component {
     if (this.transitionTimeout) {
       clearTimeout(this.transitionTimeout)
       this.transitionTimeout = null
+    }
+    if (this.backendUnsubscribe) {
+      this.backendUnsubscribe()
     }
   }
 
@@ -177,16 +198,20 @@ class NetflixHomePage extends React.Component {
     }
   }
 
-  handleAddToTorrentList(movie) {
-    const magnetLink = movie.download_links?.find(link => link.type === 'magnet')
+  handleAddToTorrentList(movie, magnetLink) {
+    const { dispatch } = require('../lib/dispatcher')
+    
     if (magnetLink) {
-      const { dispatch } = require('../lib/dispatcher')
-      dispatch('addTorrent', magnetLink.link)
-      
-      // Show notification
+      dispatch('addTorrent', magnetLink)
       this.showNotification(`"${movie.title}" added to downloads!`)
     } else {
-      this.showNotification('No magnet link available for this movie.', 'error')
+      const link = movie.download_links?.find(link => link.type === 'magnet')
+      if (link) {
+        dispatch('addTorrent', link.link)
+        this.showNotification(`"${movie.title}" added to downloads!`)
+      } else {
+        this.showNotification('No magnet link available for this movie.', 'error')
+      }
     }
   }
 
@@ -450,7 +475,28 @@ class NetflixHomePage extends React.Component {
   }
 
   render() {
-    const { loading, error } = this.state
+    const { loading, error, backendReady } = this.state
+
+    // Show loading screen when backend is not ready
+    if (!backendReady) {
+      return (
+        <div className="netflix-home-page">
+          <div className="netflix-loading">
+            <div className="netflix-loading-spinner">
+              <div style={{
+                width: '40px',
+                height: '40px',
+                border: '4px solid rgba(229, 9, 20, 0.3)',
+                borderTop: '4px solid #e50914',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }} />
+            </div>
+            <p className="netflix-loading-text">Starting ByteStream...</p>
+          </div>
+        </div>
+      )
+    }
 
     if (loading) {
       return (

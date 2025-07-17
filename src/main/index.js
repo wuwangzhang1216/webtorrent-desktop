@@ -83,19 +83,45 @@ function init () {
     isReady = true
     const state = results.state
 
-    // Start the backend server
-    try {
-      console.log('Starting backend server...')
-      await backendManager.startBackend()
-      console.log('Backend server started successfully')
-    } catch (error) {
-      console.error('Failed to start backend server:', error)
-      // You might want to show an error dialog here
-    }
-
+    // Initialize menu and hidden windows
     menu.init()
-    windows.main.init(state, { hidden })
     windows.webtorrent.init()
+
+    // Show a splash/loading state while backend starts
+    windows.main.init(state, { hidden: true }) // Keep hidden initially
+
+    // Start the backend server with a reasonable timeout
+    console.log('Starting backend server...')
+    const backendStartTime = Date.now()
+    
+    backendManager.startBackend()
+      .then(() => {
+        const startupTime = Date.now() - backendStartTime
+        console.log(`Backend server started successfully in ${startupTime}ms`)
+        
+        // Show the main window after backend is ready
+        if (!hidden) {
+          windows.main.show()
+        }
+        
+        // Notify renderer that backend is ready
+        if (windows.main.win) {
+          windows.main.win.webContents.send('backend-ready')
+        }
+      })
+      .catch((error) => {
+        console.error('Failed to start backend server:', error)
+        
+        // Show window anyway with error state
+        if (!hidden) {
+          windows.main.show()
+        }
+        
+        // Notify renderer about the error
+        if (windows.main.win) {
+          windows.main.win.webContents.send('backend-error', error.message)
+        }
+      })
 
     // To keep app startup fast, some code is delayed.
     setTimeout(() => {

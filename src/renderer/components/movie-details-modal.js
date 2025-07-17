@@ -1,6 +1,7 @@
 const React = require('react')
 const { memo } = React
 const { extractCleanTitle } = require('../lib/string-utils')
+const { dispatch } = require('../lib/dispatcher')
 
 class MovieDetailsModal extends React.Component {
   constructor(props) {
@@ -184,8 +185,9 @@ class MovieDetailsModal extends React.Component {
                             key={linkIndex}
                             className="download-option"
                             onClick={() => {
-                              const { dispatch } = require('../lib/dispatcher')
+                              // 直接使用 dispatch，不依赖传递的函数
                               dispatch('addTorrent', link.link)
+                              
                               // Show notification
                               const notification = document.createElement('div')
                               notification.className = 'notification success'
@@ -222,12 +224,12 @@ class MovieDetailsModal extends React.Component {
                               }, 3000)
                             }}
                           >
-                            <span className="icon">get_app</span>
-                            <span className="download-info">
-                              <span className="download-label">
+                            <span className="icon" style={{ pointerEvents: 'none' }}>get_app</span>
+                            <span className="download-info" style={{ pointerEvents: 'none' }}>
+                              <span className="download-label" style={{ pointerEvents: 'none' }}>
                                 {group.links.length > 1 ? `Option ${linkIndex + 1}` : 'Download'}
                               </span>
-                              {link.size && <span className="download-size">{link.size}</span>}
+                              {link.size && <span className="download-size" style={{ pointerEvents: 'none' }}>{link.size}</span>}
                             </span>
                           </button>
                         ))}

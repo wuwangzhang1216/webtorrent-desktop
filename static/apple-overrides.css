@@ -9,6 +9,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+/* Ensure all interactive elements are not draggable */
+button, a, input, select, textarea, [role="button"] {
+  -webkit-app-region: no-drag;
+}
+
 /* Hide legacy header */
 .header {
   display: none !important;
@@ -27,6 +32,7 @@ body {
   border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
   z-index: 1000;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-app-region: drag; /* Make header draggable */
 }
 
 .apple-header.scrolled {
@@ -91,6 +97,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   color: rgba(255, 255, 255, 0.8);
+  -webkit-app-region: no-drag; /* Make buttons clickable */
 }
 
 .apple-nav-item:hover {
@@ -144,6 +151,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   color: rgba(255, 255, 255, 0.6);
+  -webkit-app-region: no-drag; /* Make buttons clickable */
 }
 
 .apple-history-btn:hover:not(.disabled) {
@@ -170,6 +178,7 @@ body {
   transition: all 0.2s ease;
   color: white;
   box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+  -webkit-app-region: no-drag; /* Make button clickable */
 }
 
 .apple-add-button:hover {

@@ -91,8 +91,12 @@ class AppleMovieModal extends React.Component {
       // The new API requires the full URL as a parameter
       const url = movie.page_url || movie.link
       if (!url) {
-        console.warn('No URL available for movie details')
-        this.setState({ loading: false })
+        console.warn('[AppleMovieModal] No URL available for movie details, using original movie data')
+        // Important: Still set detailedMovie to ensure download_links are available
+        this.setState({ 
+          loading: false,
+          detailedMovie: movie // Use original movie data as fallback
+        })
         return
       }
 
@@ -100,7 +104,10 @@ class AppleMovieModal extends React.Component {
       const data = await response.json()
 
       if (data.status === 'success' && data.data) {
+        console.log('[AppleMovieModal] Fetched movie details response:', data)
         const adaptedMovie = adaptMovieData(data.data)
+        console.log('[AppleMovieModal] Adapted detailed movie:', adaptedMovie)
+        console.log('[AppleMovieModal] Adapted movie download_links:', adaptedMovie.download_links)
         this.setState({ 
           detailedMovie: adaptedMovie,
           loading: false 
@@ -137,23 +144,30 @@ class AppleMovieModal extends React.Component {
   }
 
   handleAddToTorrentList = () => {
+    console.log('[AppleMovieModal] handleAddToTorrentList called')
     const { movie, onAddToTorrentList, onClose } = this.props
     const { detailedMovie } = this.state
     
     // Use detailed movie data if available
     const movieToAdd = detailedMovie || movie
+    console.log('[AppleMovieModal] movieToAdd:', movieToAdd)
     
     if (onAddToTorrentList) {
       // If there's only one magnet link, pass it directly
       const magnetLinks = movieToAdd.download_links ? 
         movieToAdd.download_links.filter(link => link.type === 'magnet') : []
+      console.log('[AppleMovieModal] magnetLinks found:', magnetLinks)
       
       if (magnetLinks.length === 1) {
+        console.log('[AppleMovieModal] Calling onAddToTorrentList with movie and link')
         onAddToTorrentList(movieToAdd, magnetLinks[0].link)
       } else {
+        console.log('[AppleMovieModal] Calling onAddToTorrentList with movie only')
         onAddToTorrentList(movieToAdd)
       }
       onClose()
+    } else {
+      console.error('[AppleMovieModal] No onAddToTorrentList handler provided')
     }
   }
 
@@ -500,7 +514,10 @@ class AppleMovieModal extends React.Component {
                             <button 
                               key={index}
                               className="apple-modal-button resolution-option"
-                              onClick={() => this.props.onAddToTorrentList(displayMovie, link.link)}
+                              onClick={() => {
+                                console.log('[AppleMovieModal] Resolution option clicked:', link)
+                                this.props.onAddToTorrentList(displayMovie, link.link)
+                              }}
                             >
                               <DownloadIcon />
                               <span>

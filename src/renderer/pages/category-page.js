@@ -405,9 +405,12 @@ function CategoryPage({ state }) {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           onAddToTorrentList={(movie) => {
+            console.log('[CategoryPage] onAddToTorrentList called with movie:', movie)
             const magnetLink = movie.download_links?.find(link => link.type === 'magnet')
+            console.log('[CategoryPage] Found magnetLink:', magnetLink)
             if (magnetLink) {
               const { dispatch } = require('../lib/dispatcher')
+              console.log('[CategoryPage] Dispatching addTorrent')
               dispatch('addTorrent', magnetLink.link)
             }
           }}

@@ -14,10 +14,13 @@ console.log('Packaging ByteStream with Backend...')
 console.log('Step 1: Building app...')
 cp.execSync('npm run build', { stdio: 'inherit' })
 
-// 2. Copy app_online.py to the root directory for packaging
+// 2. Copy backend files to the root directory for packaging
 const backendSrc = path.join(__dirname, '..', 'backend', 'app_online.py')
 const backendDest = path.join(__dirname, '..', 'app_online.py')
+const executableSrc = path.join(__dirname, '..', 'bytestream-backend')
+const executableDest = path.join(__dirname, '..', 'bytestream-backend-temp')
 
+// Copy app_online.py
 if (fs.existsSync(backendSrc)) {
   fs.copyFileSync(backendSrc, backendDest)
   console.log('Copied app_online.py to root directory')
@@ -26,12 +29,21 @@ if (fs.existsSync(backendSrc)) {
   process.exit(1)
 }
 
+// Copy executable if it exists
+if (fs.existsSync(executableSrc)) {
+  fs.copyFileSync(executableSrc, executableDest)
+  console.log('Copied bytestream-backend executable to root directory')
+}
+
 // 3. Run the regular package script
 console.log('Step 2: Packaging app...')
 cp.execSync('npm run package', { stdio: 'inherit' })
 
-// 4. Clean up - remove app_online.py from root
+// 4. Clean up - remove temporary files from root
 fs.unlinkSync(backendDest)
+if (fs.existsSync(executableDest)) {
+  fs.unlinkSync(executableDest)
+}
 console.log('Cleaned up temporary files')
 
 console.log('\nPackaging complete!')

@@ -1,650 +1,225 @@
 const React = require('react')
-const CircularProgress = require('material-ui/CircularProgress').default
-const Snackbar = require('material-ui/Snackbar').default
-const Paper = require('material-ui/Paper').default
-const TextField = require('material-ui/TextField').default
-const IconButton = require('material-ui/IconButton').default
-const RaisedButton = require('material-ui/RaisedButton').default
-const SearchIcon = require('material-ui/svg-icons/action/search').default
-const ClearIcon = require('material-ui/svg-icons/content/clear').default
-
-const MovieCard = require('../components/movie-card')
-const MovieDetailsModal = require('../components/movie-details-modal')
-const { dispatch } = require('../lib/dispatcher')
+const { useState, useEffect, useCallback } = React
+const AppleMovieCard = require('../components/apple-movie-card')
+const AppleMovieModal = require('../components/apple-movie-modal')
 const { adaptMovieList } = require('../lib/movie-data-adapter')
 
-// Enhanced SVG Icons
-const EmptySearchIcon = () => (
-  <svg width="80" height="80" viewBox="0 0 24 24" fill="rgba(229, 9, 20, 0.6)">
+// SVG Icons
+const SearchIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
     <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
   </svg>
 )
 
-const ErrorIcon = () => (
-  <svg width="60" height="60" viewBox="0 0 24 24" fill="#e50914">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+const ClearIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
   </svg>
 )
 
-const DownloadIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
-  </svg>
-)
+function SearchPage() {
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const [movies, setMovies] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [selectedMovie, setSelectedMovie] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-const InfoIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
-  </svg>
-)
-
-class SearchPage extends React.Component {
-  constructor(props) {
-    super(props)
+  // Search movies
+  const handleSearch = useCallback(async (e, page = 1) => {
+    if (e && e.preventDefault) e.preventDefault()
     
-    this.state = {
-      searchKeyword: '',
-      movies: [],
-      loading: false,
-      error: null,
-      currentPage: 1,
-      totalPages: 1,
-      hasSearched: false,
-      selectedMovie: null,
-      isModalOpen: false
-    }
-
-    this.handleSearch = this.handleSearch.bind(this)
-    this.handleKeywordChange = this.handleKeywordChange.bind(this)
-    this.handleClearSearch = this.handleClearSearch.bind(this)
-    this.handleAddToTorrentList = this.handleAddToTorrentList.bind(this)
-    this.handleMovieClick = this.handleMovieClick.bind(this)
-    this.handleCloseModal = this.handleCloseModal.bind(this)
-  }
-
-  componentDidMount() {
-    // Focus on search input when page loads
-    setTimeout(() => {
-      const searchInput = document.querySelector('input[type="text"]')
-      if (searchInput) {
-        searchInput.focus()
-      }
-    }, 300)
-  }
-
-  handleKeywordChange(event) {
-    this.setState({ searchKeyword: event.target.value })
-  }
-
-  async handleSearch(event, page = 1) {
-    if (event && event.preventDefault) event.preventDefault()
-    
-    const keyword = this.state.searchKeyword.trim()
+    const keyword = searchKeyword.trim()
     if (!keyword) return
 
-    this.setState({ 
-      loading: true, 
-      error: null,
-      hasSearched: true
-    })
+    setLoading(true)
+    setError(null)
 
     try {
       const response = await fetch(`http://localhost:8080/api/search?keyword=${encodeURIComponent(keyword)}&page=${page}`)
       const data = await response.json()
+      console.log('[SearchPage] Raw API response:', data)
       
       if (data.status === 'success') {
         const adaptedMovies = adaptMovieList(data.data?.movies || [])
-        this.setState({
-          loading: false,
-          movies: adaptedMovies,
-          currentPage: data.data?.pagination?.current_page || 1,
-          totalPages: data.data?.pagination?.total_pages || 1,
-          error: null
-        })
+        console.log('[SearchPage] Adapted movies:', adaptedMovies)
+        setMovies(adaptedMovies)
+        setCurrentPage(data.data?.pagination?.current_page || 1)
+        setTotalPages(data.data?.pagination?.total_pages || 1)
       } else {
-        this.setState({
-          loading: false,
-          movies: [],
-          error: data.message || 'Search failed'
-        })
+        setError(data.message || 'Search failed')
+        setMovies([])
       }
     } catch (error) {
       console.error('Search error:', error)
-      this.setState({
-        loading: false,
-        movies: [],
-        error: 'Failed to search movies. Make sure the API server is running.'
-      })
+      setError('Failed to search movies')
+      setMovies([])
+    } finally {
+      setLoading(false)
     }
+  }, [searchKeyword])
+
+  const handleClearSearch = () => {
+    setSearchKeyword('')
+    setMovies([])
+    setCurrentPage(1)
+    setTotalPages(1)
+    setError(null)
   }
 
-  handleClearSearch() {
-    this.setState({
-      searchKeyword: '',
-      movies: [],
-      currentPage: 1,
-      totalPages: 1,
-      hasSearched: false,
-      error: null
-    })
-  }
-
-  handlePageChange(page) {
-    if (page >= 1 && page <= this.state.totalPages && page !== this.state.currentPage) {
-      this.handleSearch(null, page)
+  const handlePageChange = (page) => {
+    if (page >= 1 && page <= totalPages && page !== currentPage) {
+      handleSearch(null, page)
       window.scrollTo(0, 0)
     }
   }
 
-  handleAddToTorrentList(movie, magnetLink) {
-    if (magnetLink) {
-      dispatch('addTorrent', magnetLink)
-      this.showNotification(`"${movie.title}" added to downloads!`)
-    } else {
-      const fallbackLink = movie.download_links?.find(link => link.type === 'magnet')
-      if (fallbackLink) {
-        dispatch('addTorrent', fallbackLink.link)
-        this.showNotification(`"${movie.title}" added to downloads!`)
-      } else {
-        this.showNotification('No magnet link available for this movie.', 'error')
-      }
-    }
+  const handleMovieClick = (movie) => {
+    setSelectedMovie(movie)
+    setIsModalOpen(true)
   }
 
-  handleMovieClick(movie) {
-    this.setState({
-      selectedMovie: movie,
-      isModalOpen: true
-    })
+  const handleCloseModal = () => {
+    setSelectedMovie(null)
+    setIsModalOpen(false)
   }
 
-  handleCloseModal() {
-    this.setState({
-      selectedMovie: null,
-      isModalOpen: false
-    })
-  }
-
-  showNotification(message, type = 'success') {
-    const notification = document.createElement('div')
-    notification.className = `notification ${type}`
-    notification.style.cssText = `
-      position: fixed;
-      top: 90px;
-      right: 30px;
-      background: ${type === 'success' ? 'linear-gradient(135deg, #4CAF50, #45a049)' : 'linear-gradient(135deg, #f44336, #da190b)'};
-      color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      font-weight: 500;
-      max-width: 300px;
-      transform: translateX(100%);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    `
-    notification.textContent = message
-    
-    document.body.appendChild(notification)
-    
-    setTimeout(() => {
-      notification.style.transform = 'translateX(0)'
-    }, 100)
-    
-    setTimeout(() => {
-      notification.style.transform = 'translateX(100%)'
-      setTimeout(() => {
-        if (notification.parentNode) {
-          notification.parentNode.removeChild(notification)
-        }
-      }, 300)
-    }, 3000)
-  }
-
-  renderSearchSection() {
-    const { searchKeyword, loading } = this.state
-    
-    return (
-      <Paper className="search-section">
-        <h2>Search Movies</h2>
-        <form onSubmit={this.handleSearch} className="search-form">
-          <TextField
-            hintText="Enter movie title to search..."
-            value={searchKeyword}
-            onChange={this.handleKeywordChange}
-            onKeyPress={(event) => {
-              if (event.key === 'Enter') {
-                this.handleSearch(event)
-              }
-            }}
-            style={{ flex: 1 }}
-            fullWidth
-            inputStyle={{
-              color: '#FAFAFA',
-              fontSize: '16px',
-              fontWeight: '400'
-            }}
-            hintStyle={{
-              color: 'rgba(255, 255, 255, 0.6)',
-              fontSize: '16px'
-            }}
-            underlineStyle={{
-              display: 'none'
-            }}
-            underlineFocusStyle={{
-              display: 'none'
-            }}
-          />
-          <IconButton 
-            onClick={this.handleSearch}
-            tooltip="Search"
-            disabled={!searchKeyword.trim() || loading}
-            style={{
-              background: 'linear-gradient(135deg, #e50914, #f40612)',
-              borderRadius: '50%',
-              padding: '12px',
-              color: 'white',
-              boxShadow: '0 2px 8px rgba(229, 9, 20, 0.3)',
-              transition: 'all 0.3s ease'
-            }}
-          >
-            <SearchIcon />
-          </IconButton>
-          {searchKeyword && (
-            <IconButton 
-              onClick={this.handleClearSearch}
-              tooltip="Clear Search"
-              style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                borderRadius: '50%',
-                padding: '12px',
-                color: 'white',
-                transition: 'all 0.3s ease'
-              }}
+  return (
+    <div className="search-page">
+      <div className="search-header">
+        <h1>Search Movies</h1>
+        
+        <form onSubmit={handleSearch} className="search-form">
+          <div className="search-input-wrapper">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Enter movie title..."
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
+              disabled={loading}
+            />
+            {searchKeyword && (
+              <button
+                type="button"
+                className="search-clear-btn"
+                onClick={handleClearSearch}
+                disabled={loading}
+              >
+                <ClearIcon />
+              </button>
+            )}
+            <button
+              type="submit"
+              className="search-submit-btn"
+              disabled={!searchKeyword.trim() || loading}
             >
-              <ClearIcon />
-            </IconButton>
-          )}
+              <SearchIcon />
+            </button>
+          </div>
         </form>
-      </Paper>
-    )
-  }
-
-  renderPagination() {
-    const { currentPage, totalPages } = this.state
-    const pages = []
-    const maxVisiblePages = 5
-    
-    let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
-    let end = Math.min(totalPages, start + maxVisiblePages - 1)
-    
-    if (end - start < maxVisiblePages - 1) {
-      start = Math.max(1, end - maxVisiblePages + 1)
-    }
-    
-    for (let i = start; i <= end; i++) {
-      pages.push(i)
-    }
-    
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '8px',
-        marginTop: '40px',
-        marginBottom: '40px'
-      }}>
-        <button
-          onClick={() => this.handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          style={{
-            padding: '8px 12px',
-            background: currentPage === 1 ? '#333' : '#e50914',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: currentPage === 1 ? 'not-allowed' : 'pointer',
-            opacity: currentPage === 1 ? 0.5 : 1
-          }}
-        >
-          Previous
-        </button>
-        
-        {start > 1 && (
-          <>
-            <button
-              onClick={() => this.handlePageChange(1)}
-              style={{
-                padding: '8px 12px',
-                background: 'transparent',
-                color: '#e50914',
-                border: '1px solid #e50914',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              1
-            </button>
-            {start > 2 && <span style={{ color: '#999' }}>...</span>}
-          </>
-        )}
-        
-        {pages.map(page => (
-          <button
-            key={page}
-            onClick={() => this.handlePageChange(page)}
-            style={{
-              padding: '8px 12px',
-              background: page === currentPage ? '#e50914' : 'transparent',
-              color: page === currentPage ? 'white' : '#e50914',
-              border: `1px solid ${page === currentPage ? '#e50914' : '#e50914'}`,
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: page === currentPage ? 'bold' : 'normal'
-            }}
-          >
-            {page}
-          </button>
-        ))}
-        
-        {end < totalPages && (
-          <>
-            {end < totalPages - 1 && <span style={{ color: '#999' }}>...</span>}
-            <button
-              onClick={() => this.handlePageChange(totalPages)}
-              style={{
-                padding: '8px 12px',
-                background: 'transparent',
-                color: '#e50914',
-                border: '1px solid #e50914',
-                borderRadius: '4px',
-                cursor: 'pointer'
-              }}
-            >
-              {totalPages}
-            </button>
-          </>
-        )}
-        
-        <button
-          onClick={() => this.handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          style={{
-            padding: '8px 12px',
-            background: currentPage === totalPages ? '#333' : '#e50914',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: currentPage === totalPages ? 'not-allowed' : 'pointer',
-            opacity: currentPage === totalPages ? 0.5 : 1
-          }}
-        >
-          Next
-        </button>
       </div>
-    )
-  }
 
-  renderMovieGrid() {
-    const { movies } = this.state
-    
-    return (
-      <div className="search-movies-grid">
-        {movies.map((movie, index) => (
-          <div key={index} className="search-movie-card" onClick={() => this.handleMovieClick(movie)}>
-            <div className="movie-poster-container" style={{ height: '400px', position: 'relative' }}>
-              {movie.poster ? (
-                <img 
-                  src={movie.poster} 
-                  alt={movie.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '15px 15px 0 0'
-                  }}
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                  }}
-                />
-              ) : (
-                <div style={{
-                  width: '100%',
-                  height: '100%',
-                  background: 'linear-gradient(135deg, #3a3a3a, #1a1a1a)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#666',
-                  fontSize: '14px',
-                  borderRadius: '15px 15px 0 0'
-                }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <div style={{ fontSize: '40px', marginBottom: '8px' }}>🎬</div>
-                    <div>No Image</div>
-                  </div>
-                </div>
-              )}
+      {loading && (
+        <div className="search-loading">
+          <div className="loading-spinner" />
+          <p>Searching for "{searchKeyword}"...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="search-error">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {!loading && movies.length === 0 && searchKeyword && (
+        <div className="search-empty">
+          <p>No movies found for "{searchKeyword}"</p>
+        </div>
+      )}
+
+      {!loading && movies.length > 0 && (
+        <>
+          <div className="movies-grid">
+            {movies.map((movie, index) => (
+              <AppleMovieCard
+                key={index}
+                movie={movie}
+                onMovieClick={handleMovieClick}
+                onAddToTorrentList={(movie, magnetLink) => {
+                  const { dispatch } = require('../lib/dispatcher')
+                  if (magnetLink) {
+                    dispatch('addTorrent', magnetLink)
+                  } else {
+                    const link = movie.download_links?.find(link => link.type === 'magnet')
+                    if (link) {
+                      dispatch('addTorrent', link.link)
+                    }
+                  }
+                }}
+              />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="pagination">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="pagination-btn"
+              >
+                Previous
+              </button>
               
-              {/* Quality badge */}
-              {movie.quality && (
-                <div style={{
-                  position: 'absolute',
-                  top: '12px',
-                  right: '12px',
-                  background: 'rgba(0,0,0,0.8)',
-                  color: '#fff',
-                  padding: '6px 12px',
-                  borderRadius: '8px',
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255,255,255,0.2)'
-                }}>
-                  {movie.quality}
-                </div>
-              )}
-            </div>
-            
-            <div style={{ padding: '20px' }}>
-              <h3 style={{
-                color: '#FAFAFA',
-                fontSize: '18px',
-                fontWeight: '600',
-                marginBottom: '12px',
-                lineHeight: '1.3'
-              }}>
-                {movie.title || movie.full_title || 'Unknown Title'}
-              </h3>
-              
-              {movie.description && (
-                <p style={{
-                  color: 'rgba(255, 255, 255, 0.8)',
-                  fontSize: '14px',
-                  lineHeight: '1.5',
-                  marginBottom: '15px',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                }}>
-                  {movie.description}
-                </p>
-              )}
-              
-              <div style={{
-                display: 'flex',
-                gap: '8px',
-                marginBottom: '15px',
-                flexWrap: 'wrap'
-              }}>
-                {movie.year && (
-                  <span style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#aaa',
-                    padding: '4px 8px',
-                    borderRadius: '12px',
-                    fontSize: '12px'
-                  }}>
-                    {movie.year}
-                  </span>
-                )}
-                {movie.genre && (
-                  <span style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: '#aaa',
-                    padding: '4px 8px',
-                    borderRadius: '12px',
-                    fontSize: '12px'
-                  }}>
-                    {movie.genre.replace(/[\[\]"']/g, '').replace(/\\t/g, ' ').trim()}
-                  </span>
-                )}
-              </div>
+              <span className="pagination-info">
+                Page {currentPage} of {totalPages}
+              </span>
               
               <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  this.handleAddToTorrentList(movie)
-                }}
-                disabled={!movie.download_links?.some(link => link.type === 'magnet')}
-                style={{
-                  background: movie.download_links?.some(link => link.type === 'magnet') ? 
-                    'linear-gradient(135deg, #e50914, #f40612)' : 
-                    'linear-gradient(135deg, #555, #666)',
-                  color: 'white',
-                  border: 'none',
-                  padding: '12px 16px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  borderRadius: '8px',
-                  cursor: movie.download_links?.some(link => link.type === 'magnet') ? 'pointer' : 'not-allowed',
-                  width: '100%',
-                  transition: 'all 0.3s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                  letterSpacing: '0.5px',
-                  textTransform: 'uppercase'
-                }}
-                onMouseEnter={(e) => {
-                  if (movie.download_links?.some(link => link.type === 'magnet')) {
-                    e.target.style.background = 'linear-gradient(135deg, #f40612, #ff1e2d)'
-                    e.target.style.transform = 'translateY(-2px)'
-                    e.target.style.boxShadow = '0 4px 15px rgba(229,9,20,0.4)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (movie.download_links?.some(link => link.type === 'magnet')) {
-                    e.target.style.background = 'linear-gradient(135deg, #e50914, #f40612)'
-                    e.target.style.transform = 'translateY(0)'
-                    e.target.style.boxShadow = '0 2px 8px rgba(0,0,0,0.3)'
-                  }
-                }}
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="pagination-btn"
               >
-                {movie.download_links?.some(link => link.type === 'magnet') ? (
-                  <>
-                    <DownloadIcon />
-                    Add to Downloads
-                  </>
-                ) : (
-                  <>
-                    <InfoIcon />
-                    No Download
-                  </>
-                )}
+                Next
               </button>
             </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
-
-  render() {
-    const { 
-      loading, 
-      error, 
-      hasSearched,
-      movies,
-      searchKeyword
-    } = this.state
-
-    return (
-      <div className="search-page">
-        <div className="search-content">
-          {this.renderSearchSection()}
-          
-          {loading && (
-            <div className="search-loading">
-              <div className="search-loading-spinner">
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  border: '4px solid rgba(229, 9, 20, 0.3)',
-                  borderTop: '4px solid #e50914',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite'
-                }} />
-              </div>
-              <p style={{ fontSize: '18px', fontWeight: '500' }}>
-                Searching for "{searchKeyword}"...
-              </p>
-            </div>
           )}
+        </>
+      )}
 
-          {!loading && hasSearched && movies.length === 0 && (
-            <div className="search-empty-state">
-              <EmptySearchIcon />
-              <h3>No movies found</h3>
-              <p>
-                We couldn't find any movies matching "{searchKeyword}". 
-                Try searching with different keywords or check your spelling.
-              </p>
-            </div>
-          )}
+      {/* Movie Details Modal */}
+      {selectedMovie && (
+        <AppleMovieModal
+          movie={selectedMovie}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onAddToTorrentList={(movie, directMagnetLink) => {
+            console.log('[SearchPage] onAddToTorrentList called with:', { movie, directMagnetLink })
+            const { dispatch } = require('../lib/dispatcher')
 
-          {!loading && !hasSearched && (
-            <div className="search-empty-state">
-              <EmptySearchIcon />
-              <h3>Search Movies</h3>
-              <p>
-                Enter a movie title above to search for torrents. 
-                You can search by title, genre, or year.
-              </p>
-            </div>
-          )}
+            // Prefer the direct link if supplied (modal case with a single link)
+            let magnetUri = typeof directMagnetLink === 'string' ? directMagnetLink : null
 
-          {!loading && movies.length > 0 && this.renderMovieGrid()}
-          
-          {!loading && movies.length > 0 && this.state.totalPages > 1 && (
-            <div className="pagination-container">
-              {this.renderPagination()}
-            </div>
-          )}
-        </div>
+            // Fallback: Attempt to extract the first valid magnet URI from the movie object
+            if (!magnetUri && movie && Array.isArray(movie.download_links)) {
+              const firstMagnet = movie.download_links.find(l => l && l.type === 'magnet' && typeof l.link === 'string' && l.link.startsWith('magnet:'))
+              magnetUri = firstMagnet ? firstMagnet.link : null
+            }
 
-        {error && (
-          <Snackbar
-            open={!!error}
-            message={error}
-            autoHideDuration={4000}
-            onRequestClose={() => this.setState({ error: null })}
-          />
-        )}
-
-        <MovieDetailsModal
-          movie={this.state.selectedMovie}
-          isOpen={this.state.isModalOpen}
-          onClose={this.handleCloseModal}
-          onAddToTorrentList={this.handleAddToTorrentList}
+            if (magnetUri) {
+              console.log('[SearchPage] Dispatching addTorrent with magnet URI:', magnetUri)
+              dispatch('addTorrent', magnetUri)
+            } else {
+              console.error('[SearchPage] Unable to locate a valid magnet URI for:', movie)
+            }
+          }}
         />
-      </div>
-    )
-  }
+      )}
+    </div>
+  )
 }
 
-module.exports = SearchPage 
+module.exports = SearchPage
